@@ -254,10 +254,10 @@ Rcpp::IntegerMatrix getTFaces(MeshT mesh) {
 Rcpp::NumericMatrix getKNormals(Mesh3 mesh) {
   const size_t nvertices = mesh.number_of_vertices();
   Rcpp::NumericMatrix Normals(3, nvertices);
-  auto vnormals = mesh.add_property_map<boost_vertex_descriptor, Vector3>(
+  auto vnormals = mesh.add_property_map<Mesh3::Vertex_index, Vector3>(
                           "v:normals", CGAL::NULL_VECTOR)
                       .first;
-  auto fnormals = mesh.add_property_map<boost_face_descriptor, Vector3>(
+  auto fnormals = mesh.add_property_map<Mesh3::Face_index, Vector3>(
                           "f:normals", CGAL::NULL_VECTOR)
                       .first;
   PMP::compute_normals(mesh, vnormals, fnormals);
@@ -279,10 +279,10 @@ Rcpp::NumericMatrix getKNormals(Mesh3 mesh) {
 Rcpp::NumericMatrix getEKNormals(EMesh3 mesh) {
   const size_t nvertices = mesh.number_of_vertices();
   Rcpp::NumericMatrix Normals(3, nvertices);
-  auto vnormals = mesh.add_property_map<boost_vertex_descriptor, EVector3>(
+  auto vnormals = mesh.add_property_map<EMesh3::Vertex_index, EVector3>(
                           "v:normals", CGAL::NULL_VECTOR)
                       .first;
-  auto fnormals = mesh.add_property_map<boost_face_descriptor, EVector3>(
+  auto fnormals = mesh.add_property_map<EMesh3::Face_index, EVector3>(
                           "f:normals", CGAL::NULL_VECTOR)
                       .first;
   PMP::compute_normals(mesh, vnormals, fnormals);
@@ -304,10 +304,10 @@ Rcpp::NumericMatrix getEKNormals(EMesh3 mesh) {
 Rcpp::NumericMatrix getQNormals(QMesh3 mesh) {
   const size_t nvertices = mesh.number_of_vertices();
   Rcpp::NumericMatrix Normals(3, nvertices);
-  auto vnormals = mesh.add_property_map<boost_vertex_descriptor, QVector3>(
+  auto vnormals = mesh.add_property_map<QMesh3::Vertex_index, QVector3>(
                           "v:normals", CGAL::NULL_VECTOR)
                       .first;
-  auto fnormals = mesh.add_property_map<boost_face_descriptor, QVector3>(
+  auto fnormals = mesh.add_property_map<QMesh3::Face_index, QVector3>(
                           "f:normals", CGAL::NULL_VECTOR)
                       .first;
   PMP::compute_normals(mesh, vnormals, fnormals);

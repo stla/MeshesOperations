@@ -341,7 +341,7 @@ Mesh <- function(
   mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
   mesh[["edges"]] <- edges[, c(1L, 2L)]
   if(normals){
-    mesh[["normals"]] <- t(tmesh[["normals"]])
+    mesh[["normals"]] <- t(mesh[["normals"]])
   }
   if(triangulate){
     mesh[["edges0"]] <- t(mesh[["edges0"]])
