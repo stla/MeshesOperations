@@ -103,9 +103,9 @@ MeshT makeSurfTMesh(const Rcpp::List rmesh, const bool clean) {
   const Rcpp::NumericMatrix vertices =
       Rcpp::as<Rcpp::NumericMatrix>(rmesh["vertices"]);
   const Rcpp::IntegerVector rfaces =
-      Rcpp::as<Rcpp::IntegerVector>(rmesh["faces"]);
+      Rcpp::as<Rcpp::IntegerMatrix>(rmesh["faces"]);
   std::vector<PointT> points = matrix_to_points3<PointT>(vertices);
-  std::vector<std::array<int, 3>> faces = matrix_to_faces(rfaces);
+  std::vector<std::array<int, 3>> faces = matrix_to_Tfaces(rfaces);
   return soup2Tmesh<MeshT, PointT>(points, faces, clean);
 }
 
@@ -125,9 +125,9 @@ QMesh3 makeSurfTQMesh(const Rcpp::List rmesh, const bool clean) {
   const Rcpp::CharacterMatrix vertices =
       Rcpp::as<Rcpp::CharacterMatrix>(rmesh["vertices"]);
   const Rcpp::IntegerVector rfaces =
-      Rcpp::as<Rcpp::IntegerVector>(rmesh["faces"]);
+      Rcpp::as<Rcpp::IntegerMatrix>(rmesh["faces"]);
   std::vector<QPoint3> points = matrix_to_qpoints3(vertices);
-  std::vector<std::array<int, 3>> faces = matrix_to_faces(rfaces);
+  std::vector<std::array<int, 3>> faces = matrix_to_Tfaces(rfaces);
   return soup2Tmesh<QMesh3, QPoint3>(points, faces, clean);
 }
 
