@@ -112,7 +112,7 @@ QMesh3 makeSurfTQMesh(const Rcpp::List rmesh, const bool clean) {
       Rcpp::as<Rcpp::IntegerMatrix>(rmesh["faces"]);
   std::vector<QPoint3> points = matrix_to_qpoints3(vertices);
   std::vector<std::vector<size_t>> faces = matrix_to_Tfaces(rfaces);
-  return soup2Tmesh<QMesh3, QPoint3>(points, faces, clean);
+  return soup2mesh<QMesh3, QPoint3>(points, faces, clean);
 }
 
 Rcpp::NumericMatrix getVertices_K(Mesh3 mesh) {
