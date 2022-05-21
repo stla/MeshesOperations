@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^inst/trash$
+^inst/essais$
+^LICENSE$
+^\.github$
+^data-raw$
+^inst/makegifs$
+^inst/screenshots$

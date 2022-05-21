@@ -1,0 +1,20 @@
+Package: MeshesOperations
+Type: Package
+Title: Boolean Operations on 3D Meshes
+Version: 0.0.9000
+Author: Stéphane Laurent
+Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
+Description: Uses the 'CGAL' C++ library to perform Boolean operations on 3D meshes (intersection, union, difference).
+Encoding: UTF-8
+License: GPL-3
+Imports: Rcpp (>= 1.0.7), rgl, data.table, gmp
+LinkingTo: Rcpp, RcppCGAL, RcppEigen, BH
+Suggests: misc3d
+SystemRequirements: C++ 14, gmp, mpfr
+URL: https://github.com/stla/MeshesOperations
+BugReports: https://github.com/stla/MeshesOperations/issues
+RoxygenNote: 7.2.0
+Depends: 
+    R (>= 2.10)
+LazyData: true
+LazyDataCompression: bzip2
