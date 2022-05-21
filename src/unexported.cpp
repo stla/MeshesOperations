@@ -263,7 +263,7 @@ Rcpp::NumericMatrix getKNormals(Mesh3 mesh) {
   PMP::compute_normals(mesh, vnormals, fnormals);
   {
     size_t i = 0;
-    for(boost_vertex_descriptor vd : vertices(mesh)) {
+    for(Mesh3::Vertex_index vd : vertices(mesh)) {
       Rcpp::NumericVector col_i(3);
       const Vector3 normal = vnormals[vd];
       col_i(0) = normal.x();
@@ -288,7 +288,7 @@ Rcpp::NumericMatrix getEKNormals(EMesh3 mesh) {
   PMP::compute_normals(mesh, vnormals, fnormals);
   {
     size_t i = 0;
-    for(boost_vertex_descriptor vd : vertices(mesh)) {
+    for(EMesh3::Vertex_index vd : vertices(mesh)) {
       Rcpp::NumericVector col_i(3);
       const EVector3 normal = vnormals[vd];
       col_i(0) = CGAL::to_double(normal.x());
@@ -313,7 +313,7 @@ Rcpp::NumericMatrix getQNormals(QMesh3 mesh) {
   PMP::compute_normals(mesh, vnormals, fnormals);
   {
     size_t i = 0;
-    for(boost_vertex_descriptor vd : vertices(mesh)) {
+    for(QMesh3::Vertex_index vd : vertices(mesh)) {
       Rcpp::NumericVector col_i(3);
       const QVector3 normal = vnormals[vd];
       col_i(0) = normal.x().convert_to<double>();
