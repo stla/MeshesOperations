@@ -16,7 +16,7 @@ double gtest(Rcpp::CharacterVector x){
 std::string gtest2(Rcpp::CharacterVector x){
 	mpq_class gg;
 	gg = "5/2";
-	mpq_class ggg = gg + 1:
+	mpq_class ggg = gg + 2;
 	std::string y = ggg.get_str();
 	return y;
 }
