@@ -15,13 +15,13 @@ double gtest(Rcpp::CharacterVector x){
 std::string gtest2(Rcpp::CharacterVector x){
 	CGAL::Gmpq gg(CGAL::Gmpq("5/2"));
 	CGAL::Gmpq ggg = gg + 2;
-	std::string y = ggg.to_string();
+	std::string y = ggg.numerator() + "/" + ggg.denominator();
 	return y;
 }
 
 // [[Rcpp::export]]
 double gtest3(Rcpp::CharacterVector x){
-	CGAL::Gmpq gg(CGAL::Gmpq(x(0)));
+	CGAL::Gmpq gg(CGAL::Gmpq(Rcpp::as<std::string>(x(0))));
 	double y = gg.to_double();
 	return y;
 }
