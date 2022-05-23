@@ -14,19 +14,19 @@ std::vector<PointT> matrix_to_points3(const Rcpp::NumericMatrix M) {
   return points;
 }
 
-// std::vector<QPoint3> matrix_to_qpoints3(const Rcpp::CharacterMatrix M) {
-//   const size_t npoints = M.ncol();
-//   std::vector<QPoint3> points;
-//   points.reserve(npoints);
-//   for(size_t i = 0; i < npoints; i++) {
-//     const Rcpp::CharacterVector pt = M(Rcpp::_, i);
-//     mp::mpq_rational qpt0(pt(0));
-//     mp::mpq_rational qpt1(pt(1));
-//     mp::mpq_rational qpt2(pt(2));
-//     points.emplace_back(QPoint3(qpt0, qpt1, qpt2));
-//   }
-//   return points;
-// }
+std::vector<QPoint3> matrix_to_qpoints3(const Rcpp::CharacterMatrix M) {
+  const size_t npoints = M.ncol();
+  std::vector<QPoint3> points;
+  points.reserve(npoints);
+  for(size_t i = 0; i < npoints; i++) {
+    const Rcpp::CharacterVector pt = M(Rcpp::_, i);
+    mpq_class qpt0(pt(0));
+    mpq_class qpt1(pt(1));
+    mpq_class qpt2(pt(2));
+    points.emplace_back(QPoint3(qpt0, qpt1, qpt2));
+  }
+  return points;
+}
 
 std::vector<std::vector<int>> matrix_to_Tfaces(
     const Rcpp::IntegerMatrix Faces) {
@@ -96,24 +96,24 @@ MeshT makeSurfTMesh(const Rcpp::List rmesh, const bool clean) {
 template Mesh3 makeSurfTMesh<Mesh3, Point3>(const Rcpp::List, const bool);
 template EMesh3 makeSurfTMesh<EMesh3, EPoint3>(const Rcpp::List, const bool);
 
-// QMesh3 makeSurfQMesh(const Rcpp::List rmesh, const bool clean) {
-//   const Rcpp::CharacterMatrix vertices =
-//       Rcpp::as<Rcpp::CharacterMatrix>(rmesh["vertices"]);
-//   const Rcpp::List rfaces = Rcpp::as<Rcpp::List>(rmesh["faces"]);
-//   std::vector<QPoint3> points = matrix_to_qpoints3(vertices);
-//   std::vector<std::vector<size_t>> faces = list_to_faces(rfaces);
-//   return soup2mesh<QMesh3, QPoint3>(points, faces, clean);
-// }
+QMesh3 makeSurfQMesh(const Rcpp::List rmesh, const bool clean) {
+  const Rcpp::CharacterMatrix vertices =
+      Rcpp::as<Rcpp::CharacterMatrix>(rmesh["vertices"]);
+  const Rcpp::List rfaces = Rcpp::as<Rcpp::List>(rmesh["faces"]);
+  std::vector<QPoint3> points = matrix_to_qpoints3(vertices);
+  std::vector<std::vector<size_t>> faces = list_to_faces(rfaces);
+  return soup2mesh<QMesh3, QPoint3>(points, faces, clean);
+}
 
-// QMesh3 makeSurfTQMesh(const Rcpp::List rmesh, const bool clean) {
-//   const Rcpp::CharacterMatrix vertices =
-//       Rcpp::as<Rcpp::CharacterMatrix>(rmesh["vertices"]);
-//   const Rcpp::IntegerMatrix rfaces =
-//       Rcpp::as<Rcpp::IntegerMatrix>(rmesh["faces"]);
-//   std::vector<QPoint3> points = matrix_to_qpoints3(vertices);
-//   std::vector<std::vector<size_t>> faces = matrix_to_Tfaces(rfaces);
-//   return soup2mesh<QMesh3, QPoint3>(points, faces, clean);
-// }
+QMesh3 makeSurfTQMesh(const Rcpp::List rmesh, const bool clean) {
+  const Rcpp::CharacterMatrix vertices =
+      Rcpp::as<Rcpp::CharacterMatrix>(rmesh["vertices"]);
+  const Rcpp::IntegerMatrix rfaces =
+      Rcpp::as<Rcpp::IntegerMatrix>(rmesh["faces"]);
+  std::vector<QPoint3> points = matrix_to_qpoints3(vertices);
+  std::vector<std::vector<size_t>> faces = matrix_to_Tfaces(rfaces);
+  return soup2mesh<QMesh3, QPoint3>(points, faces, clean);
+}
 
 Rcpp::NumericMatrix getVertices_K(Mesh3 mesh) {
   const size_t nvertices = mesh.number_of_vertices();
@@ -151,23 +151,23 @@ Rcpp::NumericMatrix getVertices_EK(EMesh3 mesh) {
   return Vertices;
 }
 
-// Rcpp::CharacterMatrix getVertices_QK(QMesh3 mesh) {
-//   const size_t nvertices = mesh.number_of_vertices();
-//   Rcpp::CharacterMatrix Vertices(3, nvertices);
-//   {
-//     size_t i = 0;
-//     for(QMesh3::Vertex_index vd : mesh.vertices()) {
-//       Rcpp::CharacterVector col_i(3);
-//       const QPoint3 vertex = mesh.point(vd);
-//       col_i(0) = vertex.x().convert_to<std::string>();
-//       col_i(1) = vertex.y().convert_to<std::string>();
-//       col_i(2) = vertex.z().convert_to<std::string>();
-//       Vertices(Rcpp::_, i) = col_i;
-//       i++;
-//     }
-//   }
-//   return Vertices;
-// }
+Rcpp::CharacterMatrix getVertices_QK(QMesh3 mesh) {
+  const size_t nvertices = mesh.number_of_vertices();
+  Rcpp::CharacterMatrix Vertices(3, nvertices);
+  {
+    size_t i = 0;
+    for(QMesh3::Vertex_index vd : mesh.vertices()) {
+      Rcpp::CharacterVector col_i(3);
+      const QPoint3 vertex = mesh.point(vd);
+      col_i(0) = vertex.x().get_str();
+      col_i(1) = vertex.y().get_str();
+      col_i(2) = vertex.z().get_str();
+      Vertices(Rcpp::_, i) = col_i;
+      i++;
+    }
+  }
+  return Vertices;
+}
 
 template <typename KernelT, typename MeshT, typename PointT>
 Rcpp::IntegerMatrix getEdges2(MeshT mesh, const double epsilon) {
@@ -210,8 +210,8 @@ Rcpp::IntegerMatrix getEdges2(MeshT mesh, const double epsilon) {
 template Rcpp::IntegerMatrix getEdges2<K, Mesh3, Point3>(Mesh3, const double);
 template Rcpp::IntegerMatrix getEdges2<EK, EMesh3, EPoint3>(EMesh3,
                                                             const double);
-// template Rcpp::IntegerMatrix getEdges2<QK, QMesh3, QPoint3>(QMesh3,
-//                                                             const double);
+template Rcpp::IntegerMatrix getEdges2<QK, QMesh3, QPoint3>(QMesh3,
+                                                            const double);
 
 template <typename MeshT>
 Rcpp::List getFaces(MeshT mesh) {
@@ -301,30 +301,30 @@ Rcpp::NumericMatrix getEKNormals(EMesh3 mesh) {
   return Normals;
 }
 
-// Rcpp::NumericMatrix getQNormals(QMesh3 mesh) {
-//   const size_t nvertices = mesh.number_of_vertices();
-//   Rcpp::NumericMatrix Normals(3, nvertices);
-//   auto vnormals = mesh.add_property_map<QMesh3::Vertex_index, QVector3>(
-//                           "v:normals", CGAL::NULL_VECTOR)
-//                       .first;
-//   auto fnormals = mesh.add_property_map<QMesh3::Face_index, QVector3>(
-//                           "f:normals", CGAL::NULL_VECTOR)
-//                       .first;
-//   PMP::compute_normals(mesh, vnormals, fnormals);
-//   {
-//     size_t i = 0;
-//     for(QMesh3::Vertex_index vd : vertices(mesh)) {
-//       Rcpp::NumericVector col_i(3);
-//       const QVector3 normal = vnormals[vd];
-//       col_i(0) = normal.x().convert_to<double>();
-//       col_i(1) = normal.y().convert_to<double>();
-//       col_i(2) = normal.z().convert_to<double>();
-//       Normals(Rcpp::_, i) = col_i;
-//       i++;
-//     }
-//   }
-//   return Normals;
-// }
+Rcpp::NumericMatrix getQNormals(QMesh3 mesh) {
+  const size_t nvertices = mesh.number_of_vertices();
+  Rcpp::NumericMatrix Normals(3, nvertices);
+  auto vnormals = mesh.add_property_map<QMesh3::Vertex_index, QVector3>(
+                          "v:normals", CGAL::NULL_VECTOR)
+                      .first;
+  auto fnormals = mesh.add_property_map<QMesh3::Face_index, QVector3>(
+                          "f:normals", CGAL::NULL_VECTOR)
+                      .first;
+  PMP::compute_normals(mesh, vnormals, fnormals);
+  {
+    size_t i = 0;
+    for(QMesh3::Vertex_index vd : vertices(mesh)) {
+      Rcpp::NumericVector col_i(3);
+      const QVector3 normal = vnormals[vd];
+      col_i(0) = normal.x().get_d();
+      col_i(1) = normal.y().get_d();
+      col_i(2) = normal.z().get_d();
+      Normals(Rcpp::_, i) = col_i;
+      i++;
+    }
+  }
+  return Normals;
+}
 
 Rcpp::List RSurfKMesh(Mesh3 mesh, const bool normals, const double epsilon) {
   Rcpp::IntegerMatrix Edges = getEdges2<K, Mesh3, Point3>(mesh, epsilon);
@@ -354,19 +354,19 @@ Rcpp::List RSurfEKMesh(EMesh3 mesh, const bool normals, const double epsilon) {
   return out;
 }
 
-// Rcpp::List RSurfQMesh(QMesh3 mesh, const bool normals, const double epsilon) {
-//   Rcpp::IntegerMatrix Edges = getEdges2<QK, QMesh3, QPoint3>(mesh, epsilon);
-//   Rcpp::CharacterMatrix Vertices = getVertices_QK(mesh);
-//   Rcpp::List Faces = getFaces<QMesh3>(mesh);
-//   Rcpp::List out = Rcpp::List::create(Rcpp::Named("vertices") = Vertices,
-//                                       Rcpp::Named("edges") = Edges,
-//                                       Rcpp::Named("faces") = Faces);
-//   if(normals) {
-//     Rcpp::NumericMatrix Normals = getQNormals(mesh);
-//     out["normals"] = Normals;
-//   }
-//   return out;
-// }
+Rcpp::List RSurfQMesh(QMesh3 mesh, const bool normals, const double epsilon) {
+  Rcpp::IntegerMatrix Edges = getEdges2<QK, QMesh3, QPoint3>(mesh, epsilon);
+  Rcpp::CharacterMatrix Vertices = getVertices_QK(mesh);
+  Rcpp::List Faces = getFaces<QMesh3>(mesh);
+  Rcpp::List out = Rcpp::List::create(Rcpp::Named("vertices") = Vertices,
+                                      Rcpp::Named("edges") = Edges,
+                                      Rcpp::Named("faces") = Faces);
+  if(normals) {
+    Rcpp::NumericMatrix Normals = getQNormals(mesh);
+    out["normals"] = Normals;
+  }
+  return out;
+}
 
 Rcpp::List RSurfTKMesh(Mesh3 mesh, const bool normals, const double epsilon) {
   Rcpp::IntegerMatrix Edges = getEdges2<K, Mesh3, Point3>(mesh, epsilon);
@@ -396,16 +396,16 @@ Rcpp::List RSurfTEKMesh(EMesh3 mesh, const bool normals, const double epsilon) {
   return out;
 }
 
-// Rcpp::List RSurfTQMesh(QMesh3 mesh, const bool normals, const double epsilon) {
-//   Rcpp::IntegerMatrix Edges = getEdges2<QK, QMesh3, QPoint3>(mesh, epsilon);
-//   Rcpp::CharacterMatrix Vertices = getVertices_QK(mesh);
-//   Rcpp::IntegerMatrix Faces = getTFaces<QMesh3>(mesh);
-//   Rcpp::List out = Rcpp::List::create(Rcpp::Named("vertices") = Vertices,
-//                                       Rcpp::Named("edges") = Edges,
-//                                       Rcpp::Named("faces") = Faces);
-//   if(normals) {
-//     Rcpp::NumericMatrix Normals = getQNormals(mesh);
-//     out["normals"] = Normals;
-//   }
-//   return out;
-// }
+Rcpp::List RSurfTQMesh(QMesh3 mesh, const bool normals, const double epsilon) {
+  Rcpp::IntegerMatrix Edges = getEdges2<QK, QMesh3, QPoint3>(mesh, epsilon);
+  Rcpp::CharacterMatrix Vertices = getVertices_QK(mesh);
+  Rcpp::IntegerMatrix Faces = getTFaces<QMesh3>(mesh);
+  Rcpp::List out = Rcpp::List::create(Rcpp::Named("vertices") = Vertices,
+                                      Rcpp::Named("edges") = Edges,
+                                      Rcpp::Named("faces") = Faces);
+  if(normals) {
+    Rcpp::NumericMatrix Normals = getQNormals(mesh);
+    out["normals"] = Normals;
+  }
+  return out;
+}

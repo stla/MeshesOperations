@@ -2,7 +2,7 @@
 #include "MeshesOperations.h"
 #endif
 
-#include <gmpxx.h>
+
 
 // [[Rcpp::export]]
 double gtest(Rcpp::CharacterVector x){
