@@ -9,17 +9,16 @@ std::string q2str(CGAL::Gmpq r){
 	CGAL::Gmpz denom = r.denominator();
 	size_t n = numer.size();
 	size_t d = denom.size();
-	char *snumer = new char [n];
-	char *sdenom = new char [d];
-	mpz_get_str(snumer, 10, numer.mpz());
-	mpz_get_str(sdenom, 10, denom.mpz());
+	char *cnumer = new char [n];
+	char *cdenom = new char [d];
+	mpz_get_str(cnumer, 10, numer.mpz());
+	mpz_get_str(cdenom, 10, denom.mpz());
+	std::string snumer(cnumer, cnumer + n);
+	std::string sdenom(cdenom, cdenom + d);
 	return snumer + "/" + sdenom;
 }
 
-// CGAL::Gmpq str2q(Rcpp::CharacterVector x){
-// 	CGAL::Gmpq r(CGAL::Gmpq(Rcpp::as<std::string>(x)));
-// 	return r;
-// }
+
 
 // [[Rcpp::export]]
 double gtest(Rcpp::CharacterVector x){
