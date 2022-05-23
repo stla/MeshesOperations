@@ -104,7 +104,7 @@ rglmesh2 <- rotate3d(cube, pi/3, 1, 1, 1)
 
 inter <- MeshesIntersection(list(mesh1, mesh2), numbersType = "gmp")
 # perfect vertices:
-inter[["vertices"]]
+inter[["gmpVertices"]]
 rglinter <- tmesh3d(
   vertices = t(inter[["vertices"]]),
   indices = t(inter[["faces"]]),

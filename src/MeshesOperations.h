@@ -64,8 +64,9 @@ typedef std::vector<Point3> Points3;
 typedef CGAL::Surface_mesh<Point3> Mesh3;
 typedef CGAL::Surface_mesh<EPoint3> EMesh3;
 
-//typedef boost::graph_traits<Mesh3>::vertex_descriptor boost_vertex_descriptor;
-//typedef boost::graph_traits<Mesh3>::face_descriptor boost_face_descriptor;
+// typedef boost::graph_traits<Mesh3>::vertex_descriptor
+// boost_vertex_descriptor; typedef boost::graph_traits<Mesh3>::face_descriptor
+// boost_face_descriptor;
 
 typedef K::Vector_3 Vector3;
 typedef EK::Vector_3 EVector3;
@@ -77,7 +78,7 @@ typedef QK::Vector_3 QVector3;
 
 // -------------------------------------------------------------------------- //
 namespace PMP = CGAL::Polygon_mesh_processing;
-//namespace mp = boost::multiprecision;
+// namespace mp = boost::multiprecision;
 
 // -------------------------------------------------------------------------- //
 
