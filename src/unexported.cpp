@@ -2,6 +2,20 @@
 #include "MeshesOperations.h"
 #endif
 
+std::string q2str(CGAL::Gmpq r){
+  CGAL::Gmpz numer = r.numerator();
+  CGAL::Gmpz denom = r.denominator();
+  size_t n = numer.size();
+  size_t d = denom.size();
+  char *cnumer = new char [n];
+  char *cdenom = new char [d];
+  mpz_get_str(cnumer, 10, numer.mpz());
+  mpz_get_str(cdenom, 10, denom.mpz());
+  std::string snumer(cnumer, cnumer + n);
+  std::string sdenom(cdenom, cdenom + d);
+  return snumer + "/" + sdenom;
+}
+
 template <typename PointT>
 std::vector<PointT> matrix_to_points3(const Rcpp::NumericMatrix M) {
   const size_t npoints = M.ncol();

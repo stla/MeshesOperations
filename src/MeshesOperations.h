@@ -47,6 +47,7 @@
 
 #include <CGAL/Gmpq.h>
 #include <CGAL/Gmpz.h>
+#include "gmp.h"
 
 #include <algorithm>
 #include <array>
@@ -102,3 +103,5 @@ Rcpp::List RSurfQMesh(QMesh3, const bool, const double);
 Rcpp::List RSurfTKMesh(Mesh3, const bool, const double);
 Rcpp::List RSurfTEKMesh(EMesh3, const bool, const double);
 Rcpp::List RSurfTQMesh(QMesh3, const bool, const double);
+
+std::string q2str(CGAL::Gmpq);
