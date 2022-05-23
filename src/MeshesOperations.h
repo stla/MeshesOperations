@@ -46,6 +46,7 @@
 #include <CGAL/Polygon_mesh_processing/IO/polygon_mesh_io.h>
 
 #include <CGAL/Gmpq.h>
+#include <CGAL/Gmpz.h>
 
 #include <algorithm>
 #include <array>
