@@ -20,9 +20,9 @@ std::vector<QPoint3> matrix_to_qpoints3(const Rcpp::CharacterMatrix M) {
   points.reserve(npoints);
   for(size_t i = 0; i < npoints; i++) {
     const Rcpp::CharacterVector pt = M(Rcpp::_, i);
-    mpq_class qpt0(pt(0));
-    mpq_class qpt1(pt(1));
-    mpq_class qpt2(pt(2));
+    CGAL::Gmpq::Gmpq qpt0(pt(0));
+    CGAL::Gmpq::Gmpq qpt1(pt(1));
+    CGAL::Gmpq::Gmpq qpt2(pt(2));
     points.emplace_back(QPoint3(qpt0, qpt1, qpt2));
   }
   return points;
@@ -101,7 +101,7 @@ QMesh3 makeSurfQMesh(const Rcpp::List rmesh, const bool clean) {
       Rcpp::as<Rcpp::CharacterMatrix>(rmesh["vertices"]);
   const Rcpp::List rfaces = Rcpp::as<Rcpp::List>(rmesh["faces"]);
   std::vector<QPoint3> points = matrix_to_qpoints3(vertices);
-  std::vector<std::vector<size_t>> faces = list_to_faces(rfaces);
+  std::vector<std::vector<int>> faces = list_to_faces(rfaces);
   return soup2mesh<QMesh3, QPoint3>(points, faces, clean);
 }
 
@@ -111,7 +111,7 @@ QMesh3 makeSurfTQMesh(const Rcpp::List rmesh, const bool clean) {
   const Rcpp::IntegerMatrix rfaces =
       Rcpp::as<Rcpp::IntegerMatrix>(rmesh["faces"]);
   std::vector<QPoint3> points = matrix_to_qpoints3(vertices);
-  std::vector<std::vector<size_t>> faces = matrix_to_Tfaces(rfaces);
+  std::vector<std::vector<int>> faces = matrix_to_Tfaces(rfaces);
   return soup2mesh<QMesh3, QPoint3>(points, faces, clean);
 }
 
@@ -159,9 +159,9 @@ Rcpp::CharacterMatrix getVertices_QK(QMesh3 mesh) {
     for(QMesh3::Vertex_index vd : mesh.vertices()) {
       Rcpp::CharacterVector col_i(3);
       const QPoint3 vertex = mesh.point(vd);
-      col_i(0) = vertex.x().get_str();
-      col_i(1) = vertex.y().get_str();
-      col_i(2) = vertex.z().get_str();
+      col_i(0) = vertex.x().to_string();
+      col_i(1) = vertex.y().to_string();
+      col_i(2) = vertex.z().to_string();
       Vertices(Rcpp::_, i) = col_i;
       i++;
     }
@@ -316,9 +316,9 @@ Rcpp::NumericMatrix getQNormals(QMesh3 mesh) {
     for(QMesh3::Vertex_index vd : vertices(mesh)) {
       Rcpp::NumericVector col_i(3);
       const QVector3 normal = vnormals[vd];
-      col_i(0) = normal.x().get_d();
-      col_i(1) = normal.y().get_d();
-      col_i(2) = normal.z().get_d();
+      col_i(0) = normal.x().to_double();
+      col_i(1) = normal.y().to_double();
+      col_i(2) = normal.z().to_double();
       Normals(Rcpp::_, i) = col_i;
       i++;
     }

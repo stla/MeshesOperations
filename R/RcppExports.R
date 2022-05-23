@@ -13,10 +13,6 @@ gtest3 <- function(x) {
     .Call(`_MeshesOperations_gtest3`, x)
 }
 
-gtest4 <- function(x) {
-    .Call(`_MeshesOperations_gtest4`, x)
-}
-
 SurfMesh <- function(rmesh, isTriangle, triangulate, clean, normals, epsilon) {
     .Call(`_MeshesOperations_SurfMesh`, rmesh, isTriangle, triangulate, clean, normals, epsilon)
 }

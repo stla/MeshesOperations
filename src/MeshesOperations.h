@@ -45,7 +45,7 @@
 
 #include <CGAL/Polygon_mesh_processing/IO/polygon_mesh_io.h>
 
-#include <gmpxx.h>
+#include <CGAL/Gmpq.h>
 
 #include <algorithm>
 #include <array>
@@ -68,7 +68,7 @@ typedef CGAL::Surface_mesh<EPoint3> EMesh3;
 typedef K::Vector_3 Vector3;
 typedef EK::Vector_3 EVector3;
 
-typedef CGAL::Cartesian<mpq_class> QK;
+typedef CGAL::Cartesian<CGAL::Gmpq> QK;
 typedef CGAL::Surface_mesh<QK::Point_3> QMesh3;
 typedef QK::Point_3 QPoint3;
 typedef QK::Vector_3 QVector3;
