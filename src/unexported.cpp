@@ -159,9 +159,9 @@ Rcpp::CharacterMatrix getVertices_QK(QMesh3 mesh) {
     for(QMesh3::Vertex_index vd : mesh.vertices()) {
       Rcpp::CharacterVector col_i(3);
       const QPoint3 vertex = mesh.point(vd);
-      col_i(0) = vertex.x().to_string();
-      col_i(1) = vertex.y().to_string();
-      col_i(2) = vertex.z().to_string();
+      col_i(0) = q2str(vertex.x());
+      col_i(1) = q2str(vertex.y());
+      col_i(2) = q2str(vertex.z());
       Vertices(Rcpp::_, i) = col_i;
       i++;
     }
