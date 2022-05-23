@@ -64,36 +64,36 @@ Rcpp::List SurfEMesh(const Rcpp::List rmesh,
   return routmesh;
 }
 
-// [[Rcpp::export]]
-Rcpp::List SurfQMesh(const Rcpp::List rmesh,
-                     const bool isTriangle,
-                     const bool triangulate,
-                     const bool clean,
-                     const bool normals,
-                     const double epsilon) {
-  QMesh3 mesh = makeSurfQMesh(rmesh, clean);
-  const bool really_triangulate = !isTriangle && triangulate;
-  Rcpp::IntegerMatrix Edges0;
-  Rcpp::NumericMatrix Normals0;
-  if(really_triangulate) {
-    Edges0 = getEdges2<QK, QMesh3, QPoint3>(mesh, epsilon);
-    if(normals) {
-      Normals0 = getQNormals(mesh);
-    }
-    bool success = CGAL::Polygon_mesh_processing::triangulate_faces(mesh);
-    if(!success) {
-      Rcpp::stop("Triangulation has failed.");
-    }
-  }
-  Rcpp::List routmesh = RSurfQMesh(mesh, normals, epsilon);
-  if(really_triangulate) {
-    routmesh["edges0"] = Edges0;
-    if(normals) {
-      routmesh["normals0"] = Normals0;
-    }
-  }
-  return routmesh;
-}
+// // [[Rcpp::export]]
+// Rcpp::List SurfQMesh(const Rcpp::List rmesh,
+//                      const bool isTriangle,
+//                      const bool triangulate,
+//                      const bool clean,
+//                      const bool normals,
+//                      const double epsilon) {
+//   QMesh3 mesh = makeSurfQMesh(rmesh, clean);
+//   const bool really_triangulate = !isTriangle && triangulate;
+//   Rcpp::IntegerMatrix Edges0;
+//   Rcpp::NumericMatrix Normals0;
+//   if(really_triangulate) {
+//     Edges0 = getEdges2<QK, QMesh3, QPoint3>(mesh, epsilon);
+//     if(normals) {
+//       Normals0 = getQNormals(mesh);
+//     }
+//     bool success = CGAL::Polygon_mesh_processing::triangulate_faces(mesh);
+//     if(!success) {
+//       Rcpp::stop("Triangulation has failed.");
+//     }
+//   }
+//   Rcpp::List routmesh = RSurfQMesh(mesh, normals, epsilon);
+//   if(really_triangulate) {
+//     routmesh["edges0"] = Edges0;
+//     if(normals) {
+//       routmesh["normals0"] = Normals0;
+//     }
+//   }
+//   return routmesh;
+// }
 
 template <typename MeshT>
 void checkMesh(MeshT mesh, size_t i) {
@@ -153,27 +153,27 @@ Rcpp::List Intersection_EK(const Rcpp::List rmeshes,
   return RSurfTEKMesh(mesh, normals, 0);
 }
 
-// [[Rcpp::export]]
-Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
-                          const bool clean,
-                          const bool normals) {
-  const size_t nmeshes = rmeshes.size();
-  std::vector<QMesh3> meshes(nmeshes);
-  Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
-  meshes[0] = makeSurfTQMesh(rmesh, clean);
-  checkMesh<QMesh3>(meshes[0], 0);
-  for(size_t i = 1; i < nmeshes; i++) {
-    Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
-    QMesh3 mesh_i = makeSurfTQMesh(rmesh_i, clean);
-    checkMesh<QMesh3>(mesh_i, i);
-    bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1], mesh_i,
-                                                     meshes[i]);
-    if(!ok) {
-      Rcpp::stop("Intersection computation has failed.");
-    }
-  }
-  return RSurfTQMesh(meshes[nmeshes - 1], normals, 0);
-}
+// // [[Rcpp::export]]
+// Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
+//                           const bool clean,
+//                           const bool normals) {
+//   const size_t nmeshes = rmeshes.size();
+//   std::vector<QMesh3> meshes(nmeshes);
+//   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
+//   meshes[0] = makeSurfTQMesh(rmesh, clean);
+//   checkMesh<QMesh3>(meshes[0], 0);
+//   for(size_t i = 1; i < nmeshes; i++) {
+//     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
+//     QMesh3 mesh_i = makeSurfTQMesh(rmesh_i, clean);
+//     checkMesh<QMesh3>(mesh_i, i);
+//     bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1], mesh_i,
+//                                                      meshes[i]);
+//     if(!ok) {
+//       Rcpp::stop("Intersection computation has failed.");
+//     }
+//   }
+//   return RSurfTQMesh(meshes[nmeshes - 1], normals, 0);
+// }
 
 template <typename KernelT, typename MeshT, typename PointT>
 MeshT Difference(const Rcpp::List rmesh1,  // must be triangles
@@ -209,22 +209,22 @@ Rcpp::List Difference_EK(const Rcpp::List rmesh1,
   return RSurfTEKMesh(mesh, normals, 0);
 }
 
-// [[Rcpp::export]]
-Rcpp::List Difference_Q(const Rcpp::List rmesh1,  // must be triangles
-                        const Rcpp::List rmesh2,
-                        const bool clean,
-                        const bool normals) {
-  QMesh3 smesh1 = makeSurfTQMesh(rmesh1, clean);
-  checkMesh<QMesh3>(smesh1, 1);
-  QMesh3 smesh2 = makeSurfTQMesh(rmesh2, clean);
-  checkMesh<QMesh3>(smesh2, 2);
-  QMesh3 outmesh;
-  bool ok = PMP::corefine_and_compute_difference(smesh1, smesh2, outmesh);
-  if(!ok) {
-    Rcpp::stop("Difference computation has failed.");
-  }
-  return RSurfQMesh(outmesh, normals, 0);
-}
+// // [[Rcpp::export]]
+// Rcpp::List Difference_Q(const Rcpp::List rmesh1,  // must be triangles
+//                         const Rcpp::List rmesh2,
+//                         const bool clean,
+//                         const bool normals) {
+//   QMesh3 smesh1 = makeSurfTQMesh(rmesh1, clean);
+//   checkMesh<QMesh3>(smesh1, 1);
+//   QMesh3 smesh2 = makeSurfTQMesh(rmesh2, clean);
+//   checkMesh<QMesh3>(smesh2, 2);
+//   QMesh3 outmesh;
+//   bool ok = PMP::corefine_and_compute_difference(smesh1, smesh2, outmesh);
+//   if(!ok) {
+//     Rcpp::stop("Difference computation has failed.");
+//   }
+//   return RSurfQMesh(outmesh, normals, 0);
+// }
 
 template <typename KernelT, typename MeshT, typename PointT>
 MeshT Union(const Rcpp::List rmeshes,  // must be triangles
@@ -268,23 +268,23 @@ Rcpp::List Union_EK(const Rcpp::List rmeshes,
   return RSurfTEKMesh(mesh, normals, 0);
 }
 
-// [[Rcpp::export]]
-Rcpp::List Union_Q(const Rcpp::List rmeshes,  // must be triangles
-                   const bool clean,
-                   const bool normals) {
-  const size_t nmeshes = rmeshes.size();
-  std::vector<QMesh3> meshes(nmeshes);
-  Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
-  meshes[0] = makeSurfTQMesh(rmesh, clean);
-  checkMesh<QMesh3>(meshes[0], 0);
-  for(size_t i = 1; i < nmeshes; i++) {
-    Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
-    QMesh3 mesh_i = makeSurfTQMesh(rmesh_i, clean);
-    checkMesh<QMesh3>(mesh_i, i);
-    bool ok = PMP::corefine_and_compute_union(meshes[i - 1], mesh_i, meshes[i]);
-    if(!ok) {
-      Rcpp::stop("Union computation has failed.");
-    }
-  }
-  return RSurfTQMesh(meshes[nmeshes - 1], normals, 0);
-}
+// // [[Rcpp::export]]
+// Rcpp::List Union_Q(const Rcpp::List rmeshes,  // must be triangles
+//                    const bool clean,
+//                    const bool normals) {
+//   const size_t nmeshes = rmeshes.size();
+//   std::vector<QMesh3> meshes(nmeshes);
+//   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
+//   meshes[0] = makeSurfTQMesh(rmesh, clean);
+//   checkMesh<QMesh3>(meshes[0], 0);
+//   for(size_t i = 1; i < nmeshes; i++) {
+//     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
+//     QMesh3 mesh_i = makeSurfTQMesh(rmesh_i, clean);
+//     checkMesh<QMesh3>(mesh_i, i);
+//     bool ok = PMP::corefine_and_compute_union(meshes[i - 1], mesh_i, meshes[i]);
+//     if(!ok) {
+//       Rcpp::stop("Union computation has failed.");
+//     }
+//   }
+//   return RSurfTQMesh(meshes[nmeshes - 1], normals, 0);
+// }

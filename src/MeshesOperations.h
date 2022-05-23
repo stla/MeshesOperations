@@ -2,11 +2,13 @@
 #define _MESHESOPERATIONSHEADER_
 #endif
 
+// #define BOOST_THREAD_DONT_USE_MOVE
+// #undef BOOST_GCC
+// #pragma GCC diagnostic ignored "-Wclass-memaccess"
+#define CGAL_EIGEN3_ENABLED 1
 // [[Rcpp::depends(RcppCGAL)]]
 // [[Rcpp::depends(RcppEigen)]]
-// [[Rcpp::depends(BH)]]
 // [[Rcpp::plugins(cpp14)]]
-#define CGAL_EIGEN3_ENABLED 1
 
 // #include <CGAL/assertions.h>
 // #undef CGAL_error
@@ -15,6 +17,8 @@
 // #define CGAL_error_msg(msg)
 
 // #include <iostream>
+
+// #include <boost/noncopyable.hpp>
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Kernel/global_functions.h>
@@ -36,7 +40,7 @@
 #include <CGAL/number_utils.h>
 
 #include <CGAL/Cartesian.h>
-#include <boost/multiprecision/gmp.hpp>
+//#include <boost/multiprecision/gmp.hpp>
 
 #include <CGAL/Polygon_mesh_processing/IO/polygon_mesh_io.h>
 
@@ -63,14 +67,14 @@ typedef CGAL::Surface_mesh<EPoint3> EMesh3;
 typedef K::Vector_3 Vector3;
 typedef EK::Vector_3 EVector3;
 
-typedef CGAL::Cartesian<boost::multiprecision::mpq_rational> QK;
-typedef CGAL::Surface_mesh<QK::Point_3> QMesh3;
-typedef QK::Point_3 QPoint3;
-typedef QK::Vector_3 QVector3;
+// typedef CGAL::Cartesian<boost::multiprecision::mpq_rational> QK;
+// typedef CGAL::Surface_mesh<QK::Point_3> QMesh3;
+// typedef QK::Point_3 QPoint3;
+// typedef QK::Vector_3 QVector3;
 
 // -------------------------------------------------------------------------- //
 namespace PMP = CGAL::Polygon_mesh_processing;
-namespace mp = boost::multiprecision;
+//namespace mp = boost::multiprecision;
 
 // -------------------------------------------------------------------------- //
 
@@ -80,19 +84,19 @@ MeshT makeSurfMesh(const Rcpp::List, const bool);
 template <typename MeshT, typename PointT>
 MeshT makeSurfTMesh(const Rcpp::List, const bool);
 
-QMesh3 makeSurfQMesh(const Rcpp::List, const bool);
-QMesh3 makeSurfTQMesh(const Rcpp::List, const bool);
+// QMesh3 makeSurfQMesh(const Rcpp::List, const bool);
+// QMesh3 makeSurfTQMesh(const Rcpp::List, const bool);
 
 template <typename KernelT, typename MeshT, typename PointT>
 Rcpp::IntegerMatrix getEdges2(MeshT, const double);
 
 Rcpp::NumericMatrix getKNormals(Mesh3);
 Rcpp::NumericMatrix getEKNormals(EMesh3);
-Rcpp::NumericMatrix getQNormals(QMesh3);
+// Rcpp::NumericMatrix getQNormals(QMesh3);
 
 Rcpp::List RSurfKMesh(Mesh3, const bool, const double);
 Rcpp::List RSurfEKMesh(EMesh3, const bool, const double);
-Rcpp::List RSurfQMesh(QMesh3, const bool, const double);
+// Rcpp::List RSurfQMesh(QMesh3, const bool, const double);
 Rcpp::List RSurfTKMesh(Mesh3, const bool, const double);
 Rcpp::List RSurfTEKMesh(EMesh3, const bool, const double);
-Rcpp::List RSurfTQMesh(QMesh3, const bool, const double);
+// Rcpp::List RSurfTQMesh(QMesh3, const bool, const double);

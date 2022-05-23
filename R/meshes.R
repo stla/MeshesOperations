@@ -97,7 +97,7 @@ print.qsqrt <- function(x, ...){
 #' @importFrom gmp is.bigq is.matrixZQ
 #' @importFrom data.table uniqueN
 #' @noRd
-checkMesh <- function(vertices, faces, gmp){
+checkMesh <- function(vertices, faces, gmp, aslist){
   if(gmp){
     if(!is.matrixZQ(vertices) || ncol(vertices) != 3L){
       stop("The `vertices` argument must be a matrix with three columns.")
@@ -132,7 +132,11 @@ checkMesh <- function(vertices, faces, gmp){
     }
     homogeneousFaces <- TRUE
     isTriangle <- ncol(faces) == 3L
-    faces <- lapply(1L:nrow(faces), function(i) faces[i, ] - 1L)
+    if(aslist){
+      faces <- lapply(1L:nrow(faces), function(i) faces[i, ] - 1L)
+    }else{
+      faces <- t(faces - 1L)
+    }
   }else if(is.list(faces)){
     check <- all(vapply(faces, isAtomicVector, logical(1L)))
     if(!check){
@@ -293,7 +297,7 @@ Mesh <- function(
   numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
   gmp <- numbersType == "gmp"
   stopifnot(epsilon >= 0)
-  checkedMesh <- checkMesh(vertices, faces, gmp = gmp)
+  checkedMesh <- checkMesh(vertices, faces, gmp = gmp, aslist = TRUE)
   vertices <- checkedMesh[["vertices"]]
   faces <- checkedMesh[["faces"]]
   homogeneousFaces <- checkedMesh[["homogeneousFaces"]]
@@ -473,7 +477,7 @@ MeshesIntersection <- function(
   gmp <- numbersType == "gmp"
   stopifnot(is.list(meshes))
   checkMeshes <- lapply(meshes, function(mesh){
-    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp)
+    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
   })
   areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
   if(!areTriangle){
@@ -576,11 +580,13 @@ MeshesDifference <- function(
   stopifnot(is.list(mesh2))
   numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
   gmp <- numbersType == "gmp"
-  checkMesh1 <- checkMesh(mesh1[["vertices"]], mesh1[["faces"]], gmp)
+  checkMesh1 <-
+    checkMesh(mesh1[["vertices"]], mesh1[["faces"]], gmp, aslist = FALSE)
   if(!checkMesh1[["isTriangle"]]){
     stop("The first mesh is not triangular.")
   }
-  checkMesh2 <- checkMesh(mesh2[["vertices"]], mesh2[["faces"]], gmp)
+  checkMesh2 <-
+    checkMesh(mesh2[["vertices"]], mesh2[["faces"]], gmp, aslist = FALSE)
   if(!checkMesh2[["isTriangle"]]){
     stop("The second mesh is not triangular.")
   }
@@ -680,7 +686,7 @@ MeshesUnion <- function(
   numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
   gmp <- numbersType == "gmp"
   checkMeshes <- lapply(meshes, function(mesh){
-    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp)
+    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
   })
   areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
   if(!areTriangle){

@@ -11,6 +11,17 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// gtest
+double gtest(Rcpp::CharacterVector x);
+RcppExport SEXP _MeshesOperations_gtest(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(gtest(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // SurfMesh
 Rcpp::List SurfMesh(const Rcpp::List rmesh, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
 RcppExport SEXP _MeshesOperations_SurfMesh(SEXP rmeshSEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
@@ -43,22 +54,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// SurfQMesh
-Rcpp::List SurfQMesh(const Rcpp::List rmesh, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
-RcppExport SEXP _MeshesOperations_SurfQMesh(SEXP rmeshSEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh(rmeshSEXP);
-    Rcpp::traits::input_parameter< const bool >::type isTriangle(isTriangleSEXP);
-    Rcpp::traits::input_parameter< const bool >::type triangulate(triangulateSEXP);
-    Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
-    Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    Rcpp::traits::input_parameter< const double >::type epsilon(epsilonSEXP);
-    rcpp_result_gen = Rcpp::wrap(SurfQMesh(rmesh, isTriangle, triangulate, clean, normals, epsilon));
-    return rcpp_result_gen;
-END_RCPP
-}
 // Intersection_K
 Rcpp::List Intersection_K(const Rcpp::List rmeshes, const bool clean, const bool normals);
 RcppExport SEXP _MeshesOperations_Intersection_K(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
@@ -82,19 +77,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
     rcpp_result_gen = Rcpp::wrap(Intersection_EK(rmeshes, clean, normals));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Intersection_Q
-Rcpp::List Intersection_Q(const Rcpp::List rmeshes, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Intersection_Q(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::List >::type rmeshes(rmeshesSEXP);
-    Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
-    Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Intersection_Q(rmeshes, clean, normals));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -126,20 +108,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// Difference_Q
-Rcpp::List Difference_Q(const Rcpp::List rmesh1, const Rcpp::List rmesh2, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Difference_Q(SEXP rmesh1SEXP, SEXP rmesh2SEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh1(rmesh1SEXP);
-    Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh2(rmesh2SEXP);
-    Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
-    Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Difference_Q(rmesh1, rmesh2, clean, normals));
-    return rcpp_result_gen;
-END_RCPP
-}
 // Union_K
 Rcpp::List Union_K(const Rcpp::List rmeshes, const bool clean, const bool normals);
 RcppExport SEXP _MeshesOperations_Union_K(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
@@ -166,33 +134,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// Union_Q
-Rcpp::List Union_Q(const Rcpp::List rmeshes, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Union_Q(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::List >::type rmeshes(rmeshesSEXP);
-    Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
-    Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Union_Q(rmeshes, clean, normals));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_MeshesOperations_gtest", (DL_FUNC) &_MeshesOperations_gtest, 1},
     {"_MeshesOperations_SurfMesh", (DL_FUNC) &_MeshesOperations_SurfMesh, 6},
     {"_MeshesOperations_SurfEMesh", (DL_FUNC) &_MeshesOperations_SurfEMesh, 6},
-    {"_MeshesOperations_SurfQMesh", (DL_FUNC) &_MeshesOperations_SurfQMesh, 6},
     {"_MeshesOperations_Intersection_K", (DL_FUNC) &_MeshesOperations_Intersection_K, 3},
     {"_MeshesOperations_Intersection_EK", (DL_FUNC) &_MeshesOperations_Intersection_EK, 3},
-    {"_MeshesOperations_Intersection_Q", (DL_FUNC) &_MeshesOperations_Intersection_Q, 3},
     {"_MeshesOperations_Difference_K", (DL_FUNC) &_MeshesOperations_Difference_K, 4},
     {"_MeshesOperations_Difference_EK", (DL_FUNC) &_MeshesOperations_Difference_EK, 4},
-    {"_MeshesOperations_Difference_Q", (DL_FUNC) &_MeshesOperations_Difference_Q, 4},
     {"_MeshesOperations_Union_K", (DL_FUNC) &_MeshesOperations_Union_K, 3},
     {"_MeshesOperations_Union_EK", (DL_FUNC) &_MeshesOperations_Union_EK, 3},
-    {"_MeshesOperations_Union_Q", (DL_FUNC) &_MeshesOperations_Union_Q, 3},
     {NULL, NULL, 0}
 };
 
