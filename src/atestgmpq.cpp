@@ -6,7 +6,8 @@
 
 // [[Rcpp::export]]
 double gtest(Rcpp::CharacterVector x){
-	mpq_class gg == x(0);
-	double y = mpq_class::mpq_get_d(gg);
+	mpq_t gg;
+	mpq_init_set_str(gg, x(0), 10);
+	double y = mpq_get_d(gg);
 	return y;
 }
