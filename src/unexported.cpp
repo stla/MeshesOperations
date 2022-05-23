@@ -157,9 +157,9 @@ Rcpp::NumericMatrix getVertices_EK(EMesh3 mesh) {
     for(EMesh3::Vertex_index vd : mesh.vertices()) {
       Rcpp::NumericVector col_i(3);
       const EPoint3 vertex = mesh.point(vd);
-      col_i(0) = CGAL::to_double(vertex.x());
-      col_i(1) = CGAL::to_double(vertex.y());
-      col_i(2) = CGAL::to_double(vertex.z());
+      col_i(0) = CGAL::to_double<EK::FT>(vertex.x());
+      col_i(1) = CGAL::to_double<EK::FT>(vertex.y());
+      col_i(2) = CGAL::to_double<EK::FT>(vertex.z());
       Vertices(Rcpp::_, i) = col_i;
       i++;
     }
@@ -307,9 +307,9 @@ Rcpp::NumericMatrix getEKNormals(EMesh3 mesh) {
     for(EMesh3::Vertex_index vd : vertices(mesh)) {
       Rcpp::NumericVector col_i(3);
       const EVector3 normal = vnormals[vd];
-      col_i(0) = CGAL::to_double(normal.x());
-      col_i(1) = CGAL::to_double(normal.y());
-      col_i(2) = CGAL::to_double(normal.z());
+      col_i(0) = CGAL::to_double<EK::FT>(normal.x());
+      col_i(1) = CGAL::to_double<EK::FT>(normal.y());
+      col_i(2) = CGAL::to_double<EK::FT>(normal.z());
       Normals(Rcpp::_, i) = col_i;
       i++;
     }

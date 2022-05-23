@@ -11,39 +11,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// gtest
-double gtest(Rcpp::CharacterVector x);
-RcppExport SEXP _MeshesOperations_gtest(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(gtest(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// gtest2
-std::string gtest2(Rcpp::CharacterVector x);
-RcppExport SEXP _MeshesOperations_gtest2(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(gtest2(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// gtest3
-double gtest3(Rcpp::CharacterVector x);
-RcppExport SEXP _MeshesOperations_gtest3(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(gtest3(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // SurfMesh
 Rcpp::List SurfMesh(const Rcpp::List rmesh, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
 RcppExport SEXP _MeshesOperations_SurfMesh(SEXP rmeshSEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
@@ -214,9 +181,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_MeshesOperations_gtest", (DL_FUNC) &_MeshesOperations_gtest, 1},
-    {"_MeshesOperations_gtest2", (DL_FUNC) &_MeshesOperations_gtest2, 1},
-    {"_MeshesOperations_gtest3", (DL_FUNC) &_MeshesOperations_gtest3, 1},
     {"_MeshesOperations_SurfMesh", (DL_FUNC) &_MeshesOperations_SurfMesh, 6},
     {"_MeshesOperations_SurfEMesh", (DL_FUNC) &_MeshesOperations_SurfEMesh, 6},
     {"_MeshesOperations_SurfQMesh", (DL_FUNC) &_MeshesOperations_SurfQMesh, 6},
