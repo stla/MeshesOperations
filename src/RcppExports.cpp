@@ -22,6 +22,39 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// gtest2
+std::string gtest2(Rcpp::CharacterVector x);
+RcppExport SEXP _MeshesOperations_gtest2(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(gtest2(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// gtest3
+double gtest3(Rcpp::CharacterVector x);
+RcppExport SEXP _MeshesOperations_gtest3(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(gtest3(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// gtest4
+double gtest4(Rcpp::CharacterVector x);
+RcppExport SEXP _MeshesOperations_gtest4(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(gtest4(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // SurfMesh
 Rcpp::List SurfMesh(const Rcpp::List rmesh, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
 RcppExport SEXP _MeshesOperations_SurfMesh(SEXP rmeshSEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
@@ -137,6 +170,9 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_MeshesOperations_gtest", (DL_FUNC) &_MeshesOperations_gtest, 1},
+    {"_MeshesOperations_gtest2", (DL_FUNC) &_MeshesOperations_gtest2, 1},
+    {"_MeshesOperations_gtest3", (DL_FUNC) &_MeshesOperations_gtest3, 1},
+    {"_MeshesOperations_gtest4", (DL_FUNC) &_MeshesOperations_gtest4, 1},
     {"_MeshesOperations_SurfMesh", (DL_FUNC) &_MeshesOperations_SurfMesh, 6},
     {"_MeshesOperations_SurfEMesh", (DL_FUNC) &_MeshesOperations_SurfEMesh, 6},
     {"_MeshesOperations_Intersection_K", (DL_FUNC) &_MeshesOperations_Intersection_K, 3},

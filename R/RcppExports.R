@@ -5,6 +5,18 @@ gtest <- function(x) {
     .Call(`_MeshesOperations_gtest`, x)
 }
 
+gtest2 <- function(x) {
+    .Call(`_MeshesOperations_gtest2`, x)
+}
+
+gtest3 <- function(x) {
+    .Call(`_MeshesOperations_gtest3`, x)
+}
+
+gtest4 <- function(x) {
+    .Call(`_MeshesOperations_gtest4`, x)
+}
+
 SurfMesh <- function(rmesh, isTriangle, triangulate, clean, normals, epsilon) {
     .Call(`_MeshesOperations_SurfMesh`, rmesh, isTriangle, triangulate, clean, normals, epsilon)
 }

@@ -1,7 +1,7 @@
 Package: MeshesOperations
 Type: Package
 Title: Boolean Operations on 3D Meshes
-Version: 0.0.9002
+Version: 0.0.9003
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Uses the 'CGAL' C++ library to perform Boolean operations on 3D meshes (intersection, union, difference).
