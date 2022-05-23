@@ -5,14 +5,16 @@
 std::string q2str(CGAL::Gmpq r){
   CGAL::Gmpz numer = r.numerator();
   CGAL::Gmpz denom = r.denominator();
-  size_t n = numer.size();
-  size_t d = denom.size();
+  size_t n = mpz_sizeinbase(numer.mpz(), 10) + 2;
+  size_t d = mpz_sizeinbase(denom.mpz(), 10) + 2;
   char *cnumer = new char [n];
   char *cdenom = new char [d];
-  mpz_get_str(cnumer, 10, numer.mpz());
-  mpz_get_str(cdenom, 10, denom.mpz());
-  std::string snumer(cnumer, cnumer + n);
-  std::string sdenom(cdenom, cdenom + d);
+  cnumer = mpz_get_str(cnumer, 10, numer.mpz());
+  cdenom = mpz_get_str(cdenom, 10, denom.mpz());
+  std::string snumer = cnumer;
+  std::string sdenom = cdenom;
+  delete[] cnumer;
+  delete[] cdenom;
   return snumer + "/" + sdenom;
 }
 
