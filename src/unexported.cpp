@@ -20,9 +20,9 @@ std::vector<QPoint3> matrix_to_qpoints3(const Rcpp::CharacterMatrix M) {
   points.reserve(npoints);
   for(size_t i = 0; i < npoints; i++) {
     const Rcpp::CharacterVector pt = M(Rcpp::_, i);
-    CGAL::Gmpq qpt0(Gmpq(pt(0)));
-    CGAL::Gmpq qpt1(Gmpq(pt(1)));
-    CGAL::Gmpq qpt2(Gmpq(pt(2)));
+    CGAL::Gmpq qpt0(CGAL::Gmpq(pt(0)));
+    CGAL::Gmpq qpt1(CGAL::Gmpq(pt(1)));
+    CGAL::Gmpq qpt2(CGAL::Gmpq(pt(2)));
     points.emplace_back(QPoint3(qpt0, qpt1, qpt2));
   }
   return points;

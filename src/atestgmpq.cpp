@@ -6,14 +6,14 @@
 
 // [[Rcpp::export]]
 double gtest(Rcpp::CharacterVector x){
-	CGAL::Gmpq gg(Gmpq("5/2"));
+	CGAL::Gmpq gg(CGAL::Gmpq("5/2"));
 	double y = gg.to_double();
 	return y;
 }
 
 // [[Rcpp::export]]
 std::string gtest2(Rcpp::CharacterVector x){
-	CGAL::Gmpq gg(Gmpq("5/2"));
+	CGAL::Gmpq gg(CGAL::Gmpq("5/2"));
 	CGAL::Gmpq ggg = gg + 2;
 	std::string y = ggg.to_string();
 	return y;
@@ -21,7 +21,7 @@ std::string gtest2(Rcpp::CharacterVector x){
 
 // [[Rcpp::export]]
 double gtest3(Rcpp::CharacterVector x){
-	CGAL::Gmpq gg(Gmpq(x(0)));
+	CGAL::Gmpq gg(CGAL::Gmpq(x(0)));
 	double y = gg.to_double();
 	return y;
 }
