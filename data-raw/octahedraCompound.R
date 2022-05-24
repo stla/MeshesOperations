@@ -1,45 +1,55 @@
 # the compound of five octahedra ####
+library(gmp) # we use rational numbers for the vertex coordinates
+library(MeshesOperations) # to use the 'qsqrtPhi' function
 library(rgl)
 
 # all vertices
-phi <- (1+sqrt(5))/2
-vertices <- rbind(
-  c( 0.0 , 0.0 , -phi )
-  , c( 0.0 , -phi , 0.0 )
-  , c( -phi , 0.0 , 0.0 )
-  , c( 0.0 , 0.0 , phi )
-  , c( 0.0 , phi , 0.0 )
-  , c( phi , 0.0 , 0.0 )
-  , c( 0.5 , phi/2 , phi*phi/2 )
-  , c( phi/2 , phi*phi/2 , 0.5 )
-  , c( phi*phi/2 , 0.5 , phi/2 )
-  , c( 0.5 , phi/2 , -phi*phi/2 )
-  , c( phi/2 , -phi*phi/2 , 0.5 )
-  , c( -phi*phi/2 , 0.5 , phi/2 )
-  , c( 0.5 , -phi/2 , phi*phi/2 )
-  , c( -phi/2 , phi*phi/2 , 0.5 )
-  , c( phi*phi/2 , 0.5 , -phi/2 )
-  , c( 0.5 , -phi/2 , -phi*phi/2 )
-  , c( -phi/2 , -phi*phi/2 , 0.5 )
-  , c( -phi*phi/2 , 0.5 , -phi/2 )
-  , c( -0.5 , phi/2 , phi*phi/2 )
-  , c( phi/2 , phi*phi/2 , -0.5 )
-  , c( phi*phi/2 , -0.5 , phi/2 )
-  , c( -0.5 , phi/2 , -phi*phi/2 )
-  , c( phi/2 , -phi*phi/2 , -0.5 )
-  , c( -phi*phi/2 , -0.5 , phi/2 )
-  , c( -0.5 , -phi/2 , phi*phi/2 )
-  , c( -phi/2 , phi*phi/2 , -0.5 )
-  , c( phi*phi/2 , -0.5 , -phi/2 )
-  , c( -0.5 , -phi/2 , -phi*phi/2 )
-  , c( -phi/2 , -phi*phi/2 , -0.5 )
-  , c( -phi*phi/2 , -0.5 , -phi/2 )
-)
+Vertices <- function(phi, half, O){
+  t(cbind(
+    c( O , O , -phi )
+    , c( O , -phi , O )
+    , c( -phi , O , O )
+    , c( O , O , phi )
+    , c( O , phi , O )
+    , c( phi , O , O )
+    , c( half , phi*half , phi*phi*half )
+    , c( phi*half , phi*phi*half , half )
+    , c( phi*phi*half , half , phi*half )
+    , c( half , phi*half , -phi*phi*half )
+    , c( phi*half , -phi*phi*half , half )
+    , c( -phi*phi*half , half , phi*half )
+    , c( half , -phi*half , phi*phi*half )
+    , c( -phi*half , phi*phi*half , half )
+    , c( phi*phi*half , half , -phi*half )
+    , c( half , -phi*half , -phi*phi*half )
+    , c( -phi*half , -phi*phi*half , half )
+    , c( -phi*phi*half , half , -phi*half )
+    , c( -half , phi*half , phi*phi*half )
+    , c( phi*half , phi*phi*half , -half )
+    , c( phi*phi*half , -half , phi*half )
+    , c( -half , phi*half , -phi*phi*half )
+    , c( phi*half , -phi*phi*half , -half )
+    , c( -phi*phi*half , -half , phi*half )
+    , c( -half , -phi*half , phi*phi*half )
+    , c( -phi*half , phi*phi*half , -half )
+    , c( phi*phi*half , -half , -phi*half )
+    , c( -half , -phi*half , -phi*phi*half )
+    , c( -phi*half , -phi*phi*half , -half )
+    , c( -phi*phi*half , -half , -phi*half )
+  ))
+}
+vertices <- Vertices((1+sqrt(5))/2, 0.5, 0)
+gmpvertices <- Vertices(qsqrtPhi(17), as.bigq(1L, 2L), as.bigq(0L))
 vertices1 <- vertices[1+c(0,1,2,3,4,5), ]
 vertices2 <- vertices[1+c(6,10,14,27,25,23), ]
 vertices3 <- vertices[1+c(7,11,12,28,26,21), ]
 vertices4 <- vertices[1+c(8,9,13,29,24,22), ]
 vertices5 <- vertices[1+c(15,16,17,18,19,20), ]
+gmpvertices1 <- gmpvertices[1+c(0,1,2,3,4,5), ]
+gmpvertices2 <- gmpvertices[1+c(6,10,14,27,25,23), ]
+gmpvertices3 <- gmpvertices[1+c(7,11,12,28,26,21), ]
+gmpvertices4 <- gmpvertices[1+c(8,9,13,29,24,22), ]
+gmpvertices5 <- gmpvertices[1+c(15,16,17,18,19,20), ]
 
 # the face indices are common to all octahedra
 faces <- rbind(
@@ -56,33 +66,42 @@ faces <- rbind(
 # define the five octahedra meshes
 mesh1 <- list(
   "vertices" = vertices1,
+  "gmpvertices" = gmpvertices1,
   "faces" = faces
 )
 mesh2 <- list(
   "vertices" = vertices2,
+  "gmpvertices" = gmpvertices2,
   "faces" = faces
 )
 mesh3 <- list(
   "vertices" = vertices3,
+  "gmpvertices" = gmpvertices3,
   "faces" = faces
 )
 mesh4 <- list(
   "vertices" = vertices4,
+  "gmpvertices" = gmpvertices4,
   "faces" = faces
 )
 mesh5 <- list(
   "vertices" = vertices5,
+  "gmpvertices" = gmpvertices5,
   "faces" = faces
 )
-
-# put them in a list to apply the intersection algorithm
 meshes <- list(
   mesh1, mesh2, mesh3, mesh4, mesh5
 )
 
 octahedraCompound <- list(
 
-  "meshes" = meshes,
+  "meshes" = lapply(meshes, function(mesh){
+    list("vertices" = mesh[["vertices"]], faces = faces)
+  }),
+
+  "gmpmeshes" = lapply(meshes, function(mesh){
+    list("vertices" = mesh[["gmpvertices"]], faces = faces)
+  }),
 
   "rglmeshes" = list(
     tmesh3d(

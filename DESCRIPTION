@@ -7,7 +7,7 @@ Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Uses the 'CGAL' C++ library to perform Boolean operations on 3D meshes (intersection, union, difference).
 Encoding: UTF-8
 License: GPL-3
-Imports: Rcpp (>= 1.0.7), rgl (== 0.108.3), data.table, gmp
+Imports: Rcpp (>= 1.0.7), rgl, data.table, gmp
 LinkingTo: Rcpp, RcppCGAL, RcppEigen
 Suggests: misc3d
 SystemRequirements: C++ 14, gmp, mpfr

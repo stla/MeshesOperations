@@ -58,26 +58,29 @@ faces <- rbind(
 # define the five tetrahedra meshes
 mesh1 <- list(
   "vertices" = vertices[c(17, 14, 2, 11), ],
+  "gmpvertices" = gmpVertices[c(17, 14, 2, 11), ],
   "faces" = faces
 )
 mesh2 <- list(
   "vertices" = vertices[c(18, 1, 4, 5), ],
+  "gmpvertices" = gmpVertices[c(18, 1, 4, 5), ],
   "faces" = faces
 )
 mesh3 <- list(
   "vertices" = vertices[c(19, 6, 15, 7), ],
+  "gmpvertices" = gmpVertices[c(19, 6, 15, 7), ],
   "faces" = faces
 )
 mesh4 <- list(
   "vertices" = vertices[c(3, 13, 12, 8), ],
+  "gmpvertices" = gmpVertices[c(3, 13, 12, 8), ],
   "faces" = faces
 )
 mesh5 <- list(
   "vertices" = vertices[c(20, 16, 10, 9), ],
+  "gmpvertices" = gmpVertices[c(20, 16, 10, 9), ],
   "faces" = faces
 )
-
-# put them in a list to apply the intersection algorithm
 meshes <- list(
   mesh1, mesh2, mesh3, mesh4, mesh5
 )
@@ -86,6 +89,10 @@ tetrahedraCompound <- list(
 
   "meshes" = lapply(meshes, function(mesh){
     list("vertices" = mesh[["vertices"]], faces = faces)
+  }),
+
+  "gmpmeshes" = lapply(meshes, function(mesh){
+    list("vertices" = mesh[["gmpvertices"]], faces = faces)
   }),
 
   "rglmeshes" = list(

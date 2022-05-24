@@ -5,10 +5,12 @@
 \alias{tetrahedraCompound}
 \title{Compound of five tetrahedra}
 \format{
-A list with two fields: the field \code{meshes} is a list of five
+A list with three fields: the field \code{meshes} is a list of five
   elements, each one representing a tetrahedron by a list with two elements,
   the vertices and the faces; the field \code{rglmeshes} is the list of
-  the five corresponding \strong{rgl} meshes.
+  the five corresponding \strong{rgl} meshes; the field \code{gmpmeshes} is
+  the same as \code{meshes} except that the vertices are \strong{gmp}
+  rational numbers.
 }
 \usage{
 tetrahedraCompound
