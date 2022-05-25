@@ -7,7 +7,7 @@
 // #pragma GCC diagnostic ignored "-Wclass-memaccess"
 // [[Rcpp::depends(RcppCGAL)]]
 // [[Rcpp::depends(RcppEigen)]]
-// [[Rcpp::depends(BH)]]
+// // [[Rcpp::depends(BH)]]
 // [[Rcpp::plugins(cpp14)]]
 #include <RcppEigen.h>
 #define CGAL_EIGEN3_ENABLED 1
@@ -107,3 +107,5 @@ Rcpp::List RSurfTEKMesh(EMesh3, const bool, const double);
 Rcpp::List RSurfTQMesh(QMesh3, const bool, const double);
 
 std::string q2str(CGAL::Gmpq);
+
+void Message(std::string);

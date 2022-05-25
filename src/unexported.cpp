@@ -2,6 +2,11 @@
 #include "MeshesOperations.h"
 #endif
 
+void Message(std::string msg){
+  SEXP rmsg = Rcpp::wrap(msg);
+  Rcpp::message(rmsg);
+}
+
 std::string q2str(CGAL::Gmpq r) {
   CGAL::Gmpz numer = r.numerator();
   CGAL::Gmpz denom = r.denominator();
@@ -91,24 +96,22 @@ MeshT soup2mesh(std::vector<PointT> points,
     }else{
       msg2 = "The mesh does not bound a volume.\n";
     }
-    SEXP rmsg2 = Rcpp::wrap(msg2);
-    Rcpp::message(rmsg2);
+    Message(msg2);
     if(CGAL::is_triangle_mesh(mesh)){
       if(bv){
         if(!PMP::is_outward_oriented(mesh)){
           PMP::reverse_face_orientations(mesh);
         }
       }else{
-        Rcpp::message("WAIT......\n");
+        Message("WAIT......\n");
       }
     }else{
-      Rcpp::message("The mesh is not triangle. No way to ensure it is outward oriented.\n");
+      Message("The mesh is not triangle. No way to ensure it is outward oriented.\n");
     }
   }else{
     msg1 = "The mesh is not closed.\n";
   }
-  SEXP rmsg1 = Rcpp::wrap(msg1);
-  Rcpp::message(rmsg1);
+  Message(msg1);
   return mesh;
 }
 
