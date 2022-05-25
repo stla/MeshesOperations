@@ -8,8 +8,8 @@ Description: Uses the 'CGAL' C++ library to perform Boolean operations on 3D mes
 Encoding: UTF-8
 License: GPL-3
 Imports: Rcpp (>= 1.0.7), rgl, data.table, gmp
-LinkingTo: Rcpp, RcppCGAL, RcppEigen, BH
-Suggests: misc3d
+LinkingTo: Rcpp, RcppCGAL, RcppEigen
+Suggests: BH, misc3d
 SystemRequirements: C++ 14, gmp, mpfr
 URL: https://github.com/stla/MeshesOperations
 BugReports: https://github.com/stla/MeshesOperations/issues

@@ -7,18 +7,19 @@
 // #pragma GCC diagnostic ignored "-Wclass-memaccess"
 // [[Rcpp::depends(RcppCGAL)]]
 // [[Rcpp::depends(RcppEigen)]]
-// [[Rcpp::depends(BH)]]
+// // [[Rcpp::depends(BH)]]
 // [[Rcpp::plugins(cpp14)]]
 #include <RcppEigen.h>
 #define CGAL_EIGEN3_ENABLED 1
-// Helper macros to disable macros
-#if defined(__clang__) || defined(BOOST_GCC)
-#  define CGAL_PRAGMA_DIAG_PUSH _Pragma("GCC diagnostic push")
-#  define CGAL_PRAGMA_DIAG_POP  _Pragma("GCC diagnostic pop")
-#else
-#  define CGAL_PRAGMA_DIAG_PUSH
-#  define CGAL_PRAGMA_DIAG_POP
-#endif
+
+// // Helper macros to disable macros
+// #if defined(__clang__) || defined(BOOST_GCC)
+// #  define CGAL_PRAGMA_DIAG_PUSH _Pragma("GCC diagnostic push")
+// #  define CGAL_PRAGMA_DIAG_POP  _Pragma("GCC diagnostic pop")
+// #else
+// #  define CGAL_PRAGMA_DIAG_PUSH
+// #  define CGAL_PRAGMA_DIAG_POP
+// #endif
 
 // #include <CGAL/assertions.h>
 // #undef CGAL_error
