@@ -85,9 +85,9 @@ MeshT soup2mesh(std::vector<PointT> points,
   std::string msg1, msg2;
   if(CGAL::is_closed(mesh)){
     msg1 = "The mesh is closed.\n";
-    const bool bv = CGAL::does_bound_a_volume(mesh);
+    const bool bv = PMP::does_bound_a_volume(mesh);
     if(bv){
-      msg2 = "The mesh bounds a volume.\n"
+      msg2 = "The mesh bounds a volume.\n";
     }else{
       msg2 = "The mesh does not bound a volume.\n";
     }

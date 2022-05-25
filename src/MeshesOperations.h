@@ -7,6 +7,7 @@
 // #pragma GCC diagnostic ignored "-Wclass-memaccess"
 // [[Rcpp::depends(RcppCGAL)]]
 // [[Rcpp::depends(RcppEigen)]]
+// [[Rcpp::depends(BH)]]
 // [[Rcpp::plugins(cpp14)]]
 #include <RcppEigen.h>
 #define CGAL_EIGEN3_ENABLED 1
