@@ -82,6 +82,33 @@ MeshT soup2mesh(std::vector<PointT> points,
   }
   MeshT mesh;
   PMP::polygon_soup_to_polygon_mesh(points, faces, mesh);
+  std::string msg1, msg2;
+  if(CGAL::is_closed(mesh)){
+    msg1 = "The mesh is closed.\n";
+    const bool bv = CGAL::does_bound_a_volume(mesh);
+    if(bv){
+      msg2 = "The mesh bounds a volume.\n"
+    }else{
+      msg2 = "The mesh does not bound a volume.\n";
+    }
+    SEXP rmsg2 = Rcpp::wrap(msg2);
+    Rcpp::message(rmsg2);
+    if(CGAL::is_triangle_mesh(mesh)){
+      if(bv){
+        if(!PMP::is_outward_oriented(mesh)){
+          PMP::reverse_face_orientations(mesh);
+        }
+      }else{
+        Rcpp::message("WAIT......\n");
+      }
+    }else{
+      Rcpp::message("The mesh is not triangle. No way to ensure it is outward oriented.\n");
+    }
+  }else{
+    msg1 = "The mesh is not closed.\n";
+  }
+  SEXP rmsg1 = Rcpp::wrap(msg1);
+  Rcpp::message(rmsg1);
   return mesh;
 }
 
