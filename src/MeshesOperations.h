@@ -5,9 +5,6 @@
 // #define BOOST_THREAD_DONT_USE_MOVE
 // #undef BOOST_GCC
 // #pragma GCC diagnostic ignored "-Wclass-memaccess"
-// [[Rcpp::depends(RcppCGAL)]]
-// [[Rcpp::depends(RcppEigen)]]
-// // [[Rcpp::depends(BH)]]
 // [[Rcpp::plugins(cpp14)]]
 #include <RcppEigen.h>
 #define CGAL_EIGEN3_ENABLED 1
@@ -58,6 +55,8 @@
 #include <CGAL/Gmpq.h>
 #include <CGAL/Gmpz.h>
 #include "gmp.h"
+
+#include <CGAL/Polygon_mesh_processing/connected_components.h>
 
 #include <algorithm>
 #include <array>
