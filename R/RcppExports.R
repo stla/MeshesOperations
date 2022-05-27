@@ -5,6 +5,14 @@ connectedComponentsK <- function(rmesh0, isTriangle, triangulate, clean, normals
     .Call(`_MeshesOperations_connectedComponentsK`, rmesh0, isTriangle, triangulate, clean, normals, epsilon)
 }
 
+connectedComponentsEK <- function(rmesh0, isTriangle, triangulate, clean, normals, epsilon) {
+    .Call(`_MeshesOperations_connectedComponentsEK`, rmesh0, isTriangle, triangulate, clean, normals, epsilon)
+}
+
+connectedComponentsQ <- function(rmesh0, isTriangle, triangulate, clean, normals, epsilon) {
+    .Call(`_MeshesOperations_connectedComponentsQ`, rmesh0, isTriangle, triangulate, clean, normals, epsilon)
+}
+
 SurfMesh <- function(rmesh, isTriangle, triangulate, clean, normals, epsilon) {
     .Call(`_MeshesOperations_SurfMesh`, rmesh, isTriangle, triangulate, clean, normals, epsilon)
 }

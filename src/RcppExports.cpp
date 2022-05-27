@@ -27,6 +27,38 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// connectedComponentsEK
+Rcpp::List connectedComponentsEK(const Rcpp::List rmesh0, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
+RcppExport SEXP _MeshesOperations_connectedComponentsEK(SEXP rmesh0SEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh0(rmesh0SEXP);
+    Rcpp::traits::input_parameter< const bool >::type isTriangle(isTriangleSEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate(triangulateSEXP);
+    Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
+    Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
+    Rcpp::traits::input_parameter< const double >::type epsilon(epsilonSEXP);
+    rcpp_result_gen = Rcpp::wrap(connectedComponentsEK(rmesh0, isTriangle, triangulate, clean, normals, epsilon));
+    return rcpp_result_gen;
+END_RCPP
+}
+// connectedComponentsQ
+Rcpp::List connectedComponentsQ(const Rcpp::List rmesh0, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
+RcppExport SEXP _MeshesOperations_connectedComponentsQ(SEXP rmesh0SEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh0(rmesh0SEXP);
+    Rcpp::traits::input_parameter< const bool >::type isTriangle(isTriangleSEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate(triangulateSEXP);
+    Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
+    Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
+    Rcpp::traits::input_parameter< const double >::type epsilon(epsilonSEXP);
+    rcpp_result_gen = Rcpp::wrap(connectedComponentsQ(rmesh0, isTriangle, triangulate, clean, normals, epsilon));
+    return rcpp_result_gen;
+END_RCPP
+}
 // SurfMesh
 Rcpp::List SurfMesh(const Rcpp::List rmesh, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
 RcppExport SEXP _MeshesOperations_SurfMesh(SEXP rmeshSEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
@@ -198,6 +230,8 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_MeshesOperations_connectedComponentsK", (DL_FUNC) &_MeshesOperations_connectedComponentsK, 6},
+    {"_MeshesOperations_connectedComponentsEK", (DL_FUNC) &_MeshesOperations_connectedComponentsEK, 6},
+    {"_MeshesOperations_connectedComponentsQ", (DL_FUNC) &_MeshesOperations_connectedComponentsQ, 6},
     {"_MeshesOperations_SurfMesh", (DL_FUNC) &_MeshesOperations_SurfMesh, 6},
     {"_MeshesOperations_SurfEMesh", (DL_FUNC) &_MeshesOperations_SurfEMesh, 6},
     {"_MeshesOperations_SurfQMesh", (DL_FUNC) &_MeshesOperations_SurfQMesh, 6},

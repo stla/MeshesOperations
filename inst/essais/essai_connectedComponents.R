@@ -37,8 +37,17 @@ tmesh <- tmesh3d(
 open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 shade3d(tmesh, color = "orangered")
 
+cube <- cube3d()
 meshes <- MeshesOperations:::connectedComponentsK(
-    rmesh0 = list(vertices = contour_shape[["vertices"]], faces = contour_shape[["triangles"]]),
+    rmesh0 = list(vertices = cube$vb, faces = split(t(cube$ib-1), 1:6)),
+    isTriangle = TRUE,
+    triangulate = FALSE,
+    clean = FALSE,
+    normals = FALSE,
+    epsilon = 0
+)
+meshes <- MeshesOperations:::connectedComponentsK(
+    rmesh0 = list(vertices = t(contour_shape[["vertices"]]), faces = split(contour_shape[["triangles"]]-1, 1:nrow(contour_shape[["triangles"]]))),
     isTriangle = TRUE,
     triangulate = FALSE,
     clean = TRUE,
