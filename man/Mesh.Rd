@@ -49,7 +49,8 @@ A list giving the vertices, the edges, the faces of the mesh, the
 }
 \description{
 Make a 3D mesh from given vertices and faces; the returned
-  faces are coherently oriented and normals are computed if desired.
+  faces are coherently oriented, normals are computed if desired, and
+  triangulation is performed if desired.
 }
 \examples{
 library(MeshesOperations)
