@@ -29,7 +29,7 @@ Rcpp::List smoothMeshK(const Rcpp::List rmesh,
   EIFMap eif = get(CGAL::edge_is_feature, mesh);
   PMP::detect_sharp_edges(mesh, angle, eif);
   int sharp_counter = 0;
-  for(Mesh3::Edge_index e : mesh.edges()) {
+  for(boost::graph_traits<Mesh3>::edge_descriptor e : mesh.edges()) {
     if(get(eif, e)) {
       ++sharp_counter;
     }
