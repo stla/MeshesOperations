@@ -65,3 +65,7 @@ smoothMeshK <- function(rmesh, angle, niters, triangulate, normals) {
     .Call(`_MeshesOperations_smoothMeshK`, rmesh, angle, niters, triangulate, normals)
 }
 
+smoothShapeK <- function(rmesh, time, niters, triangulate, normals) {
+    .Call(`_MeshesOperations_smoothShapeK`, rmesh, time, niters, triangulate, normals)
+}
+

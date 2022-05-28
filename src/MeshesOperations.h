@@ -61,6 +61,8 @@
 #include <CGAL/Polygon_mesh_processing/smooth_mesh.h>
 #include <CGAL/Polygon_mesh_processing/detect_features.h>
 
+#include <CGAL/Polygon_mesh_processing/smooth_shape.h>
+
 // to remove degenerate faces:
 #include <CGAL/Polygon_mesh_processing/shape_predicates.h>
 

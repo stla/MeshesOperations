@@ -2,7 +2,7 @@
 #include "MeshesOperations.h"
 #endif
 
-void Message(std::string msg){
+void Message(std::string msg) {
   SEXP rmsg = Rcpp::wrap(msg);
   Rcpp::message(rmsg);
 }
@@ -88,29 +88,31 @@ MeshT soup2mesh(std::vector<PointT> points,
   MeshT mesh;
   PMP::polygon_soup_to_polygon_mesh(points, faces, mesh);
   std::string msg1, msg2;
-  if(CGAL::is_closed(mesh)){
+  if(CGAL::is_closed(mesh)) {
     msg1 = "The mesh is closed.\n";
     const bool bv = PMP::does_bound_a_volume(mesh);
-    if(bv){
+    if(bv) {
       msg2 = "The mesh bounds a volume.\n";
-    }else{
+    } else {
       msg2 = "The mesh does not bound a volume - reorienting.\n";
       PMP::orient_to_bound_a_volume(mesh);
     }
     Message(msg2);
-    if(CGAL::is_triangle_mesh(mesh)){
-//      if(bv){
-        if(!PMP::is_outward_oriented(mesh)){
-          PMP::reverse_face_orientations(mesh);
-        }
-//      }else{
-//        Message("WAIT......\n");
-//        PMP::orient_to_bound_a_volume(mesh);
-//      }
-    }else{
-      Message("The mesh is not triangle. No way to ensure it is outward oriented.\n");
+    if(CGAL::is_triangle_mesh(mesh)) {
+      //      if(bv){
+      if(!PMP::is_outward_oriented(mesh)) {
+        PMP::reverse_face_orientations(mesh);
+      }
+      //      }else{
+      //        Message("WAIT......\n");
+      //        PMP::orient_to_bound_a_volume(mesh);
+      //      }
+    } else {
+      Message(
+          "The mesh is not triangle. No way to ensure it is outward "
+          "oriented.\n");
     }
-  }else{
+  } else {
     msg1 = "The mesh is not closed.\n";
   }
   Message(msg1);
@@ -459,15 +461,17 @@ Rcpp::List RSurfTQMesh(QMesh3 mesh, const bool normals, const double epsilon) {
 }
 
 template <typename MeshT>
-MeshT removeDegenerateFaces(MeshT mesh) { // triangular faces only
+MeshT removeDegenerateFaces(MeshT mesh) {  // triangular faces only
   for(typename MeshT::Face_index fd : mesh.faces()) {
-    if(PMP::is_degenerate_triangle_face(fd, mesh)){
+    if(PMP::is_degenerate_triangle_face(fd, mesh)) {
       mesh.remove_face(fd);
     }
   }
   const size_t nrmfs = mesh.number_of_removed_faces();
-  if(nrmfs > 0){
-    const std::string endmsg = nrmfs == 1 ? "one degenerate face" : (std::to_string(nrmfs) + "degenerate faces");
+  if(nrmfs > 0) {
+    const std::string endmsg =
+        nrmfs == 1 ? "one degenerate face"
+                   : (std::to_string(nrmfs) + "degenerate faces");
     const std::string msg = "Removed " + endmsg + ".\n";
     Message(msg);
     mesh.collect_garbage();
