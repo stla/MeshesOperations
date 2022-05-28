@@ -74,16 +74,20 @@ Rcpp::List smoothShapeK(const Rcpp::List rmesh,
     }
   }
   std::set<Mesh3::Vertex_index> constrained_vertices;
-  for(Mesh3::Vertex_index v : mesh.vertices()){
-    if(mesh.is_border(v)){
+  for(Mesh3::Vertex_index v : mesh.vertices()) {
+    if(mesh.is_border(v)) {
       constrained_vertices.insert(v);
     }
   }
-  std::cout << "Constraining: " << constrained_vertices.size() << " border vertices" << std::endl;
-  CGAL::Boolean_property_map<std::set<Mesh3::Vertex_index> > vcmap(constrained_vertices);
-  std::cout << "Smoothing shape... (" << niters << " iterations)" << std::endl;
-  PMP::smooth_shape(mesh, time, PMP::parameters::number_of_iterations(niters)
-                                                .vertex_is_constrained_map(vcmap));
+  Rcpp::Rcout << "Constraining: " << constrained_vertices.size()
+              << " border vertices.\n";
+  CGAL::Boolean_property_map<std::set<Mesh3::Vertex_index> > vcmap(
+      constrained_vertices);
+  Rcpp::Rcout << "Smoothing shape... (" << niters << " iterations).\n";
+  PMP::smooth_shape(
+      mesh, time,
+      PMP::parameters::number_of_iterations(niters).vertex_is_constrained_map(
+          vcmap));
   Rcpp::List routmesh = RSurfKMesh(mesh, normals, 0);
   if(triangulate) {
     routmesh["edges0"] = Edges0;
