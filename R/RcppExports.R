@@ -61,6 +61,10 @@ Union_Q <- function(rmeshes, clean, normals) {
     .Call(`_MeshesOperations_Union_Q`, rmeshes, clean, normals)
 }
 
+isotropicRemeshingK <- function(rmesh, targetEdgeLength, niters, nrelaxsteps, triangulate, normals) {
+    .Call(`_MeshesOperations_isotropicRemeshingK`, rmesh, targetEdgeLength, niters, nrelaxsteps, triangulate, normals)
+}
+
 smoothMeshK <- function(rmesh, angle, niters, triangulate, normals) {
     .Call(`_MeshesOperations_smoothMeshK`, rmesh, angle, niters, triangulate, normals)
 }
