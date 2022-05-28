@@ -457,3 +457,24 @@ Rcpp::List RSurfTQMesh(QMesh3 mesh, const bool normals, const double epsilon) {
   }
   return out;
 }
+
+template <typename MeshT>
+MeshT removeDegenerateFaces(MeshT mesh) { // triangular faces only
+  for(typename MeshT::Face_index fd : mesh.faces()) {
+    if(PMP::is_degenerate_triangle_face(fd, mesh)){
+      mesh.remove_face(fd);
+    }
+  }
+  const size_t nrmfs = mesh.number_of_removed_faces();
+  if(nrmfs > 0){
+    const std::string endmsg = nrmfs == 1 ? "one degenerate face" : (std::to_string(nrmfs) + "degenerate faces");
+    const std::string msg = "Removed " + endmsg + ".\n";
+    Message(msg);
+    mesh.collect_garbage();
+  }
+  return mesh;
+}
+
+template Mesh3 removeDegenerateFaces<Mesh3>(Mesh3);
+
+//{}

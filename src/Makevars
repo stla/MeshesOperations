@@ -5,7 +5,7 @@
 ## With R 3.1.0 or later, you can uncomment the following line to tell R to
 ## enable compilation with C++11 (or even C++14) where available
 CXX_STD = CXX14
-PKG_LIBS = -lmpfr -lgmp -lgmpxx
+PKG_LIBS = -lmpfr -lgmp
 BH_PATH=`echo 'cat(system.file("include", package="BH", mustWork=TRUE))' | "${R_HOME}/bin/R" --vanilla --no-echo`
 PKG_CXXFLAGS = -DCGAL_HEADER_ONLY=1 -I$(BH_PATH)
 

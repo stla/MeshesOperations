@@ -58,10 +58,17 @@
 
 #include <CGAL/Polygon_mesh_processing/connected_components.h>
 
-#include <algorithm>
-#include <array>
-#include <map>
-#include <vector>
+#include <CGAL/Polygon_mesh_processing/smooth_mesh.h>
+#include <CGAL/Polygon_mesh_processing/detect_features.h>
+
+// to remove degenerate faces:
+#include <CGAL/Polygon_mesh_processing/shape_predicates.h>
+
+
+// #include <algorithm>
+// #include <array>
+// #include <map>
+// #include <vector>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Exact_predicates_exact_constructions_kernel EK;
@@ -117,3 +124,6 @@ Rcpp::List RSurfTQMesh(QMesh3, const bool, const double);
 std::string q2str(CGAL::Gmpq);
 
 void Message(std::string);
+
+template <typename MeshT>
+MeshT removeDegenerateFaces(MeshT);
