@@ -23,7 +23,7 @@ Rcpp::List smoothMeshK(const Rcpp::List rmesh,
     }
   }
   // remove degenerate faces
-  const Mesh3 mesh = removeDegenerateFaces<Mesh3>(mesh0);
+  Mesh3 mesh = removeDegenerateFaces<Mesh3>(mesh0);
   // Constrain edges with a dihedral angle over the given angle
   typedef boost::property_map<Mesh3, CGAL::edge_is_feature_t>::type EIFMap;
   EIFMap eif = get(CGAL::edge_is_feature, mesh);
