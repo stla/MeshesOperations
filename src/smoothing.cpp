@@ -8,7 +8,7 @@ Rcpp::List smoothMeshK(const Rcpp::List rmesh,
                        const unsigned niters,
                        const bool triangulate,
                        const bool normals) {
-  const Mesh3 mesh0 = makeSurfMesh<Mesh3, Point3>(rmesh, true);
+  Mesh3 mesh0 = makeSurfMesh<Mesh3, Point3>(rmesh, true);
   Rcpp::IntegerMatrix Edges0;
   Rcpp::NumericMatrix Normals0;
   if(triangulate) {
