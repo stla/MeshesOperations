@@ -8,22 +8,22 @@ Rcpp::List smoothMeshK(const Rcpp::List rmesh,
                        const unsigned niters,
                        const bool triangulate,
                        const bool normals) {
-  const Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true);
+  const Mesh3 mesh0 = makeSurfMesh<Mesh3, Point3>(rmesh, true);
   Rcpp::IntegerMatrix Edges0;
   Rcpp::NumericMatrix Normals0;
   if(triangulate) {
-    Edges0 = getEdges2<K, Mesh3, Point3>(mesh, 0);
+    Edges0 = getEdges2<K, Mesh3, Point3>(mesh0, 0);
     if(normals) {
-      Normals0 = getKNormals(mesh);
+      Normals0 = getKNormals(mesh0);
     }
-    const bool success = PMP::triangulate_faces(mesh);
+    const bool success = PMP::triangulate_faces(mesh0);
     if(!success) {
       const std::string msg = "Triangulation has failed.";
       Rcpp::stop(msg);
     }
   }
   // remove degenerate faces
-  mesh = removeDegenerateFaces<Mesh3>(mesh);
+  const Mesh3 mesh = removeDegenerateFaces<Mesh3>(mesh0);
   // Constrain edges with a dihedral angle over the given angle
   typedef boost::property_map<Mesh3, CGAL::edge_is_feature_t>::type EIFMap;
   EIFMap eif = get(CGAL::edge_is_feature, mesh);
