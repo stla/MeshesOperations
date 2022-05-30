@@ -20,6 +20,8 @@
 #' @examples
 #' library(MeshesOperations)
 #' library(rgl)
+#'
+#' # parabola ####
 #' x <- seq(-1, 1, length.out = 30)
 #' parabola <- cylinder3d(cbind(x, x^2, 0), radius = 0.2, closed = -2)
 #' vertices <- t(parabola$vb[-4L, ])
@@ -40,6 +42,25 @@
 #' view3d(0, 0)
 #' shade3d(sparabola, color = "green")
 #' wire3d(sparabola)
+#'
+#' # Stanford bunny (light version)
+#' vf <- readMeshFile(
+#'   system.file("extdata", "bunny.off", package = "MeshesOperations")
+#' )
+#' mesh <- Mesh(vf[["vertices"]], vf[["faces"]], normals = TRUE)
+#' rglmesh <- toRGL(mesh)
+#' smesh <- smoothShape(
+#'   vf[["vertices"]], vf[["faces"]],
+#'   time = 0.00001, iterations = 1, normals = TRUE
+#' )
+#' srglmesh <- toRGL(smesh)
+#' open3d(windowRect = c(50, 50, 900, 500))
+#' mfrow3d(1, 2)
+#' view3d(0, 0, zoom = 0.8)
+#' shade3d(rglmesh, color = "purple")
+#' next3d()
+#' view3d(0, 0, zoom = 0.8)
+#' shade3d(srglmesh, color = "violetred")
 smoothShape <- function(
   vertices, faces, time, iterations = 1, normals = FALSE
 ){
