@@ -11,22 +11,22 @@ Using the C++ library **CGAL** to perform Boolean operations on 3D Meshes.
 
 #### Intersection
 
-![](https://raw.githubusercontent.com/stla/MeshesOperations/main/inst/screenshots/Intersection.png)
+![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/Intersection.png)
 
 #### Difference
 
-![](https://raw.githubusercontent.com/stla/MeshesOperations/main/inst/screenshots/Difference.png)
+![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/Difference.png)
 
 #### Union
 
-![](https://raw.githubusercontent.com/stla/MeshesOperations/main/inst/screenshots/Union.png)
+![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/Union.png)
 
-![](https://raw.githubusercontent.com/stla/MeshesOperations/main/inst/screenshots/tetrahedraCompound.gif)
+![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/tetrahedraCompound.gif)
 
 
 ## Shape smoothing
 
-![](https://raw.githubusercontent.com/stla/MeshesOperations/main/inst/screenshots/HopfTorusSmoothed.gif)
+![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/HopfTorusSmoothed.gif)
 
 
 ## License
