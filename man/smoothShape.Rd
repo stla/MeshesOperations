@@ -13,19 +13,21 @@ smoothShape(vertices, faces, time, iterations = 1, normals = FALSE)
 of the corresponding face) or a list of integer vectors, each one
 providing the vertex indices of the corresponding face}
 
-\item{time}{}
+\item{time}{positive number, a time step that corresponds to the speed by
+which the surface is smoothed (the larger the faster); typical values lie
+between \code{1e-6} and \code{1}}
 
 \item{iterations}{number of iterations, a positive integer}
 
-\item{normals}{Boolean, whether to compute the vertex normals of the 
+\item{normals}{Boolean, whether to compute the vertex normals of the
 output mesh}
 }
 \value{
-A triangle mesh represented as the output of the 
+A triangle mesh represented as the output of the
   \code{\link{Mesh}} function.
 }
 \description{
-Smooths the overall shape of the mesh by using the mean 
+Smooths the overall shape of the mesh by using the mean
   curvature flow.
 }
 \examples{
