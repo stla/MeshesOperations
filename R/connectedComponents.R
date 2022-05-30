@@ -3,7 +3,7 @@
 #'   returned component, its faces are coherently oriented, its normals are
 #'   computed if desired, and it is triangulated if desired.
 #'
-#' @param vertices a numeric matrix with three columns, or a \code{bigq} 
+#' @param vertices a numeric matrix with three columns, or a \code{bigq}
 #'   matrix with three columns if \code{numbersType="gmp"}
 #' @param faces either an integer matrix (each row provides the vertex indices
 #'   of the corresponding face) or a list of integer vectors, each one
@@ -54,18 +54,10 @@
 #'
 #' # now run the `connectedComponents` function ####
 #' meshes <- connectedComponents(vertices, faces, normals = FALSE)
-#' mesh1 <- meshes[[1]]; mesh2 <- meshes[[2]] 
-#' # plot 
-#' tmesh1 <- tmesh3d(
-#'   vertices = t(mesh1[["vertices"]]),
-#'   indices = t(mesh1[["faces"]]),
-#'   homogeneous = FALSE
-#' )
-#' tmesh2 <- tmesh3d(
-#'   vertices = t(mesh2[["vertices"]]),
-#'   indices = t(mesh2[["faces"]]),
-#'   homogeneous = FALSE
-#' )
+#' mesh1 <- meshes[[1]]; mesh2 <- meshes[[2]]
+#' # plot
+#' tmesh1 <- toRGL(mesh1)
+#' tmesh2 <- toRGL(mesh2)
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' shade3d(tmesh1, color = "green", back = "culled")
 #' shade3d(tmesh2, color = "red", back = "culled")

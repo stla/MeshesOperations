@@ -15,7 +15,7 @@ connectedComponents(
 )
 }
 \arguments{
-\item{vertices}{a numeric matrix with three columns, or a \code{bigq} 
+\item{vertices}{a numeric matrix with three columns, or a \code{bigq}
 matrix with three columns if \code{numbersType="gmp"}}
 
 \item{faces}{either an integer matrix (each row provides the vertex indices
@@ -73,18 +73,10 @@ faces <- rbind(faces1, faces1 + 4)
 
 # now run the `connectedComponents` function ####
 meshes <- connectedComponents(vertices, faces, normals = FALSE)
-mesh1 <- meshes[[1]]; mesh2 <- meshes[[2]] 
-# plot 
-tmesh1 <- tmesh3d(
-  vertices = t(mesh1[["vertices"]]),
-  indices = t(mesh1[["faces"]]),
-  homogeneous = FALSE
-)
-tmesh2 <- tmesh3d(
-  vertices = t(mesh2[["vertices"]]),
-  indices = t(mesh2[["faces"]]),
-  homogeneous = FALSE
-)
+mesh1 <- meshes[[1]]; mesh2 <- meshes[[2]]
+# plot
+tmesh1 <- toRGL(mesh1)
+tmesh2 <- toRGL(mesh2)
 open3d(windowRect = c(50, 50, 562, 562))
 shade3d(tmesh1, color = "green", back = "culled")
 shade3d(tmesh2, color = "red", back = "culled")
