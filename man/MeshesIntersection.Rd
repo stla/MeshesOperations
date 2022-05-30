@@ -14,7 +14,7 @@ MeshesIntersection(
 \arguments{
 \item{meshes}{a list of \emph{triangular} meshes, each given as a list with
 (at least) two fields: \code{vertices} and \code{faces}; the `vertices`
-matrix must have the \code{bigq} class if \code{numberTypes="gmp"},
+matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 otherwise it must be numeric}
 
 \item{clean}{Boolean, whether to clean the input meshes (merging
@@ -33,7 +33,7 @@ exact computations is slower but more accurate}
 \value{
 A triangular mesh given as a list with fields \code{vertices},
   \code{faces}, \code{edges}, \code{exteriorEdges}, \code{gmpvertices}
-  if \code{numberTypes="gmp"}, and \code{normals} if \code{normals=TRUE}.
+  if \code{numbersType="gmp"}, and \code{normals} if \code{normals=TRUE}.
 }
 \description{
 Computes the intersection of the given meshes.

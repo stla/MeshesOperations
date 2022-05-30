@@ -19,7 +19,7 @@
 #'   improve the detection of the exterior edges
 #' @param epsilon if the mesh is triangulated or if \code{triangulate=TRUE},
 #'   then \code{epsilon} is used in the detection of exterior edges (see the
-#'   \strong{Value} section of \code{\link{Mesh}}).
+#'   \strong{Value} section of \code{\link{Mesh}})
 #'
 #' @return A list of meshes, the connected components, each one being
 #'   represented as the output of the \code{\link{Mesh}} function.

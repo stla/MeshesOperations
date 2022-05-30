@@ -1,6 +1,19 @@
 library(rgl)
 library(MeshesOperations)
 
+
+setwd("C:/SL/MyPackages/MeshesOperations/inst/trash")
+
+for(i in 1:60){
+  command <-
+    sprintf("magick convert aa%03d.png bb%03d.png +append HT%03d.png", i, i, i)
+  system(command)
+}
+command <- "gifski --fps=9 --frames=HT*.png -s 900x450 -o HopfTorusSmoothed.gif"
+system(command)
+
+
+
 setwd("C:/SL/MyPackages/MeshesOperations/inst/PoissonExamples")
 
 

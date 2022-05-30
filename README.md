@@ -24,6 +24,11 @@ Using the C++ library **CGAL** to perform Boolean operations on 3D Meshes.
 ![](https://raw.githubusercontent.com/stla/MeshesOperations/main/inst/screenshots/tetrahedraCompound.gif)
 
 
+## Shape smoothing
+
+![](https://raw.githubusercontent.com/stla/MeshesOperations/main/inst/screenshots/HopfTorusSmoothed.gif)
+
+
 ## License
 
 This package is provided under the GPL-3 license. If you wish to use CGAL for 

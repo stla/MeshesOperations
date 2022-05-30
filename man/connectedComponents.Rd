@@ -37,7 +37,7 @@ improve the detection of the exterior edges}
 
 \item{epsilon}{if the mesh is triangulated or if \code{triangulate=TRUE},
 then \code{epsilon} is used in the detection of exterior edges (see the
-\strong{Value} section of \code{\link{Mesh}}).}
+\strong{Value} section of \code{\link{Mesh}})}
 }
 \value{
 A list of meshes, the connected components, each one being
