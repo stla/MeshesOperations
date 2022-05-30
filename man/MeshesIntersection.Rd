@@ -61,16 +61,8 @@ mesh2 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
 inter <- MeshesIntersection(list(mesh1, mesh2))
 
 # plot
-rglmesh1 <- tmesh3d(
-  vertices = t(mesh1[["vertices"]]),
-  indices = t(mesh1[["faces"]]),
-  homogeneous = FALSE
-)
-rglinter <- tmesh3d(
-  vertices = t(inter[["vertices"]]),
-  indices = t(inter[["faces"]]),
-  homogeneous = FALSE
-)
+rglmesh1 <- toRGL(mesh1)
+rglinter <- toRGL(inter)
 open3d(windowRect = c(50, 50, 562, 562))
 shade3d(rglmesh1, color = "yellow", alpha = 0.2)
 shade3d(cube, color = "cyan", alpha = 0.2)
@@ -105,11 +97,7 @@ rglmesh2 <- rotate3d(cube, pi/3, 1, 1, 1)
 inter <- MeshesIntersection(list(mesh1, mesh2), numbersType = "gmp")
 # perfect vertices:
 inter[["gmpVertices"]]
-rglinter <- tmesh3d(
-  vertices = t(inter[["vertices"]]),
-  indices = t(inter[["faces"]]),
-  homogeneous = FALSE
-)
+rglinter <- toRGL(inter)
 
 open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 bg3d("#363940")

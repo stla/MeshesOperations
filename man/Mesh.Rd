@@ -85,11 +85,7 @@ shade3d(tmesh1, color = "green", back = "cull")
 mesh2 <- Mesh(vertices, faces, normals = FALSE)
 # plot the tetrahedron, hiding the back of the faces
 # then all faces appear now
-tmesh2 <- tmesh3d(
-  vertices = t(mesh2[["vertices"]]),
-  indices = t(mesh2[["faces"]]),
-  homogeneous = FALSE
-)
+tmesh2 <- toRGL(mesh2)
 open3d(windowRect = c(50, 50, 562, 562))
 shade3d(tmesh2, color = "blue", back = "cull")
 
@@ -109,14 +105,9 @@ voxel <- array(with(g, f(x, y, z, a, c, mu)), c(45, 45, 30))
 cont <- computeContour3d(voxel, level = 0, x = x, y = y, z = z)
 ids <- matrix(1:nrow(cont), ncol = 3, byrow = TRUE)
 # run the `Mesh` function with `clean=TRUE`
-mesh <- Mesh(cont, ids, clean = TRUE)
+mesh <- Mesh(cont, ids, clean = TRUE, normals = TRUE)
 # plot the cyclide
-tmesh <- tmesh3d(
-  vertices = t(mesh[["vertices"]]),
-  indices = t(mesh[["faces"]]),
-  normals = mesh[["normals"]],
-  homogeneous = FALSE
-)
+tmesh <- toRGL(mesh)
 open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 shade3d(tmesh, color = "green")
 
@@ -130,11 +121,7 @@ mesh <- Mesh(
   triangulate = TRUE, normals = FALSE
 )
 # now we can plot the truncated icosahedron
-tmesh <- tmesh3d(
-  vertices = t(mesh[["vertices"]]),
-  indices = t(mesh[["faces"]]),
-  homogeneous = FALSE
-)
+tmesh <- toRGL(mesh)
 open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 shade3d(tmesh, color = "orange")
 }

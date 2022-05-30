@@ -47,16 +47,8 @@
 #' inter <- MeshesIntersection(list(mesh1, mesh2))
 #'
 #' # plot
-#' rglmesh1 <- tmesh3d(
-#'   vertices = t(mesh1[["vertices"]]),
-#'   indices = t(mesh1[["faces"]]),
-#'   homogeneous = FALSE
-#' )
-#' rglinter <- tmesh3d(
-#'   vertices = t(inter[["vertices"]]),
-#'   indices = t(inter[["faces"]]),
-#'   homogeneous = FALSE
-#' )
+#' rglmesh1 <- toRGL(mesh1)
+#' rglinter <- toRGL(inter)
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' shade3d(rglmesh1, color = "yellow", alpha = 0.2)
 #' shade3d(cube, color = "cyan", alpha = 0.2)
@@ -91,11 +83,7 @@
 #' inter <- MeshesIntersection(list(mesh1, mesh2), numbersType = "gmp")
 #' # perfect vertices:
 #' inter[["gmpVertices"]]
-#' rglinter <- tmesh3d(
-#'   vertices = t(inter[["vertices"]]),
-#'   indices = t(inter[["faces"]]),
-#'   homogeneous = FALSE
-#' )
+#' rglinter <- toRGL(inter)
 #'
 #' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 #' bg3d("#363940")
@@ -199,11 +187,7 @@ MeshesIntersection <- function(
 #' differ <- MeshesDifference(mesh1, mesh2)
 #'
 #' # plot
-#' rgldiffer <- tmesh3d(
-#'   vertices = t(differ[["vertices"]]),
-#'   indices = t(differ[["faces"]]),
-#'   homogeneous = FALSE
-#' )
+#' rgldiffer <- toRGL(differ)
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' shade3d(cube1, color = "yellow", alpha = 0.2)
 #' shade3d(cube2, color = "cyan", alpha = 0.2)
@@ -308,11 +292,7 @@ MeshesDifference <- function(
 #' umesh <- MeshesUnion(list(mesh1, mesh2))
 #'
 #' # plot
-#' rglumesh <- tmesh3d(
-#'   vertices = t(umesh[["vertices"]]),
-#'   indices = t(umesh[["faces"]]),
-#'   homogeneous = FALSE
-#' )
+#' rglumesh <- toRGL(umesh)
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' shade3d(rglumesh, color = "red")
 #' plotEdges(

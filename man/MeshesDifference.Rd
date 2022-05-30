@@ -61,11 +61,7 @@ mesh2 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
 differ <- MeshesDifference(mesh1, mesh2)
 
 # plot
-rgldiffer <- tmesh3d(
-  vertices = t(differ[["vertices"]]),
-  indices = t(differ[["faces"]]),
-  homogeneous = FALSE
-)
+rgldiffer <- toRGL(differ)
 open3d(windowRect = c(50, 50, 562, 562))
 shade3d(cube1, color = "yellow", alpha = 0.2)
 shade3d(cube2, color = "cyan", alpha = 0.2)

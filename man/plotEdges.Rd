@@ -57,11 +57,7 @@ mesh <- Mesh(
   triangulate = TRUE, normals = FALSE
 )
 # now we can plot the truncated icosahedron
-tmesh <- tmesh3d(
-  vertices = t(mesh[["vertices"]]),
-  indices = t(mesh[["faces"]]),
-  homogeneous = FALSE
-)
+tmesh <- toRGL(mesh)
 open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 shade3d(tmesh, color = "gold")
 plotEdges(mesh[["vertices"]], mesh[["edges0"]], color = "navy")

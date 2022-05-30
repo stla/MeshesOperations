@@ -55,11 +55,7 @@ mesh2 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
 umesh <- MeshesUnion(list(mesh1, mesh2))
 
 # plot
-rglumesh <- tmesh3d(
-  vertices = t(umesh[["vertices"]]),
-  indices = t(umesh[["faces"]]),
-  homogeneous = FALSE
-)
+rglumesh <- toRGL(umesh)
 open3d(windowRect = c(50, 50, 562, 562))
 shade3d(rglumesh, color = "red")
 plotEdges(
