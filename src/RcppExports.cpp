@@ -22,6 +22,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// writeFile
+void writeFile(const std::string filename, const bool binary, const int precision, const Rcpp::NumericMatrix Vertices, const Rcpp::List Faces);
+RcppExport SEXP _MeshesOperations_writeFile(SEXP filenameSEXP, SEXP binarySEXP, SEXP precisionSEXP, SEXP VerticesSEXP, SEXP FacesSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< const bool >::type binary(binarySEXP);
+    Rcpp::traits::input_parameter< const int >::type precision(precisionSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix >::type Vertices(VerticesSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List >::type Faces(FacesSEXP);
+    writeFile(filename, binary, precision, Vertices, Faces);
+    return R_NilValue;
+END_RCPP
+}
 // connectedComponentsK
 Rcpp::List connectedComponentsK(const Rcpp::List rmesh0, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
 RcppExport SEXP _MeshesOperations_connectedComponentsK(SEXP rmesh0SEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
@@ -287,6 +301,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_MeshesOperations_readFile", (DL_FUNC) &_MeshesOperations_readFile, 1},
+    {"_MeshesOperations_writeFile", (DL_FUNC) &_MeshesOperations_writeFile, 5},
     {"_MeshesOperations_connectedComponentsK", (DL_FUNC) &_MeshesOperations_connectedComponentsK, 6},
     {"_MeshesOperations_connectedComponentsEK", (DL_FUNC) &_MeshesOperations_connectedComponentsEK, 6},
     {"_MeshesOperations_connectedComponentsQ", (DL_FUNC) &_MeshesOperations_connectedComponentsQ, 6},

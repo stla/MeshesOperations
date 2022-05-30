@@ -5,6 +5,10 @@ readFile <- function(filename) {
     .Call(`_MeshesOperations_readFile`, filename)
 }
 
+writeFile <- function(filename, binary, precision, Vertices, Faces) {
+    invisible(.Call(`_MeshesOperations_writeFile`, filename, binary, precision, Vertices, Faces))
+}
+
 connectedComponentsK <- function(rmesh0, isTriangle, triangulate, clean, normals, epsilon) {
     .Call(`_MeshesOperations_connectedComponentsK`, rmesh0, isTriangle, triangulate, clean, normals, epsilon)
 }

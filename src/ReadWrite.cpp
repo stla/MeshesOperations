@@ -12,6 +12,23 @@ std::string toLower(std::string s) {
   return s;
 }
 
+std::pair<std::vector<std::vector<int>>, bool> list_to_faces2(
+    const Rcpp::List L) {
+  const size_t nfaces = L.size();
+  std::vector<std::vector<int>> faces;
+  faces.reserve(nfaces);
+  bool triangle = true;
+  for(size_t i = 0; i < nfaces; i++) {
+    Rcpp::IntegerVector face_rcpp = Rcpp::as<Rcpp::IntegerVector>(L(i));
+    std::vector<int> face(face_rcpp.begin(), face_rcpp.end());
+    std::transform(face.begin(), face.end(), face.begin(),
+                   std::bind2nd(std::minus<int>(), 1));
+    faces.emplace_back(face);
+    triangle = triangle && (face.size() == 3);
+  }
+  return std::make_pair(faces, triangle);
+}
+
 // [[Rcpp::export]]
 Rcpp::List readFile(const std::string filename) {
   const std::string ext = toLower(filename.substr(filename.length() - 3, 3));
@@ -58,6 +75,42 @@ Rcpp::List readFile(const std::string filename) {
     Rcpp::stop("Reading failure.");
   }
   return out;
+}
+
+// [[Rcpp::export]]
+void writeFile(const std::string filename,
+               const bool binary,
+               const int precision,
+               const Rcpp::NumericMatrix Vertices,
+               const Rcpp::List Faces) {
+  const std::vector<Point3> points = matrix_to_points3<Point3>(Vertices);
+  const std::pair<std::vector<std::vector<int>>, bool> faces =
+      list_to_faces2(Faces);
+  const std::string ext = toLower(filename.substr(filename.length() - 3, 3));
+  bool ok = false;
+  if(ext == "ply") {
+    ok = CGAL::IO::write_PLY(
+        filename, points, faces.first,
+        CGAL::parameters::use_binary_mode(binary).stream_precision(precision));
+  } else if(ext == "stl") {
+    if(!faces.second) {
+      Rcpp::stop("STL files only accept triangular faces.");
+    }
+    ok = CGAL::IO::write_STL(
+        filename, points, faces.first,
+        CGAL::parameters::use_binary_mode(binary).stream_precision(precision));
+  } else if(ext == "obj") {
+    ok = CGAL::IO::write_OBJ(filename, points, faces.first,
+                             CGAL::parameters::stream_precision(precision));
+  } else if(ext == "off") {
+    ok = CGAL::IO::write_OFF(filename, points, faces.first,
+                             CGAL::parameters::stream_precision(precision));
+  } else {
+    Rcpp::stop("Unknown file extension.");
+  }
+  if(!ok) {
+    Rcpp::stop("Failed to write file.");
+  }
 }
 
 //{}

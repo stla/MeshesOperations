@@ -35,6 +35,8 @@ std::vector<PointT> matrix_to_points3(const Rcpp::NumericMatrix M) {
   return points;
 }
 
+template std::vector<Point3> matrix_to_points3<Point3>(const Rcpp::NumericMatrix);
+
 std::vector<QPoint3> matrix_to_qpoints3(const Rcpp::CharacterMatrix M) {
   const size_t npoints = M.ncol();
   std::vector<QPoint3> points;

@@ -102,6 +102,9 @@ namespace PMP = CGAL::Polygon_mesh_processing;
 
 // -------------------------------------------------------------------------- //
 
+template <typename PointT>
+std::vector<PointT> matrix_to_points3(const Rcpp::NumericMatrix);
+
 template <typename MeshT, typename PointT>
 MeshT makeSurfMesh(const Rcpp::List, const bool);
 
