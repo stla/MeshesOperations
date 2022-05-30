@@ -94,6 +94,30 @@ print.qsqrt <- function(x, ...){
   invisible(NULL)
 }
 
+#' @exportS3Method print cgalMesh
+print.cgalMesh <- function(x, ...){
+  rgl <- attr(x, "toRGL")
+  nv <- nrow(x[["vertices"]])
+  nf <- if(is.list(x[["faces"]])) length(x[["faces"]]) else nrow(x[["faces"]])
+  msg <- sprintf("Mesh with %d vertices and %d faces.\n", nv, nf)
+  cat(msg)
+  is <- if(rgl == 3L) " is " else " is not "
+  msg <- paste0("This mesh", is, "triangle.\n")
+  cat(msg)
+  can <- if(isFALSE(rgl)) " cannot " else " can "
+  msg <- paste0(
+    "This mesh", can, "be converted to a 'rgl' mesh (see `?toRGL`).\n"
+  )
+  cat(msg)
+  normals <- !is.null(x$normals)
+  has <- if(normals) " has " else " does not have "
+  msg <- paste0("This mesh", has, "vertex normals.\n")
+  cat(msg)
+  invisible(NULL)
+}
+
+
+
 #' @importFrom gmp is.bigq is.matrixZQ
 #' @importFrom data.table uniqueN
 #' @noRd
