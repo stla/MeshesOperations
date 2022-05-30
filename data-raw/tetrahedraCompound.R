@@ -88,7 +88,10 @@ meshes <- list(
 tetrahedraCompound <- list(
 
   "meshes" = lapply(meshes, function(mesh){
-    list("vertices" = mesh[["vertices"]], faces = faces)
+    out <- list("vertices" = mesh[["vertices"]], faces = faces)
+    attr(out, "toRGL") <- 3L
+    class(out) <- "cgalMesh"
+    out
   }),
 
   "gmpmeshes" = lapply(meshes, function(mesh){

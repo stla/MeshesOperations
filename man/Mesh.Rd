@@ -15,7 +15,8 @@ Mesh(
 )
 }
 \arguments{
-\item{vertices}{a numeric matrix with three columns}
+\item{vertices}{a numeric matrix with three columns, or a \code{bigq}
+matrix with three columns if \code{numbersType="gmp"}}
 
 \item{faces}{either an integer matrix (each row provides the vertex indices
 of the corresponding face) or a list of integer vectors, each one

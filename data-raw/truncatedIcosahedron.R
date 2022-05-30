@@ -103,6 +103,8 @@ faces <- list(
 )
 
 truncatedIcosahedron <- list(
-  vertices = vertices,
-  faces = faces
+  "vertices" = vertices,
+  "faces"    = faces
 )
+attr(truncatedIcosahedron, "toRGL") <- FALSE
+class(truncatedIcosahedron) <- "cgalMesh"

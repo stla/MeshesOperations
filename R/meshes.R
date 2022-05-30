@@ -115,7 +115,8 @@ checkMesh <- function(vertices, faces, gmp, aslist){
     stop("Found missing values in `vertices`.")
   }
   homogeneousFaces <- FALSE
-  isTriangle <- FALSE
+  isTriangle       <- FALSE
+  toRGL            <- FALSE
   if(is.matrix(faces)){
     if(ncol(faces) < 3L){
       stop("Faces must be given by at least three indices.")
@@ -130,8 +131,11 @@ checkMesh <- function(vertices, faces, gmp, aslist){
     if(any(faces > nrow(vertices))){
       stop("Faces cannot contain indices higher than the number of vertices.")
     }
-    homogeneousFaces <- TRUE
-    isTriangle <- ncol(faces) == 3L
+    homogeneousFaces <- ncol(faces)
+    if(homogeneousFaces %in% c(3L, 4L)){
+      isTriangle <- homogeneousFaces == 3L
+      toRGL <- homogeneousFaces
+    }
     if(aslist){
       faces <- lapply(1L:nrow(faces), function(i) faces[i, ] - 1L)
     }else{
@@ -160,8 +164,16 @@ checkMesh <- function(vertices, faces, gmp, aslist){
         "number of vertices."
       )
     }
-    homogeneousFaces <- uniqueN(sizes) == 1L
-    isTriangle <- homogeneousFaces && sizes[1L] == 3L
+    usizes <- uniqueN(sizes)
+    if(usizes == 1L){
+      homogeneousFaces <- sizes[1L]
+      isTriangle <- homogeneousFaces == 3L
+      if(homogeneousFaces %in% c(3L, 4L)){
+        toRGL <- homogeneousFaces
+      }
+    }else if(usizes == 2L && all(sizes %in% c(3L, 4L))){
+      toRGL <- 34L
+    }
   }else{
     stop("The `faces` argument must be a list or a matrix.")
   }
@@ -169,7 +181,8 @@ checkMesh <- function(vertices, faces, gmp, aslist){
     vertices = t(vertices),
     faces = faces,
     homogeneousFaces = homogeneousFaces,
-    isTriangle = isTriangle
+    isTriangle = isTriangle,
+    toRGL = toRGL
   )
 }
 
@@ -178,7 +191,8 @@ checkMesh <- function(vertices, faces, gmp, aslist){
 #'   faces are coherently oriented, normals are computed if desired, and
 #'   triangulation is performed if desired.
 #'
-#' @param vertices a numeric matrix with three columns
+#' @param vertices a numeric matrix with three columns, or a \code{bigq}
+#'   matrix with three columns if \code{numbersType="gmp"}
 #' @param faces either an integer matrix (each row provides the vertex indices
 #'   of the corresponding face) or a list of integer vectors, each one
 #'   providing the vertex indices of the corresponding face
@@ -299,10 +313,10 @@ Mesh <- function(
   gmp <- numbersType == "gmp"
   stopifnot(epsilon >= 0)
   checkedMesh <- checkMesh(vertices, faces, gmp = gmp, aslist = TRUE)
-  vertices <- checkedMesh[["vertices"]]
-  faces <- checkedMesh[["faces"]]
+  vertices         <- checkedMesh[["vertices"]]
+  faces            <- checkedMesh[["faces"]]
   homogeneousFaces <- checkedMesh[["homogeneousFaces"]]
-  isTriangle <- checkedMesh[["isTriangle"]]
+  isTriangle       <- checkedMesh[["isTriangle"]]
   rmesh <- list("vertices" = vertices, "faces" = faces)
   if(numbersType == "double"){
     mesh <- SurfMesh(
@@ -357,7 +371,73 @@ Mesh <- function(
   if(triangulate || homogeneousFaces){
     mesh[["faces"]] <- do.call(rbind, mesh[["faces"]])
   }
+  attr(mesh, "toRGL") <- checkedMesh[["toRGL"]]
+  class(mesh) <- "cgalMesh"
   mesh
+}
+
+#' @title Conversion to 'rgl' mesh
+#' @description Converts a CGAL mesh (e.g. an output of the \code{\link{Mesh}}
+#'   function) to a \strong{rgl} mesh.
+#'
+#' @param mesh a CGAL mesh, that is to say a list of class \code{"cgalMesh"}
+#'   (e.g. an output of the \code{\link{Mesh}} function); in order to be
+#'   convertible to a \strong{rgl} mesh, its faces must have at most four sides
+#' @param ... arguments passed to \code{\link[rgl]{mesh3d}}
+#'
+#' @return A \strong{rgl} mesh, that is to say a list of class \code{"mesh3d"}.
+#' @export
+#'
+#' @importFrom rgl mesh3d
+#'
+#' @examples
+#' library(MeshesOperations)
+#' library(rgl)
+#' mesh <- Mesh(
+#'   truncatedIcosahedron[["vertices"]], truncatedIcosahedron[["faces"]],
+#'   triangulate = TRUE
+#' )
+#' rglmesh <- toRGL(mesh, segments = t(mesh[["edges"]]))
+#' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
+#' shade3d(rglmesh, color = "darkred")
+toRGL <- function(mesh, ...){
+  if(!inherits(mesh, "cgalMesh")){
+    stop(
+      "The `mesh` argument must be of class 'cgalMesh'",
+      " (e.g. an output of the `Mesh` function)."
+    )
+  }
+  rgl <- attr(mesh, "toRGL")
+  if(isFALSE(rgl)){
+    stop(
+      "Impossible to convert this mesh to a 'rgl' mesh ",
+      "(the faces must have at most four sides)."
+    )
+  }
+  if(rgl == 3L){
+    mesh3d(
+      x         = mesh[["vertices"]],
+      normals   = mesh[["normals"]],
+      triangles = t(mesh[["faces"]]),
+      ...
+    )
+  }else if(rgl == 4L){
+    mesh3d(
+      x       = mesh[["vertices"]],
+      normals = mesh[["normals"]],
+      quads   = t(mesh[["faces"]]),
+      ...
+    )
+  }else{
+    faces <- split(mesh[["faces"]], lengths(mesh[["faces"]]))
+    mesh3d(
+      x         = mesh[["vertices"]],
+      normals   = mesh[["normals"]],
+      triangles = do.call(cbind, faces[["3"]]),
+      quads     = do.call(cbind, faces[["4"]]),
+      ...
+    )
+  }
 }
 
 #' @title Plot some edges

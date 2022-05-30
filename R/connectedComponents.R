@@ -3,7 +3,8 @@
 #'   returned component, its faces are coherently oriented, its normals are
 #'   computed if desired, and it is triangulated if desired.
 #'
-#' @param vertices a numeric matrix with three columns
+#' @param vertices a numeric matrix with three columns, or a \code{bigq} 
+#'   matrix with three columns if \code{numbersType="gmp"}
 #' @param faces either an integer matrix (each row provides the vertex indices
 #'   of the corresponding face) or a list of integer vectors, each one
 #'   providing the vertex indices of the corresponding face
@@ -26,6 +27,7 @@
 #' @export
 #'
 #' @importFrom gmp as.bigq asNumeric
+#' @importFrom data.table uniqueN
 #'
 #' @examples
 #' library(MeshesOperations)
@@ -75,10 +77,10 @@ connectedComponents <- function(
   gmp <- numbersType == "gmp"
   stopifnot(epsilon >= 0)
   checkedMesh <- checkMesh(vertices, faces, gmp = gmp, aslist = TRUE)
-  vertices <- checkedMesh[["vertices"]]
-  faces <- checkedMesh[["faces"]]
+  vertices         <- checkedMesh[["vertices"]]
+  faces            <- checkedMesh[["faces"]]
   homogeneousFaces <- checkedMesh[["homogeneousFaces"]]
-  isTriangle <- checkedMesh[["isTriangle"]]
+  isTriangle       <- checkedMesh[["isTriangle"]]
   rmesh <- list("vertices" = vertices, "faces" = faces)
   if(numbersType == "double"){
     ccmeshes <- connectedComponentsK(
@@ -127,7 +129,23 @@ connectedComponents <- function(
     }
     if(triangulate || homogeneousFaces){
       mesh[["faces"]] <- do.call(rbind, mesh[["faces"]])
+      toRGL <- ifelse(triangulate, 3L, homogeneousFaces)
+    }else{
+      sizes <- lengths(mesh[["faces"]])
+      usizes <- uniqueN(sizes)
+      if(usizes == 1L){
+        if(sizes[1L] %in% c(3L, 4L)){
+          toRGL <- sizes[1L]
+        }
+        mesh[["faces"]] <- do.call(rbind, mesh[["faces"]])
+      }else if(usizes == 2L && all(sizes %in% c(3L, 4L))){
+        toRGL <- 34L
+      }else{
+        toRGL <- FALSE
+      }
     }
+    attr(mesh, "toRGL") <- toRGL
+    class(mesh) <- "cgalMesh"
     meshes[[i]] <- mesh
   }
   meshes

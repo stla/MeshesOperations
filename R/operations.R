@@ -21,7 +21,6 @@
 #'   if \code{numberTypes="gmp"}, and \code{normals} if \code{normals=TRUE}.
 #'
 #' @importFrom gmp as.bigq asNumeric
-#' @importFrom rgl tmesh3d
 #'
 #' @export
 #'
@@ -120,7 +119,7 @@ MeshesIntersection <- function(
   })
   areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
   if(!areTriangle){
-    stop("All meshes must be triangular.")
+    stop("All meshes must be triangle.")
   }
   meshes <- lapply(checkMeshes, `[`, c("vertices", "faces"))
   if(numbersType == "double"){
@@ -147,6 +146,8 @@ MeshesIntersection <- function(
   if(normals){
     inter[["normals"]] <- t(inter[["normals"]])
   }
+  attr(inter, "toRGL") <- 3L
+  class(inter) <- "cgalMesh"
   inter
 }
 
@@ -173,7 +174,6 @@ MeshesIntersection <- function(
 #'   if \code{numberTypes="gmp"}, and \code{normals} if \code{normals=TRUE}.
 #'
 #' @importFrom gmp as.bigq asNumeric
-#' @importFrom rgl tmesh3d
 #'
 #' @export
 #'
@@ -255,6 +255,8 @@ MeshesDifference <- function(
   if(normals){
     differ[["normals"]] <- t(differ[["normals"]])
   }
+  attr(differ, "toRGL") <- 3L
+  class(differ) <- "cgalMesh"
   differ
 }
 
@@ -281,7 +283,6 @@ MeshesDifference <- function(
 #'   if \code{numberTypes="gmp"}, and \code{normals} if \code{normals=TRUE}.
 #'
 #' @importFrom gmp as.bigq asNumeric
-#' @importFrom rgl tmesh3d
 #'
 #' @export
 #'
@@ -356,5 +357,7 @@ MeshesUnion <- function(
   if(normals){
     umesh[["normals"]] <- t(umesh[["normals"]])
   }
+  attr(umesh, "toRGL") <- 3L
+  class(umesh) <- "cgalMesh"
   umesh
 }
