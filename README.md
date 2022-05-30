@@ -36,7 +36,10 @@ commercial purposes, you must obtain a license from the
 [GeometryFactory](https://geometryfactory.com).
 
 
-
 ## Blog post
 
-I wrote a [blog post](https://laustep.github.io/stlahblog/posts/SurfaceReconstruction.html) devoted to **RCGAL**.
+I wrote a 
+[blog post](https://laustep.github.io/stlahblog/posts/BooleanOpsOnMeshes.html)
+devoted to Boolean operations on meshes (using **RCGAL**, the 
+[ancestor](https://laustep.github.io/stlahblog/posts/splittingRCGAL.html) 
+of **MehesOperations**).
