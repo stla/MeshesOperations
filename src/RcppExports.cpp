@@ -11,6 +11,17 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// readFile
+Rcpp::List readFile(const std::string filename);
+RcppExport SEXP _MeshesOperations_readFile(SEXP filenameSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string >::type filename(filenameSEXP);
+    rcpp_result_gen = Rcpp::wrap(readFile(filename));
+    return rcpp_result_gen;
+END_RCPP
+}
 // connectedComponentsK
 Rcpp::List connectedComponentsK(const Rcpp::List rmesh0, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
 RcppExport SEXP _MeshesOperations_connectedComponentsK(SEXP rmesh0SEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
@@ -275,6 +286,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_MeshesOperations_readFile", (DL_FUNC) &_MeshesOperations_readFile, 1},
     {"_MeshesOperations_connectedComponentsK", (DL_FUNC) &_MeshesOperations_connectedComponentsK, 6},
     {"_MeshesOperations_connectedComponentsEK", (DL_FUNC) &_MeshesOperations_connectedComponentsEK, 6},
     {"_MeshesOperations_connectedComponentsQ", (DL_FUNC) &_MeshesOperations_connectedComponentsQ, 6},
