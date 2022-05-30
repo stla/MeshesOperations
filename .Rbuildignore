@@ -7,3 +7,5 @@
 ^data-raw$
 ^inst/makegifs$
 ^inst/screenshots$
+^\.Rprofile$
+
