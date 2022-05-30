@@ -35,7 +35,7 @@ library(MeshesOperations)
 library(rgl)
 x <- seq(-1, 1, length.out = 30)
 parabola <- cylinder3d(cbind(x, x^2, 0), radius = 0.2, closed = -2)
-vertices <- t(parabola$vb)
+vertices <- t(parabola$vb[-4L, ])
 faces <- c(
   split(t(parabola$it)-1L, 1L:ncol(parabola$it)),
   split(t(parabola$ib)-1L, 1L:ncol(parabola$ib))

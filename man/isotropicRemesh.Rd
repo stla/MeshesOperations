@@ -40,4 +40,26 @@ Isotropically remesh a mesh.
 \examples{
 library(MeshesOperations)
 library(rgl)
+
+theta <- seq(0, 2*pi, length.out = 16)
+torus <- cylinder3d(
+  cbind(cos(theta), sin(theta), 0), 
+  radius = 0.4, closed = TRUE
+)
+
+mesh <- isotropicRemesh(
+  vertices = t(torus$vb[-4L, ]),
+  faces = t(torus$ib),
+  targetEdgeLength = 0.3,
+  iterations = 3
+)
+rglmesh <- toRGL(mesh)
+
+open3d(windowRect = c(50, 50, 950, 500))
+mfrow3d(1, 2)
+view3d(0, 0, zoom = 0.8)
+wire3d(torus)
+next3d()
+view3d(0, 0, zoom = 0.8)
+wire3d(rglmesh)
 }
