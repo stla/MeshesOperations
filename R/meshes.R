@@ -371,7 +371,7 @@ Mesh <- function(
   if(triangulate || homogeneousFaces){
     mesh[["faces"]] <- do.call(rbind, mesh[["faces"]])
   }
-  attr(mesh, "toRGL") <- checkedMesh[["toRGL"]]
+  attr(mesh, "toRGL") <- ifelse(triangulate, 3L, checkedMesh[["toRGL"]])
   class(mesh) <- "cgalMesh"
   mesh
 }

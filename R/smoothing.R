@@ -1,0 +1,68 @@
+#' @title Smoothing of the shape of a mesh
+#' @description Smooths the overall shape of the mesh by using the mean 
+#'   curvature flow.
+#'
+#' @param vertices a numeric matrix with three columns
+#' @param faces either an integer matrix (each row provides the vertex indices
+#'   of the corresponding face) or a list of integer vectors, each one
+#'   providing the vertex indices of the corresponding face
+#' @param time 
+#' @param iterations number of iterations, a positive integer
+#' @param normals Boolean, whether to compute the vertex normals of the 
+#'   output mesh
+#'
+#' @return A triangle mesh represented as the output of the 
+#'   \code{\link{Mesh}} function.
+#' @export
+#'
+#' @examples
+#' library(MeshesOperations)
+#' library(rgl)
+#' x <- seq(-1, 1, length.out = 30)
+#' parabola <- cylinder3d(cbind(x, x^2, 0), radius = 0.2, closed = -2)
+#' vertices <- t(parabola$vb)
+#' faces <- c(
+#'   split(t(parabola$it)-1L, 1L:ncol(parabola$it)),
+#'   split(t(parabola$ib)-1L, 1L:ncol(parabola$ib))
+#' )
+#' sparabola <- smoothShape(
+#'   vertices, faces, time = 0.0005, iterations = 10
+#' )
+#' sparabola <- toRGL(sparabola)
+#' open3d(windowRect = c(50, 50, 950, 500))
+#' mfrow3d(1, 2)
+#' view3d(0, 0, zoom = 0.9)
+#' shade3d(parabola, color = "orange")
+#' wire3d(parabola)
+#' next3d()
+#' view3d(0, 0)
+#' shade3d(sparabola, color = "green")
+#' wire3d(sparabola)
+smoothShape <- function(
+  vertices, faces, time, iterations = 1, normals = FALSE
+){
+  stopifnot(isPositiveNumber(time))
+  stopifnot(isStrictPositiveInteger(iterations))
+  stopifnot(isBoolean(normals))
+  checkedMesh <- checkMesh(vertices, faces, gmp = FALSE, aslist = TRUE)
+  vertices         <- checkedMesh[["vertices"]]
+  faces            <- checkedMesh[["faces"]]
+  isTriangle       <- checkedMesh[["isTriangle"]]
+  rmesh <- list("vertices" = vertices, "faces" = faces)
+  triangulate <- !isTriangle
+  mesh <- smoothShapeK(
+    rmesh, time, as.integer(iterations), triangulate, normals
+  )
+  mesh[["vertices"]] <- t(mesh[["vertices"]])
+  edges <- unname(t(mesh[["edges"]]))
+  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+  mesh[["exteriorEdges"]] <- exteriorEdges
+  mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
+  mesh[["edges"]] <- edges[, c(1L, 2L)]
+  if(normals){
+    mesh[["normals"]] <- t(mesh[["normals"]])
+  }
+  attr(mesh, "toRGL") <- 3L
+  class(mesh) <- "cgalMesh"
+  mesh
+}
