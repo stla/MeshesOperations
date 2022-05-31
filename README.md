@@ -1,7 +1,7 @@
 # MeshesOperations: Boolean operations on 3D meshes with R
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/stla/MeshesOperations/workflows/R-CMD-check/badge.svg)](https://github.com/stla/MeshesOperations/actions)
+[![R-CMD-check](https://github.com/stla/MeshesOperations/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stla/MeshesOperations/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 Using the C++ library **CGAL** to perform Boolean operations on 3D Meshes.
