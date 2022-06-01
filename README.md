@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/stla/MeshesOperations/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stla/MeshesOperations/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check-valgrind](https://github.com/stla/MeshesOperations/actions/workflows/R-CMD-check-valgrind.yaml/badge.svg)](https://github.com/stla/MeshesOperations/actions/workflows/R-CMD-check-valgrind.yaml)
 <!-- badges: end -->
 
 Using the C++ library **CGAL** to perform Boolean operations on 3D Meshes.
@@ -27,6 +28,8 @@ Using the C++ library **CGAL** to perform Boolean operations on 3D Meshes.
 ## Shape smoothing
 
 ![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/HopfTorusSmoothed.gif)
+
+![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/StanfordBunnySmoothed.gif)
 
 
 ## License
