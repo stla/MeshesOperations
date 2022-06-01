@@ -15,15 +15,12 @@
 #' library(MeshesOperations)
 #' library(rgl)
 #' library(Rvcg)
-#' # Stanford bunny (light version)
-#' mesh1 <- readMeshFile(
-#'   system.file("extdata", "bunny.off", package = "MeshesOperations")
-#' )
+#' mesh1 <- cube3d()
 #' mesh2 <- vcgSphere(subdivision = 2, normals = FALSE)
 #' mesh <- MinkowskiSum(mesh1, mesh2)
 #' rglmesh <- toRGL(mesh)
-#' open3d(windowRect = c(50, 50, 900, 500))
-#' view3d(0, 0, zoom = 0.8)
+#' open3d(windowRect = c(50, 50, 562, 562))
+#' view3d(30, 30, zoom = 0.8)
 #' shade3d(rglmesh, color = "maroon")
 MinkowskiSum <- function(mesh1, mesh2, normals = FALSE){
   stopifnot(isBoolean(normals))
