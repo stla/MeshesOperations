@@ -4,10 +4,13 @@
 \alias{MinkowskiSum}
 \title{Minkowski sum of two meshes}
 \usage{
-MinkowskiSum(mesh1, mesh2, normals = FALSE)
+MinkowskiSum(mesh1, mesh2, triangulate = TRUE, normals = FALSE)
 }
 \arguments{
 \item{mesh1, mesh2}{xxx}
+
+\item{triangulate}{Boolean, whether to triangulate the output mesh (note 
+that it is not necessarily triangle when the two input meshes are triangle)}
 
 \item{normals}{Boolean, whether to compute the vertex normals of the 
 output mesh}

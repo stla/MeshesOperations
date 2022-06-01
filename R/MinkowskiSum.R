@@ -3,6 +3,8 @@
 #'   two input meshes.
 #'
 #' @param mesh1,mesh2 xxx 
+#' @param triangulate Boolean, whether to triangulate the output mesh (note 
+#'   that it is not necessarily triangle when the two input meshes are triangle)
 #' @param normals Boolean, whether to compute the vertex normals of the 
 #'   output mesh 
 #'
@@ -22,11 +24,12 @@
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(30, 30, zoom = 0.8)
 #' shade3d(rglmesh, color = "maroon")
-MinkowskiSum <- function(mesh1, mesh2, normals = FALSE){
+MinkowskiSum <- function(mesh1, mesh2, triangulate = TRUE, normals = FALSE){
   stopifnot(isBoolean(normals))
   vft1 <- getVFT(mesh1)
   vft2 <- getVFT(mesh2)
-  mesh <- MinkowskiSumEK(vft1[["rmesh"]], vft2[["rmesh"]], normals)
+  mesh <- 
+    MinkowskiSumEK(vft1[["rmesh"]], vft2[["rmesh"]], triangulate, normals)
   mesh[["vertices"]] <- t(mesh[["vertices"]])
   toRGL <- FALSE
   faces <- mesh[["faces"]]
