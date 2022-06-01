@@ -96,6 +96,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// meshAreaK
+double meshAreaK(const Rcpp::List rmesh, const bool triangulate);
+RcppExport SEXP _MeshesOperations_meshAreaK(SEXP rmeshSEXP, SEXP triangulateSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh(rmeshSEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate(triangulateSEXP);
+    rcpp_result_gen = Rcpp::wrap(meshAreaK(rmesh, triangulate));
+    return rcpp_result_gen;
+END_RCPP
+}
 // SurfMesh
 Rcpp::List SurfMesh(const Rcpp::List rmesh, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
 RcppExport SEXP _MeshesOperations_SurfMesh(SEXP rmeshSEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
@@ -318,6 +330,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MeshesOperations_connectedComponentsEK", (DL_FUNC) &_MeshesOperations_connectedComponentsEK, 6},
     {"_MeshesOperations_connectedComponentsQ", (DL_FUNC) &_MeshesOperations_connectedComponentsQ, 6},
     {"_MeshesOperations_meshVolumeK", (DL_FUNC) &_MeshesOperations_meshVolumeK, 2},
+    {"_MeshesOperations_meshAreaK", (DL_FUNC) &_MeshesOperations_meshAreaK, 2},
     {"_MeshesOperations_SurfMesh", (DL_FUNC) &_MeshesOperations_SurfMesh, 6},
     {"_MeshesOperations_SurfEMesh", (DL_FUNC) &_MeshesOperations_SurfEMesh, 6},
     {"_MeshesOperations_SurfQMesh", (DL_FUNC) &_MeshesOperations_SurfQMesh, 6},

@@ -25,6 +25,10 @@ meshVolumeK <- function(rmesh, triangulate) {
     .Call(`_MeshesOperations_meshVolumeK`, rmesh, triangulate)
 }
 
+meshAreaK <- function(rmesh, triangulate) {
+    .Call(`_MeshesOperations_meshAreaK`, rmesh, triangulate)
+}
+
 SurfMesh <- function(rmesh, isTriangle, triangulate, clean, normals, epsilon) {
     .Call(`_MeshesOperations_SurfMesh`, rmesh, isTriangle, triangulate, clean, normals, epsilon)
 }
