@@ -81,6 +81,10 @@ isotropicRemeshingK <- function(rmesh, targetEdgeLength, niters, nrelaxsteps, tr
     .Call(`_MeshesOperations_isotropicRemeshingK`, rmesh, targetEdgeLength, niters, nrelaxsteps, triangulate, normals)
 }
 
+sampleMeshK <- function(nsims, rmesh, triangulate) {
+    .Call(`_MeshesOperations_sampleMeshK`, nsims, rmesh, triangulate)
+}
+
 smoothMeshK <- function(rmesh, angle, niters, triangulate, normals) {
     .Call(`_MeshesOperations_smoothMeshK`, rmesh, angle, niters, triangulate, normals)
 }

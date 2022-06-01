@@ -23,6 +23,20 @@ std::string q2str(CGAL::Gmpq r) {
   return snumer + "/" + sdenom;
 }
 
+Rcpp::NumericMatrix points3_to_matrix(std::vector<Point3> points) {
+  const size_t nvertices = points.size();
+  Rcpp::NumericMatrix Vertices(3, nvertices);
+  for(size_t i = 0; i != nvertices; i++) {
+    Rcpp::NumericVector col_i(3);
+    const Point3 vertex = points[i];
+    col_i(0) = vertex.x();
+    col_i(1) = vertex.y();
+    col_i(2) = vertex.z();
+    Vertices(Rcpp::_, i) = col_i;
+  }
+  return Vertices;
+}
+
 template <typename PointT>
 std::vector<PointT> matrix_to_points3(const Rcpp::NumericMatrix M) {
   const size_t npoints = M.ncol();

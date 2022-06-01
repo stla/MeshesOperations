@@ -108,6 +108,8 @@ namespace PMP = CGAL::Polygon_mesh_processing;
 
 // -------------------------------------------------------------------------- //
 
+Rcpp::NumericMatrix points3_to_matrix(std::vector<Point3>);
+
 template <typename PointT>
 std::vector<PointT> matrix_to_points3(const Rcpp::NumericMatrix);
 

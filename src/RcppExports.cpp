@@ -292,6 +292,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// sampleMeshK
+Rcpp::NumericMatrix sampleMeshK(const unsigned nsims, const Rcpp::List rmesh, const bool triangulate);
+RcppExport SEXP _MeshesOperations_sampleMeshK(SEXP nsimsSEXP, SEXP rmeshSEXP, SEXP triangulateSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const unsigned >::type nsims(nsimsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh(rmeshSEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate(triangulateSEXP);
+    rcpp_result_gen = Rcpp::wrap(sampleMeshK(nsims, rmesh, triangulate));
+    return rcpp_result_gen;
+END_RCPP
+}
 // smoothMeshK
 Rcpp::List smoothMeshK(const Rcpp::List rmesh, const double angle, const unsigned niters, const bool triangulate, const bool normals);
 RcppExport SEXP _MeshesOperations_smoothMeshK(SEXP rmeshSEXP, SEXP angleSEXP, SEXP nitersSEXP, SEXP triangulateSEXP, SEXP normalsSEXP) {
@@ -344,6 +357,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MeshesOperations_Union_EK", (DL_FUNC) &_MeshesOperations_Union_EK, 3},
     {"_MeshesOperations_Union_Q", (DL_FUNC) &_MeshesOperations_Union_Q, 3},
     {"_MeshesOperations_isotropicRemeshingK", (DL_FUNC) &_MeshesOperations_isotropicRemeshingK, 6},
+    {"_MeshesOperations_sampleMeshK", (DL_FUNC) &_MeshesOperations_sampleMeshK, 3},
     {"_MeshesOperations_smoothMeshK", (DL_FUNC) &_MeshesOperations_smoothMeshK, 5},
     {"_MeshesOperations_smoothShapeK", (DL_FUNC) &_MeshesOperations_smoothShapeK, 5},
     {NULL, NULL, 0}
