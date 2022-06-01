@@ -74,6 +74,9 @@
 // for sampling:
 #include <CGAL/Polygon_mesh_processing/distance.h>
 
+#include <CGAL/Nef_polyhedron_3.h>
+#include <CGAL/boost/graph/convert_nef_polyhedron_to_polygon_mesh.h>
+#include <CGAL/minkowski_sum_3.h>
 
 // #include <algorithm>
 // #include <array>
@@ -101,6 +104,8 @@ typedef CGAL::Cartesian<CGAL::Gmpq> QK;
 typedef CGAL::Surface_mesh<QK::Point_3> QMesh3;
 typedef QK::Point_3 QPoint3;
 typedef QK::Vector_3 QVector3;
+
+typedef CGAL::Nef_polyhedron_3<EK> ENef3;
 
 // -------------------------------------------------------------------------- //
 namespace PMP = CGAL::Polygon_mesh_processing;
