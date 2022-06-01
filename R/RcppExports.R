@@ -21,6 +21,10 @@ connectedComponentsQ <- function(rmesh0, isTriangle, triangulate, clean, normals
     .Call(`_MeshesOperations_connectedComponentsQ`, rmesh0, isTriangle, triangulate, clean, normals, epsilon)
 }
 
+meshVolumeK <- function(rmesh, triangulate) {
+    .Call(`_MeshesOperations_meshVolumeK`, rmesh, triangulate)
+}
+
 SurfMesh <- function(rmesh, isTriangle, triangulate, clean, normals, epsilon) {
     .Call(`_MeshesOperations_SurfMesh`, rmesh, isTriangle, triangulate, clean, normals, epsilon)
 }

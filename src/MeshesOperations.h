@@ -68,6 +68,12 @@
 // to remove degenerate faces:
 #include <CGAL/Polygon_mesh_processing/shape_predicates.h>
 
+// for volume:
+#include <CGAL/Polygon_mesh_processing/measure.h>
+
+// for sampling:
+#include <CGAL/Polygon_mesh_processing/distance.h>
+
 
 // #include <algorithm>
 // #include <array>
