@@ -14,8 +14,8 @@
 #' sims <- sampleOnMesh(200, mesh)
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(0, 0, zoom = 0.75)
-#' shade3d(mesh, color = "yellow", alpha = 0.3)
-#' points3d(sims)
+#' shade3d(mesh, color = "yellow")
+#' points3d(sims, size = 5)
 sampleOnMesh <- function(n, mesh){
   stopifnot(isStrictPositiveInteger(n))
   vft <- getVFT(mesh)
