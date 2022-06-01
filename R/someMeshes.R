@@ -78,7 +78,8 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
   )
   k1 <- i_nv - nv
   l_ <- k1 + jp1_
-  tris1[, k_] <- rbind(j_, l_, k1 + j_)
+  k_ <- k1 + j_
+  tris1[, k_] <- rbind(j_, l_, k_)
   tris2[, k_] <- rbind(j_, jp1_, l_)
   if(rgl){
     tmesh3d(
