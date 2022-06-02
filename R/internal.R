@@ -54,6 +54,8 @@ getVFT <- function(mesh, transposed = TRUE){
 		faces <- mesh[["faces"]]
 		if(is.matrix(faces)){
 			faces <- lapply(1L:nrow(faces), function(i) faces[i, ] - 1L)
+		}else{
+			faces <- lapply(faces, function(face) face - 1L)
 		}
 		rmesh <- list("vertices" = vertices, "faces" = faces)
 	}else if(is.list(mesh)){
