@@ -7,6 +7,7 @@
 isotropicRemesh(
   vertices,
   faces,
+  mesh = NULL,
   targetEdgeLength,
   iterations = 1,
   relaxSteps = 1,
@@ -19,6 +20,11 @@ isotropicRemesh(
 \item{faces}{either an integer matrix (each row provides the vertex indices
 of the corresponding face) or a list of integer vectors, each one
 providing the vertex indices of the corresponding face}
+
+\item{mesh}{if not \code{NULL}, this argument takes precedence over \code{vertices} 
+and \code{faces}, and must be either a list containing the fields \code{vertices} 
+and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh 
+(i.e. a \code{mesh3d} object)}
 
 \item{targetEdgeLength}{positive number, the target edge length of the 
 remeshed mesh}
@@ -48,8 +54,7 @@ torus <- cylinder3d(
 )
 
 mesh <- isotropicRemesh(
-  vertices = t(torus$vb[-4L, ]),
-  faces = t(torus$ib),
+  mesh = torus,
   targetEdgeLength = 0.3,
   iterations = 3
 )

@@ -5,6 +5,10 @@
 #' @param faces either an integer matrix (each row provides the vertex indices
 #'   of the corresponding face) or a list of integer vectors, each one
 #'   providing the vertex indices of the corresponding face
+#' @param mesh if not \code{NULL}, this argument takes precedence over \code{vertices} 
+#'   and \code{faces}, and must be either a list containing the fields \code{vertices} 
+#'   and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh 
+#'   (i.e. a \code{mesh3d} object)
 #' @param targetEdgeLength positive number, the target edge length of the 
 #'   remeshed mesh
 #' @param iterations number of iterations, a positive integer
@@ -27,8 +31,7 @@
 #' )
 #' 
 #' mesh <- isotropicRemesh(
-#'   vertices = t(torus$vb[-4L, ]),
-#'   faces = t(torus$ib),
+#'   mesh = torus,
 #'   targetEdgeLength = 0.3,
 #'   iterations = 3
 #' )
@@ -42,13 +45,21 @@
 #' view3d(0, 0, zoom = 0.8)
 #' wire3d(rglmesh)
 isotropicRemesh <- function(
-  vertices, faces, targetEdgeLength, 
+  vertices, faces, mesh = NULL, targetEdgeLength, 
   iterations = 1, relaxSteps = 1, normals = FALSE
 ){
   stopifnot(isPositiveNumber(targetEdgeLength))
   stopifnot(isStrictPositiveInteger(iterations))
   stopifnot(isStrictPositiveInteger(relaxSteps))
   stopifnot(isBoolean(normals))
+  if(!is.null(mesh)){
+	if(inherits(mesh, "mesh3d")){
+	  vft  <- getVFT(mesh)
+	  mesh <- vft[["rmesh"]]
+	}
+	vertices <- mesh[["vertices"]]
+	faces    <- mesh[["faces"]]
+  }
   checkedMesh <- checkMesh(vertices, faces, gmp = FALSE, aslist = TRUE)
   vertices         <- checkedMesh[["vertices"]]
   faces            <- checkedMesh[["faces"]]

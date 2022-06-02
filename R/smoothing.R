@@ -6,6 +6,10 @@
 #' @param faces either an integer matrix (each row provides the vertex indices
 #'   of the corresponding face) or a list of integer vectors, each one
 #'   providing the vertex indices of the corresponding face
+#' @param mesh if not \code{NULL}, this argument takes precedence over \code{vertices} 
+#'   and \code{faces}, and must be either a list containing two fields \code{vertices} 
+#'   and \code{faces} as described above, otherwise a \strong{rgl} mesh (i.e. a 
+#'   \code{mesh3d} object)
 #' @param time positive number, a time step that corresponds to the speed by
 #'   which the surface is smoothed (the larger the faster); typical values lie
 #'   between \code{1e-6} and \code{1}
@@ -50,7 +54,7 @@
 #' mesh <- Mesh(vf[["vertices"]], vf[["faces"]], normals = TRUE)
 #' rglmesh <- toRGL(mesh)
 #' smesh <- smoothShape(
-#'   vf[["vertices"]], vf[["faces"]],
+#'   mesh = mesh,
 #'   time = 0.00001, iterations = 1, normals = TRUE
 #' )
 #' srglmesh <- toRGL(smesh)
@@ -62,31 +66,39 @@
 #' view3d(0, 0, zoom = 0.8)
 #' shade3d(srglmesh, color = "violetred")
 smoothShape <- function(
-  vertices, faces, time, iterations = 1, normals = FALSE
+		vertices, faces, mesh = NULL, time, iterations = 1, normals = FALSE
 ){
-  stopifnot(isPositiveNumber(time))
-  stopifnot(isStrictPositiveInteger(iterations))
-  stopifnot(isBoolean(normals))
-  checkedMesh <- checkMesh(vertices, faces, gmp = FALSE, aslist = TRUE)
-  vertices         <- checkedMesh[["vertices"]]
-  faces            <- checkedMesh[["faces"]]
-  isTriangle       <- checkedMesh[["isTriangle"]]
-  rmesh <- list("vertices" = vertices, "faces" = faces)
-  triangulate <- !isTriangle
-  mesh <- smoothShapeK(
-    rmesh, time, as.integer(iterations), triangulate, normals
-  )
-  mesh[["vertices"]] <- t(mesh[["vertices"]])
-  mesh[["faces"]] <- t(mesh[["faces"]])
-  edges <- unname(t(mesh[["edges"]]))
-  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
-  mesh[["exteriorEdges"]] <- exteriorEdges
-  mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-  mesh[["edges"]] <- edges[, c(1L, 2L)]
-  if(normals){
-    mesh[["normals"]] <- t(mesh[["normals"]])
-  }
-  attr(mesh, "toRGL") <- 3L
-  class(mesh) <- "cgalMesh"
-  mesh
+	stopifnot(isPositiveNumber(time))
+	stopifnot(isStrictPositiveInteger(iterations))
+	stopifnot(isBoolean(normals))
+	if(!is.null(mesh)){
+		if(inherits(mesh, "mesh3d")){
+			vft  <- getVFT(mesh)
+			mesh <- vft[["rmesh"]]
+		}
+		vertices <- mesh[["vertices"]]
+		faces    <- mesh[["faces"]]
+	}
+	checkedMesh <- checkMesh(vertices, faces, gmp = FALSE, aslist = TRUE)
+	vertices         <- checkedMesh[["vertices"]]
+	faces            <- checkedMesh[["faces"]]
+	isTriangle       <- checkedMesh[["isTriangle"]]
+	rmesh <- list("vertices" = vertices, "faces" = faces)
+	triangulate <- !isTriangle
+	mesh <- smoothShapeK(
+			rmesh, time, as.integer(iterations), triangulate, normals
+	)
+	mesh[["vertices"]] <- t(mesh[["vertices"]])
+	mesh[["faces"]] <- t(mesh[["faces"]])
+	edges <- unname(t(mesh[["edges"]]))
+	exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+	mesh[["exteriorEdges"]] <- exteriorEdges
+	mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
+	mesh[["edges"]] <- edges[, c(1L, 2L)]
+	if(normals){
+		mesh[["normals"]] <- t(mesh[["normals"]])
+	}
+	attr(mesh, "toRGL") <- 3L
+	class(mesh) <- "cgalMesh"
+	mesh
 }

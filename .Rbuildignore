@@ -8,4 +8,6 @@
 ^inst/makegifs$
 ^inst/screenshots$
 ^\.Rprofile$
+^\.settings$
+^\.project$
 

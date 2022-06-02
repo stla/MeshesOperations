@@ -4,7 +4,14 @@
 \alias{smoothShape}
 \title{Smoothing of the shape of a mesh}
 \usage{
-smoothShape(vertices, faces, time, iterations = 1, normals = FALSE)
+smoothShape(
+  vertices,
+  faces,
+  mesh = NULL,
+  time,
+  iterations = 1,
+  normals = FALSE
+)
 }
 \arguments{
 \item{vertices}{a numeric matrix with three columns}
@@ -12,6 +19,11 @@ smoothShape(vertices, faces, time, iterations = 1, normals = FALSE)
 \item{faces}{either an integer matrix (each row provides the vertex indices
 of the corresponding face) or a list of integer vectors, each one
 providing the vertex indices of the corresponding face}
+
+\item{mesh}{if not \code{NULL}, this argument takes precedence over \code{vertices} 
+and \code{faces}, and must be either a list containing two fields \code{vertices} 
+and \code{faces} as described above, otherwise a \strong{rgl} mesh (i.e. a 
+\code{mesh3d} object)}
 
 \item{time}{positive number, a time step that corresponds to the speed by
 which the surface is smoothed (the larger the faster); typical values lie
@@ -63,7 +75,7 @@ vf <- readMeshFile(
 mesh <- Mesh(vf[["vertices"]], vf[["faces"]], normals = TRUE)
 rglmesh <- toRGL(mesh)
 smesh <- smoothShape(
-  vf[["vertices"]], vf[["faces"]],
+  mesh = mesh,
   time = 0.00001, iterations = 1, normals = TRUE
 )
 srglmesh <- toRGL(smesh)
