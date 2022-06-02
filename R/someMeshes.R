@@ -237,7 +237,7 @@ HopfTorusMesh <- function(
   stopifnot(isStrictPositiveInteger(nlobes))
   stopifnot(isPositiveNumber(A))
   stopifnot(A < pi/2)
-  stopifnot(isPositiveNumber(alpha))
+  stopifnot(is.null(alpha) || isPositiveNumber(alpha))
   stopifnot(nu >= 3, nv >= 3)
   stopifnot(isBoolean(rgl))
   nu <- as.integer(nu)
