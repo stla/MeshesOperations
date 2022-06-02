@@ -32,6 +32,11 @@ Using the C++ library **CGAL** to perform Boolean operations on 3D Meshes.
 ![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/StanfordBunnySmoothed.gif)
 
 
+## Minkowski sum
+
+![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/OctahedronPlusSphere.gif)
+
+
 ## License
 
 This package is provided under the GPL-3 license. If you wish to use CGAL for 
