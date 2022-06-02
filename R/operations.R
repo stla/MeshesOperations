@@ -1,8 +1,9 @@
 #' @title Meshes intersection
 #' @description Computes the intersection of the given meshes.
 #'
-#' @param meshes a list of \emph{triangular} meshes, each given as a list with
-#'   (at least) two fields: \code{vertices} and \code{faces}; the `vertices`
+#' @param meshes a list of \emph{triangle} meshes, each being either a 
+#'   \strong{rgl} mesh, or as a list with (at least) two fields: 
+#'   \code{vertices} and \code{faces}; the \code{vertices}
 #'   matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 #'   otherwise it must be numeric
 #' @param clean Boolean, whether to clean the input meshes (merging
@@ -16,7 +17,7 @@
 #'   (exact computations with rational numbers); of course using
 #'   exact computations is slower but more accurate
 #'
-#' @return A triangular mesh given as a list with fields \code{vertices},
+#' @return A triangle mesh given as a list with fields \code{vertices},
 #'   \code{faces}, \code{edges}, \code{exteriorEdges}, \code{gmpvertices}
 #'   if \code{numbersType="gmp"}, and \code{normals} if \code{normals=TRUE}.
 #'
@@ -103,6 +104,10 @@ MeshesIntersection <- function(
   gmp <- numbersType == "gmp"
   stopifnot(is.list(meshes))
   checkMeshes <- lapply(meshes, function(mesh){
+	if(inherits(mesh, "mesh3d")){
+	  vft  <- getVFT(mesh)
+	  mesh <- vft[["rmesh"]]
+	}
     checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
   })
   areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
@@ -142,8 +147,9 @@ MeshesIntersection <- function(
 #' @title Meshes difference
 #' @description Computes the difference between two meshes.
 #'
-#' @param mesh1,mesh2 two \emph{triangular} meshes, each given as a list with
-#'   (at least) two fields: \code{vertices} and \code{faces}; the `vertices`
+#' @param mesh1,mesh2 two \emph{triangular} meshes, each being either a 
+#'   \strong{rgl} mesh, or as a list with (at least) two fields: 
+#'   \code{vertices} and \code{faces}; the \code{vertices}
 #'   matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 #'   otherwise it must be numeric
 #' @param clean Boolean, whether to clean the input mesh (merging duplicated
@@ -157,7 +163,7 @@ MeshesIntersection <- function(
 #'   (exact computations with rational numbers); of course using
 #'   exact computations is slower but more accurate
 #'
-#' @return A triangular mesh given as a list with fields \code{vertices},
+#' @return A triangle mesh given as a list with fields \code{vertices},
 #'   \code{faces}, \code{edges}, \code{exteriorEdges}, \code{gmpvertices}
 #'   if \code{numbersType="gmp"}, and \code{normals} if \code{normals=TRUE}.
 #'
@@ -203,10 +209,18 @@ MeshesDifference <- function(
   stopifnot(is.list(mesh2))
   numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
   gmp <- numbersType == "gmp"
+  if(inherits(mesh1, "mesh3d")){
+	  vft  <- getVFT(mesh1)
+	  mesh1 <- vft[["rmesh"]]
+  }
   checkMesh1 <-
     checkMesh(mesh1[["vertices"]], mesh1[["faces"]], gmp, aslist = FALSE)
   if(!checkMesh1[["isTriangle"]]){
     stop("The first mesh is not triangular.")
+  }
+  if(inherits(mesh2, "mesh3d")){
+	  vft  <- getVFT(mesh2)
+	  mesh2 <- vft[["rmesh"]]
   }
   checkMesh2 <-
     checkMesh(mesh2[["vertices"]], mesh2[["faces"]], gmp, aslist = FALSE)
@@ -247,8 +261,9 @@ MeshesDifference <- function(
 #' @title Meshes union
 #' @description Computes the union of the given meshes.
 #'
-#' @param meshes a list of \emph{triangular} meshes, each given as a list with
-#'   (at least) two fields: \code{vertices} and \code{faces}; the `vertices`
+#' @param meshes a list of two or more \emph{triangle} meshes, each being 
+#'   either a \strong{rgl} mesh, or as a list with (at least) two fields: 
+#'   \code{vertices} and \code{faces}; the \code{vertices}
 #'   matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 #'   otherwise it must be numeric
 #' @param clean Boolean, whether to clean the input meshes (merging duplicated
@@ -262,7 +277,7 @@ MeshesDifference <- function(
 #'   (exact computations with rational numbers); of course using
 #'   exact computations is slower but more accurate
 #'
-#' @return A triangular mesh given as a list with fields \code{vertices},
+#' @return A triangle mesh given as a list with fields \code{vertices},
 #'   \code{faces}, \code{edges}, \code{exteriorEdges}, \code{gmpvertices}
 #'   if \code{numbersType="gmp"}, and \code{normals} if \code{normals=TRUE}.
 #'
@@ -306,7 +321,11 @@ MeshesUnion <- function(
   numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
   gmp <- numbersType == "gmp"
   checkMeshes <- lapply(meshes, function(mesh){
-    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
+	  if(inherits(mesh, "mesh3d")){
+		  vft  <- getVFT(mesh)
+		  mesh <- vft[["rmesh"]]
+	  }
+	  checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
   })
   areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
   if(!areTriangle){

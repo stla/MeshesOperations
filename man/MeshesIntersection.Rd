@@ -12,8 +12,9 @@ MeshesIntersection(
 )
 }
 \arguments{
-\item{meshes}{a list of \emph{triangular} meshes, each given as a list with
-(at least) two fields: \code{vertices} and \code{faces}; the `vertices`
+\item{meshes}{a list of \emph{triangle} meshes, each being either a 
+\strong{rgl} mesh, or as a list with (at least) two fields: 
+\code{vertices} and \code{faces}; the \code{vertices}
 matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 otherwise it must be numeric}
 
@@ -31,7 +32,7 @@ computations; must be one of \code{"double"}, \code{"lazyExact"}
 exact computations is slower but more accurate}
 }
 \value{
-A triangular mesh given as a list with fields \code{vertices},
+A triangle mesh given as a list with fields \code{vertices},
   \code{faces}, \code{edges}, \code{exteriorEdges}, \code{gmpvertices}
   if \code{numbersType="gmp"}, and \code{normals} if \code{normals=TRUE}.
 }
