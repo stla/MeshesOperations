@@ -1,115 +1,115 @@
 #' @exportS3Method print cgalMesh
 print.cgalMesh <- function(x, ...){
-  rgl <- attr(x, "toRGL")
-  nv <- nrow(x[["vertices"]])
-  nf <- if(is.list(x[["faces"]])) length(x[["faces"]]) else nrow(x[["faces"]])
-  msg <- sprintf("Mesh with %d vertices and %d faces.\n", nv, nf)
-  cat(msg)
-  is <- if(rgl == 3L) " is " else " is not "
-  msg <- paste0("This mesh", is, "triangle.\n")
-  cat(msg)
-  can <- if(isFALSE(rgl)) " cannot " else " can "
-  msg <- paste0(
-    "This mesh", can, "be converted to a 'rgl' mesh (see `?toRGL`).\n"
-  )
-  cat(msg)
-  normals <- !is.null(x[["normals"]])
-  has <- if(normals) " has " else " does not have "
-  msg <- paste0("This mesh", has, "vertex normals.\n")
-  cat(msg)
-  invisible(NULL)
+	rgl <- attr(x, "toRGL")
+	nv <- nrow(x[["vertices"]])
+	nf <- if(is.list(x[["faces"]])) length(x[["faces"]]) else nrow(x[["faces"]])
+	msg <- sprintf("Mesh with %d vertices and %d faces.\n", nv, nf)
+	cat(msg)
+	is <- if(rgl == 3L) " is " else " is not "
+	msg <- paste0("This mesh", is, "triangle.\n")
+	cat(msg)
+	can <- if(isFALSE(rgl)) " cannot " else " can "
+	msg <- paste0(
+			"This mesh", can, "be converted to a 'rgl' mesh (see `?toRGL`).\n"
+	)
+	cat(msg)
+	normals <- !is.null(x[["normals"]])
+	has <- if(normals) " has " else " does not have "
+	msg <- paste0("This mesh", has, "vertex normals.\n")
+	cat(msg)
+	invisible(NULL)
 }
 
 #' @importFrom gmp is.bigq is.matrixZQ
 #' @importFrom data.table uniqueN
 #' @noRd
 checkMesh <- function(vertices, faces, gmp, aslist){
-  if(gmp){
-    if(!is.matrixZQ(vertices) || ncol(vertices) != 3L){
-      stop("The `vertices` argument must be a matrix with three columns.")
-    }
-    stopifnot(is.bigq(vertices))
-    vertices <- as.character(vertices)
-  }else{
-    if(!is.matrix(vertices) || ncol(vertices) != 3L){
-      stop("The `vertices` argument must be a matrix with three columns.")
-    }
-    stopifnot(is.numeric(vertices))
-    storage.mode(vertices) <- "double"
-  }
-  if(anyNA(vertices)){
-    stop("Found missing values in `vertices`.")
-  }
-  homogeneousFaces <- FALSE
-  isTriangle       <- FALSE
-  toRGL            <- FALSE
-  if(is.matrix(faces)){
-    if(ncol(faces) < 3L){
-      stop("Faces must be given by at least three indices.")
-    }
-    storage.mode(faces) <- "integer"
-    if(anyNA(faces)){
-      stop("Found missing values in `faces`.")
-    }
-    if(any(faces < 1L)){
-      stop("Faces cannot contain indices lower than 1.")
-    }
-    if(any(faces > nrow(vertices))){
-      stop("Faces cannot contain indices higher than the number of vertices.")
-    }
-    homogeneousFaces <- ncol(faces)
-    if(homogeneousFaces %in% c(3L, 4L)){
-      isTriangle <- homogeneousFaces == 3L
-      toRGL <- homogeneousFaces
-    }
-    if(aslist){
-      faces <- lapply(1L:nrow(faces), function(i) faces[i, ] - 1L)
-    }else{
-      faces <- t(faces - 1L)
-    }
-  }else if(is.list(faces)){
-    check <- all(vapply(faces, isAtomicVector, logical(1L)))
-    if(!check){
-      stop("The `faces` argument must be a list of integer vectors.")
-    }
-    check <- any(vapply(faces, anyNA, logical(1L)))
-    if(check){
-      stop("Found missing values in `faces`.")
-    }
-    faces <- lapply(faces, function(x) as.integer(x) - 1L)
-    sizes <- lengths(faces)
-    if(any(sizes < 3L)){
-      stop("Faces must be given by at least three indices.")
-    }
-    check <- any(vapply(faces, function(f){
-      any(f < 0L) || any(f >= nrow(vertices))
-    }, logical(1L)))
-    if(check){
-      stop(
-        "Faces cannot contain indices lower than 1 or higher than the ",
-        "number of vertices."
-      )
-    }
-    usizes <- uniqueN(sizes)
-    if(usizes == 1L){
-      homogeneousFaces <- sizes[1L]
-      isTriangle <- homogeneousFaces == 3L
-      if(homogeneousFaces %in% c(3L, 4L)){
-        toRGL <- homogeneousFaces
-      }
-    }else if(usizes == 2L && all(sizes %in% c(3L, 4L))){
-      toRGL <- 34L
-    }
-  }else{
-    stop("The `faces` argument must be a list or a matrix.")
-  }
-  list(
-    vertices = t(vertices),
-    faces = faces,
-    homogeneousFaces = homogeneousFaces,
-    isTriangle = isTriangle,
-    toRGL = toRGL
-  )
+	if(gmp){
+		if(!is.matrixZQ(vertices) || ncol(vertices) != 3L){
+			stop("The `vertices` argument must be a matrix with three columns.")
+		}
+		stopifnot(is.bigq(vertices))
+		vertices <- as.character(vertices)
+	}else{
+		if(!is.matrix(vertices) || ncol(vertices) != 3L){
+			stop("The `vertices` argument must be a matrix with three columns.")
+		}
+		stopifnot(is.numeric(vertices))
+		storage.mode(vertices) <- "double"
+	}
+	if(anyNA(vertices)){
+		stop("Found missing values in `vertices`.")
+	}
+	homogeneousFaces <- FALSE
+	isTriangle       <- FALSE
+	toRGL            <- FALSE
+	if(is.matrix(faces)){
+		if(ncol(faces) < 3L){
+			stop("Faces must be given by at least three indices.")
+		}
+		storage.mode(faces) <- "integer"
+		if(anyNA(faces)){
+			stop("Found missing values in `faces`.")
+		}
+		if(any(faces < 1L)){
+			stop("Faces cannot contain indices lower than 1.")
+		}
+		if(any(faces > nrow(vertices))){
+			stop("Faces cannot contain indices higher than the number of vertices.")
+		}
+		homogeneousFaces <- ncol(faces)
+		if(homogeneousFaces %in% c(3L, 4L)){
+			isTriangle <- homogeneousFaces == 3L
+			toRGL <- homogeneousFaces
+		}
+		if(aslist){
+			faces <- lapply(1L:nrow(faces), function(i) faces[i, ] - 1L)
+		}else{
+			faces <- t(faces - 1L)
+		}
+	}else if(is.list(faces)){
+		check <- all(vapply(faces, isAtomicVector, logical(1L)))
+		if(!check){
+			stop("The `faces` argument must be a list of integer vectors.")
+		}
+		check <- any(vapply(faces, anyNA, logical(1L)))
+		if(check){
+			stop("Found missing values in `faces`.")
+		}
+		faces <- lapply(faces, function(x) as.integer(x) - 1L)
+		sizes <- lengths(faces)
+		if(any(sizes < 3L)){
+			stop("Faces must be given by at least three indices.")
+		}
+		check <- any(vapply(faces, function(f){
+							any(f < 0L) || any(f >= nrow(vertices))
+						}, logical(1L)))
+		if(check){
+			stop(
+					"Faces cannot contain indices lower than 1 or higher than the ",
+					"number of vertices."
+			)
+		}
+		usizes <- uniqueN(sizes)
+		if(usizes == 1L){
+			homogeneousFaces <- sizes[1L]
+			isTriangle <- homogeneousFaces == 3L
+			if(homogeneousFaces %in% c(3L, 4L)){
+				toRGL <- homogeneousFaces
+			}
+		}else if(usizes == 2L && all(sizes %in% c(3L, 4L))){
+			toRGL <- 34L
+		}
+	}else{
+		stop("The `faces` argument must be a list or a matrix.")
+	}
+	list(
+			vertices = t(vertices),
+			faces = faces,
+			homogeneousFaces = homogeneousFaces,
+			isTriangle = isTriangle,
+			toRGL = toRGL
+	)
 }
 
 #' @title Make a 3D mesh
@@ -222,82 +222,82 @@ checkMesh <- function(vertices, faces, gmp, aslist){
 #' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 #' shade3d(tmesh, color = "orange")
 Mesh <- function(
-    vertices, faces, mesh = NULL, triangulate = FALSE, clean = FALSE, 
-	normals = FALSE, numbersType = "double", epsilon = 0
+		vertices, faces, mesh = NULL, triangulate = FALSE, clean = FALSE, 
+		normals = FALSE, numbersType = "double", epsilon = 0
 ){
-  numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
-  gmp <- numbersType == "gmp"
-  stopifnot(epsilon >= 0)
-  if(!is.null(mesh)){
-	if(inherits(mesh, "mesh3d")){
-	  vft  <- getVFT(mesh)
-	  mesh <- vft[["rmesh"]]
+	numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
+	gmp <- numbersType == "gmp"
+	stopifnot(epsilon >= 0)
+	if(!is.null(mesh)){
+		if(inherits(mesh, "mesh3d")){
+			vft  <- getVFT(mesh, transposed = FALSE)
+			mesh <- vft[["rmesh"]]
+		}
+		vertices <- mesh[["vertices"]]
+		faces    <- mesh[["faces"]]
 	}
-	vertices <- mesh[["vertices"]]
-	faces    <- mesh[["faces"]]
-  }
-  checkedMesh <- checkMesh(vertices, faces, gmp = gmp, aslist = TRUE)
-  vertices         <- checkedMesh[["vertices"]]
-  faces            <- checkedMesh[["faces"]]
-  homogeneousFaces <- checkedMesh[["homogeneousFaces"]]
-  isTriangle       <- checkedMesh[["isTriangle"]]
-  rmesh <- list("vertices" = vertices, "faces" = faces)
-  if(numbersType == "double"){
-    mesh <- SurfMesh(
-      rmesh, isTriangle, triangulate, clean, normals, epsilon
-    )
-  }else if(numbersType == "lazyExact"){
-    mesh <- SurfEMesh(
-      rmesh, isTriangle, triangulate, clean, normals, epsilon
-    )
-  }else{
-    mesh <- SurfQMesh(
-      rmesh, isTriangle, triangulate, clean, normals, epsilon
-    )
-  }
-  if(triangulate && isTriangle){
-    message(
-      "Ignored option `triangulate`, since the mesh is already triangulated."
-    )
-    triangulate <- FALSE
-  }
-  # mesh <- if(normals){
-  #   SurfMeshWithNormals(t(vertices), faces, merge)
-  # }else{
-  #   if(triangulate){
-  #     SurfTMesh(t(vertices), faces, merge)
-  #   }else{
-  #     SurfMesh(t(vertices), faces, merge)
-  #   }
-  # }
-  if(gmp){
-    vertices <- as.bigq(t(mesh[["vertices"]]))
-    mesh[["gmpVertices"]] <- vertices
-    vertices <- asNumeric(vertices)
-  }else{
-    vertices <- t(mesh[["vertices"]])
-  }
-  mesh[["vertices"]] <- vertices
-  edges <- unname(t(mesh[["edges"]]))
-  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
-  mesh[["exteriorEdges"]] <- exteriorEdges
-  mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-  mesh[["edges"]] <- edges[, c(1L, 2L)]
-  if(normals){
-    mesh[["normals"]] <- t(mesh[["normals"]])
-  }
-  if(triangulate){
-    mesh[["edges0"]] <- t(mesh[["edges0"]])
-    if(normals){
-      mesh[["normals0"]] <- t(mesh[["normals0"]])
-    }
-  }
-  if(triangulate || homogeneousFaces){
-    mesh[["faces"]] <- do.call(rbind, mesh[["faces"]])
-  }
-  attr(mesh, "toRGL") <- ifelse(triangulate, 3L, checkedMesh[["toRGL"]])
-  class(mesh) <- "cgalMesh"
-  mesh
+	checkedMesh <- checkMesh(vertices, faces, gmp = gmp, aslist = TRUE)
+	vertices         <- checkedMesh[["vertices"]]
+	faces            <- checkedMesh[["faces"]]
+	homogeneousFaces <- checkedMesh[["homogeneousFaces"]]
+	isTriangle       <- checkedMesh[["isTriangle"]]
+	rmesh <- list("vertices" = vertices, "faces" = faces)
+	if(numbersType == "double"){
+		mesh <- SurfMesh(
+				rmesh, isTriangle, triangulate, clean, normals, epsilon
+		)
+	}else if(numbersType == "lazyExact"){
+		mesh <- SurfEMesh(
+				rmesh, isTriangle, triangulate, clean, normals, epsilon
+		)
+	}else{
+		mesh <- SurfQMesh(
+				rmesh, isTriangle, triangulate, clean, normals, epsilon
+		)
+	}
+	if(triangulate && isTriangle){
+		message(
+				"Ignored option `triangulate`, since the mesh is already triangulated."
+		)
+		triangulate <- FALSE
+	}
+	# mesh <- if(normals){
+	#   SurfMeshWithNormals(t(vertices), faces, merge)
+	# }else{
+	#   if(triangulate){
+	#     SurfTMesh(t(vertices), faces, merge)
+	#   }else{
+	#     SurfMesh(t(vertices), faces, merge)
+	#   }
+	# }
+	if(gmp){
+		vertices <- as.bigq(t(mesh[["vertices"]]))
+		mesh[["gmpVertices"]] <- vertices
+		vertices <- asNumeric(vertices)
+	}else{
+		vertices <- t(mesh[["vertices"]])
+	}
+	mesh[["vertices"]] <- vertices
+	edges <- unname(t(mesh[["edges"]]))
+	exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+	mesh[["exteriorEdges"]] <- exteriorEdges
+	mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
+	mesh[["edges"]] <- edges[, c(1L, 2L)]
+	if(normals){
+		mesh[["normals"]] <- t(mesh[["normals"]])
+	}
+	if(triangulate){
+		mesh[["edges0"]] <- t(mesh[["edges0"]])
+		if(normals){
+			mesh[["normals0"]] <- t(mesh[["normals0"]])
+		}
+	}
+	if(triangulate || homogeneousFaces){
+		mesh[["faces"]] <- do.call(rbind, mesh[["faces"]])
+	}
+	attr(mesh, "toRGL") <- ifelse(triangulate, 3L, checkedMesh[["toRGL"]])
+	class(mesh) <- "cgalMesh"
+	mesh
 }
 
 #' @title Conversion to 'rgl' mesh
@@ -325,43 +325,43 @@ Mesh <- function(
 #' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 #' shade3d(rglmesh, color = "darkred")
 toRGL <- function(mesh, ...){
-  if(!inherits(mesh, "cgalMesh")){
-    stop(
-      "The `mesh` argument must be of class 'cgalMesh'",
-      " (e.g. an output of the `Mesh` function)."
-    )
-  }
-  rgl <- attr(mesh, "toRGL")
-  if(isFALSE(rgl)){
-    stop(
-      "Impossible to convert this mesh to a 'rgl' mesh ",
-      "(the faces must have at most four sides)."
-    )
-  }
-  if(rgl == 3L){
-    mesh3d(
-      x         = mesh[["vertices"]],
-      normals   = mesh[["normals"]],
-      triangles = t(mesh[["faces"]]),
-      ...
-    )
-  }else if(rgl == 4L){
-    mesh3d(
-      x       = mesh[["vertices"]],
-      normals = mesh[["normals"]],
-      quads   = t(mesh[["faces"]]),
-      ...
-    )
-  }else{
-    faces <- split(mesh[["faces"]], lengths(mesh[["faces"]]))
-    mesh3d(
-      x         = mesh[["vertices"]],
-      normals   = mesh[["normals"]],
-      triangles = do.call(cbind, faces[["3"]]),
-      quads     = do.call(cbind, faces[["4"]]),
-      ...
-    )
-  }
+	if(!inherits(mesh, "cgalMesh")){
+		stop(
+				"The `mesh` argument must be of class 'cgalMesh'",
+				" (e.g. an output of the `Mesh` function)."
+		)
+	}
+	rgl <- attr(mesh, "toRGL")
+	if(isFALSE(rgl)){
+		stop(
+				"Impossible to convert this mesh to a 'rgl' mesh ",
+				"(the faces must have at most four sides)."
+		)
+	}
+	if(rgl == 3L){
+		mesh3d(
+				x         = mesh[["vertices"]],
+				normals   = mesh[["normals"]],
+				triangles = t(mesh[["faces"]]),
+				...
+		)
+	}else if(rgl == 4L){
+		mesh3d(
+				x       = mesh[["vertices"]],
+				normals = mesh[["normals"]],
+				quads   = t(mesh[["faces"]]),
+				...
+		)
+	}else{
+		faces <- split(mesh[["faces"]], lengths(mesh[["faces"]]))
+		mesh3d(
+				x         = mesh[["vertices"]],
+				normals   = mesh[["normals"]],
+				triangles = do.call(cbind, faces[["3"]]),
+				quads     = do.call(cbind, faces[["4"]]),
+				...
+		)
+	}
 }
 
 #' @title Plot some edges
@@ -401,33 +401,33 @@ toRGL <- function(mesh, ...){
 #' shade3d(tmesh, color = "gold")
 #' plotEdges(mesh[["vertices"]], mesh[["edges0"]], color = "navy")
 plotEdges <- function(
-    vertices,
-    edges,
-    color = "black",
-    lwd = 2,
-    edgesAsTubes = TRUE,
-    tubesRadius = 0.03,
-    verticesAsSpheres = TRUE,
-    only = NULL,
-    spheresRadius = 0.05,
-    spheresColor = color
+		vertices,
+		edges,
+		color = "black",
+		lwd = 2,
+		edgesAsTubes = TRUE,
+		tubesRadius = 0.03,
+		verticesAsSpheres = TRUE,
+		only = NULL,
+		spheresRadius = 0.05,
+		spheresColor = color
 ){
-  for(i in 1L:nrow(edges)){
-    edge <- edges[i, ]
-    if(edgesAsTubes){
-      tube <- cylinder3d(
-        vertices[edge, ], radius = tubesRadius, sides = 90
-      )
-      shade3d(tube, color = color)
-    }else{
-      lines3d(vertices[edge, ], color = color, lwd = lwd)
-    }
-  }
-  if(verticesAsSpheres){
-    if(!is.null(only)){
-      vertices <- vertices[only, ]
-    }
-    spheres3d(vertices, radius = spheresRadius, color = spheresColor)
-  }
-  invisible(NULL)
+	for(i in 1L:nrow(edges)){
+		edge <- edges[i, ]
+		if(edgesAsTubes){
+			tube <- cylinder3d(
+					vertices[edge, ], radius = tubesRadius, sides = 90
+			)
+			shade3d(tube, color = color)
+		}else{
+			lines3d(vertices[edge, ], color = color, lwd = lwd)
+		}
+	}
+	if(verticesAsSpheres){
+		if(!is.null(only)){
+			vertices <- vertices[only, ]
+		}
+		spheres3d(vertices, radius = spheresRadius, color = spheresColor)
+	}
+	invisible(NULL)
 }
