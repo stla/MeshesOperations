@@ -16,6 +16,8 @@
 #' @examples
 #' library(MeshesOperations)
 #' library(rgl)
+#' 
+#' # example 1: octahedron + sphere 
 #' library(Rvcg)
 #' mesh1 <- octahedron3d()
 #' mesh2 <- vcgSphere(subdivision = 2, normals = FALSE)
@@ -24,6 +26,35 @@
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(30, 30, zoom = 0.8)
 #' shade3d(rglmesh, color = "maroon")
+#' 
+#' # example2: truncated icosahedron + tetrahedron
+#' library(MeshesOperations)
+#' library(rgl)
+#' # mesh 1
+#' mesh1 <- truncatedIcosahedron
+#' # mesh 2: regular tetrahedron
+#' a <- 1 / sqrt(3)
+#' vertices <- rbind(
+#' 		c( a, -a, -a),
+#' 		c( a,  a,  a),
+#' 		c(-a, -a,  a),
+#' 		c(-a,  a, -a)
+#' )
+#' faces <- rbind(
+#' 		c(1L, 2L, 3L),
+#' 		c(3L, 2L, 4L),
+#' 		c(4L, 2L, 1L),
+#' 		c(1L, 3L, 4L)
+#' )
+#' mesh2 <- list(vertices = vertices, faces = faces)
+#' # sum 
+#' mesh <- MinkowskiSum(mesh1, mesh2, normals = FALSE)
+#' # plot
+#' rglmesh <- toRGL(mesh)
+#' open3d(windowRect = c(50, 50, 562, 562))
+#' view3d(30, 30, zoom = 0.8)
+#' shade3d(rglmesh, color = "navy")
+#' plotEdges(mesh[["vertices"]], mesh[["edges0"]], color = "yellow")
 MinkowskiSum <- function(mesh1, mesh2, triangulate = TRUE, normals = FALSE){
   stopifnot(isBoolean(normals))
   vft1 <- getVFT(mesh1)
