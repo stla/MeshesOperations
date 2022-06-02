@@ -38,7 +38,7 @@ Using the C++ library **CGAL** to perform Boolean operations on 3D Meshes.
 
 ![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/OctahedronPlusSphere.gif)
 
-- Tetrahedron + truncated icosahedron
+- Tetrahedron + truncated icosahedron:
 
 ![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/TetrahedronPlusTruncatedIcosahedron.gif)
 

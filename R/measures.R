@@ -1,7 +1,10 @@
 #' @title Mesh volume
 #' @description Computes the volume bounded by a mesh.
 #'
-#' @param mesh xxx
+#' @param mesh a mesh given either as a list containing (at least) the two fields 
+#'   \code{vertices} (numeric matrix with three columns) and \code{faces} (integer 
+#'   matrix or list of integer vectors), otherwise as a \strong{rgl} mesh (i.e. a 
+#'   \code{mesh3d} object)
 #'
 #' @return A number, the volume bounded by the mesh.
 #' @export
@@ -21,7 +24,10 @@ meshVolume <- function(mesh){
 #' @title Mesh area
 #' @description Computes the surface area a mesh.
 #'
-#' @param mesh xxx
+#' @param mesh a mesh given either as a list containing (at least) the two fields 
+#'   \code{vertices} (numeric matrix with three columns) and \code{faces} (integer 
+#'   matrix or list of integer vectors), otherwise as a \strong{rgl} mesh (i.e. a 
+#'   \code{mesh3d} object)
 #'
 #' @return A number, the surface area of the mesh.
 #' @export

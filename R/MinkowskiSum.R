@@ -2,13 +2,17 @@
 #' @description Returns the mesh defined as the Minkowski sum of the 
 #'   two input meshes.
 #'
-#' @param mesh1,mesh2 xxx 
+#' @param mesh1,mesh2 two meshes, each one given either as a list containing 
+#'   (at least) the two fields \code{vertices} (numeric matrix with three columns) 
+#'   and \code{faces} (integer matrix or list of integer vectors), otherwise a 
+#'   \strong{rgl} mesh (i.e. a \code{mesh3d} object)
 #' @param triangulate Boolean, whether to triangulate the output mesh (note 
 #'   that it is not necessarily triangle when the two input meshes are triangle)
 #' @param normals Boolean, whether to compute the vertex normals of the 
 #'   output mesh 
 #'
-#' @return xxx
+#' @return A mesh represented as the output of the \code{\link{Mesh}} function.
+#' 
 #' @export
 #'
 #' @importFrom data.table uniqueN

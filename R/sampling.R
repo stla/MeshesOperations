@@ -2,7 +2,10 @@
 #' @description Uniformly samples points on a mesh.
 #'
 #' @param n number of simulations, a positive integer
-#' @param mesh xxx
+#' @param mesh either a list containing (at least) two fields \code{vertices} 
+#'   (numeric matrix with three columns) and \code{faces} (integer matrix or 
+#'   list of integer vectors), otherwise a \strong{rgl} mesh (i.e. a 
+#'   \code{mesh3d} object)
 #'
 #' @return The simulated points on a matrix with three columns.
 #' @export

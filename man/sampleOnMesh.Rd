@@ -9,7 +9,10 @@ sampleOnMesh(n, mesh)
 \arguments{
 \item{n}{number of simulations, a positive integer}
 
-\item{mesh}{xxx}
+\item{mesh}{either a list containing (at least) two fields \code{vertices} 
+(numeric matrix with three columns) and \code{faces} (integer matrix or 
+list of integer vectors), otherwise a \strong{rgl} mesh (i.e. a 
+\code{mesh3d} object)}
 }
 \value{
 The simulated points on a matrix with three columns.
