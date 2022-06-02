@@ -1,15 +1,15 @@
 #' @title Torus mesh
-#' @description Triangle mesh of a torus (in \strong{rgl} format).
+#' @description Triangle mesh of a torus.
 #'
-#' @param R,r major and minor radii, positive numbers 
+#' @param R,r major and minor radii, positive numbers
 #' @param nu,nv numbers of subdivisions, integers (at least 3)
 #' @param rgl Boolean, whether to return a \strong{rgl} mesh
 #'
-#' @return A triangle \strong{rgl} mesh (class \code{mesh3d}) if 
-#'   \code{rgl=TRUE}, otherwise a \code{cgalMesh} list (vertices, faces, 
+#' @return A triangle \strong{rgl} mesh (class \code{mesh3d}) if
+#'   \code{rgl=TRUE}, otherwise a \code{cgalMesh} list (vertices, faces,
 #'   and normals).
 #' @export
-#' 
+#'
 #' @importFrom rgl tmesh3d
 #'
 #' @examples
@@ -85,7 +85,7 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
     tmesh3d(
       vertices = vs,
       indices = cbind(tris1, tris2),
-      normals = normals, 
+      normals = normals,
       homogeneous = FALSE
     )
   }else{
@@ -97,3 +97,85 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
     out
   }
 }
+
+#' @title Cyclide mesh
+#' @description Triangle mesh of a Dupin cyclide.
+#'
+#' @param a,c,mu cyclide parameters, positive numbers such that
+#'   \code{c < a} and \code{c < mu}
+#' @param nu,nv numbers of subdivisions, integers (at least 3)
+#' @param rgl Boolean, whether to return a \strong{rgl} mesh
+#'
+#' @return A triangle \strong{rgl} mesh (class \code{mesh3d}) if
+#'   \code{rgl=TRUE}, otherwise a \code{cgalMesh} list (vertices, faces,
+#'   and normals).
+#' @export
+#'
+#' @importFrom rgl tmesh3d
+#'
+#' @examples
+#' library(MeshesOperations)
+#' library(rgl)
+#' mesh <- cyclideMesh(a = 0.97, c = 0.32, mu = 0.56)
+#' open3d(windowRect = c(50, 50, 562, 562))
+#' view3d(0, 0, zoom = 0.75)
+#' shade3d(mesh, color = "chartreuse")
+#' wire3d(mesh)
+cyclideMesh <- function(a, c, mu, nu = 90, nv = 40, rgl = TRUE){
+  stopifnot(c > 0, a > c, mu > c)
+  stopifnot(nu >= 3, nv >= 3)
+  stopifnot(isBoolean(rgl))
+  nu <- as.integer(nu)
+  nv <- as.integer(nv)
+  vertices <- matrix(NA_real_, nrow = 3L, ncol = nu*nv)
+  normals  <- matrix(NA_real_, nrow = nu*nv, ncol = 3L)
+  b2 <- a * a - c * c;
+  bb <- sqrt(b2 * (mu * mu - c * c))
+  omega <- (a * mu + bb) / c
+  Omega0 <- c(omega, 0, 0)
+  inversion <- function(M) {
+    OmegaM <- M - Omega0
+    k <- c(crossprod(OmegaM))
+    OmegaM / k + Omega0
+  }
+  h <- (c * c) / ((a - c) * (mu - c) + bb)
+  r <- (h * (mu - c)) / ((a + c) * (mu - c) + bb)
+  R <- (h * (a - c)) / ((a - c) * (mu + c) + bb)
+  omegaT <- omega - (b2 * (omega - c)) /
+    ((a - c) * (mu + omega) - b2) /
+    ((a + c) * (omega - c) + b2)
+  OmegaT <- c(omegaT, 0, 0)
+  tormesh <- torusMesh(R, r, nu, nv, rgl = FALSE)
+  rtnormals <- r * tormesh[["normals"]]
+  xvertices <- t(tormesh[["vertices"]]) + OmegaT
+  for(i in 1L:nu){
+    k0 <- i * nv - nv
+    for(j in 1L:nv){
+      k <- k0 + j
+      rtnormal <- rtnormals[k, ]
+      xvertex <- xvertices[, k]
+      vertex <- inversion(xvertex)
+      vertices[, k] <- vertex
+      foo <- vertex - inversion(rtnormal + xvertex)
+      normals[k, ] <- foo / sqrt(c(crossprod(foo)))
+    }
+  }
+  if(rgl){
+    tmesh3d(
+      vertices    = vertices,
+      indices     = t(tormesh[["faces"]]),
+      normals     = normals,
+      homogeneous = FALSE
+    )
+  }else{
+    out <- list(
+      "vertices" = t(vertices),
+      "faces"    = tormesh[["faces"]],
+      "normals"  = normals
+    )
+    attr(out, "toRGL") <- 3L
+    class(out) <- "cgalMesh"
+    out
+  }
+}
+
