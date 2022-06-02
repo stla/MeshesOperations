@@ -28,16 +28,18 @@ isBoolean <- function(x){
 	Reduce(gmp::`%*%`, replicate(n, A, simplify = FALSE))
 }
 
-getVFT <- function(mesh, transposed = TRUE){
+getVFT <- function(mesh, beforeCheck = FALSE){
+	transposed <- !beforeCheck
+	i0 <- as.integer(transposed)
 	if(inherits(mesh, "mesh3d")){
 		triangles <- mesh[["it"]]
 		if(!is.null(triangles)){
-			triangles <- lapply(1L:ncol(triangles), function(i) triangles[, i] - 1L)
+			triangles <- lapply(1L:ncol(triangles), function(i) triangles[, i] - i0)
 		}
 		quads <- mesh[["ib"]]
 		isTriangle <- is.null(quads)
 		if(!isTriangle){
-			quads <- lapply(1L:ncol(quads), function(i) quads[, i] - 1L)
+			quads <- lapply(1L:ncol(quads), function(i) quads[, i] - i0)
 		}
 		faces <- c(triangles, quads)
 		vertices <- mesh[["vb"]][-4L, ]
@@ -53,8 +55,8 @@ getVFT <- function(mesh, transposed = TRUE){
 		}
 		faces <- mesh[["faces"]]
 		if(is.matrix(faces)){
-			faces <- lapply(1L:nrow(faces), function(i) faces[i, ] - 1L)
-		}else{
+			faces <- lapply(1L:nrow(faces), function(i) faces[i, ] - i0)
+		}else if(!beforeCheck){
 			faces <- lapply(faces, function(face) face - 1L)
 		}
 		rmesh <- list("vertices" = vertices, "faces" = faces)
@@ -62,8 +64,9 @@ getVFT <- function(mesh, transposed = TRUE){
 		rmesh <-
 				checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp = FALSE, aslist = TRUE)
 		isTriangle <- rmesh[["isTriangle"]]
-		if(!transposed){
+		if(!beforeCheck){
 			rmesh[["vertices"]] <- t(rmesh[["vertices"]])
+			rmesh[["faces"]] <- lapply(rmesh[["faces"]], function(face) face + 1L)
 		}
 	}else{
 		stop("Invalid `mesh` argument.", call. = FALSE)

@@ -100,7 +100,7 @@ MeshesIntersection <- function(
 	stopifnot(is.list(meshes))
 	checkMeshes <- lapply(meshes, function(mesh){
 				if(inherits(mesh, "mesh3d")){
-					vft  <- getVFT(mesh, transposed = FALSE)
+					vft  <- getVFT(mesh, beforeCheck = TRUE)
 					mesh <- vft[["rmesh"]]
 				}
 				checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
@@ -201,7 +201,7 @@ MeshesDifference <- function(
 	numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
 	gmp <- numbersType == "gmp"
 	if(inherits(mesh1, "mesh3d")){
-		vft  <- getVFT(mesh1)
+		vft  <- getVFT(mesh1, beforeCheck = TRUE)
 		mesh1 <- vft[["rmesh"]]
 	}
 	checkMesh1 <-
@@ -210,7 +210,7 @@ MeshesDifference <- function(
 		stop("The first mesh is not triangular.")
 	}
 	if(inherits(mesh2, "mesh3d")){
-		vft  <- getVFT(mesh2, transposed = FALSE)
+		vft  <- getVFT(mesh2, beforeCheck = TRUE)
 		mesh2 <- vft[["rmesh"]]
 	}
 	checkMesh2 <-
@@ -309,7 +309,7 @@ MeshesUnion <- function(
 	gmp <- numbersType == "gmp"
 	checkMeshes <- lapply(meshes, function(mesh){
 				if(inherits(mesh, "mesh3d")){
-					vft  <- getVFT(mesh, transposed = FALSE)
+					vft  <- getVFT(mesh, beforeCheck = TRUE)
 					mesh <- vft[["rmesh"]]
 				}
 				checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)

@@ -230,7 +230,7 @@ Mesh <- function(
 	stopifnot(epsilon >= 0)
 	if(!is.null(mesh)){
 		if(inherits(mesh, "mesh3d")){
-			vft  <- getVFT(mesh, transposed = FALSE)
+			vft  <- getVFT(mesh, beforeCheck = TRUE)
 			mesh <- vft[["rmesh"]]
 		}
 		vertices <- mesh[["vertices"]]
