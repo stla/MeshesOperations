@@ -53,3 +53,4 @@ inst/trash/
 # Eclipse
 .settings/
 .project
+*.log

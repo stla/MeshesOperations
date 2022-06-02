@@ -81,6 +81,9 @@ MinkowskiSum <- function(mesh1, mesh2, triangulate = TRUE, normals = FALSE){
   if(normals){
     mesh[["normals"]] <- t(mesh[["normals"]])
   }
+	if(triangulate){
+		mesh[["edges0"]] <- t(mesh[["edges0"]][-3L, ])
+	}
   attr(mesh, "toRGL") <- toRGL
   class(mesh) <- "cgalMesh"
   mesh
