@@ -40,17 +40,13 @@ library(rgl)
 
 # mesh one: a cube; one has to triangulate it
 cube1 <- cube3d() # (from the rgl package)
-vertices <- t(cube1$vb[-4L, ])
-faces <- t(cube1$ib)
-mesh1 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
+mesh1 <- Mesh(mesh = cube1, triangulate = TRUE, normals = FALSE)
 
 # mesh two: another cube; one also has to triangulate it
 cube2 <- translate3d( # (from the rgl package)
   cube3d(), 1, 1, 1
 )
-vertices <- t(cube2$vb[-4L, ])
-faces <- t(cube2$ib)
-mesh2 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
+mesh2 <- Mesh(mesh = cube2, triangulate = TRUE, normals = FALSE)
 
 # compute the union
 umesh <- MeshesUnion(list(mesh1, mesh2))

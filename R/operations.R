@@ -31,8 +31,7 @@
 #'
 #' # mesh one: truncated icosahedron; one has to triangulate it
 #' mesh1 <- Mesh(
-#'   truncatedIcosahedron[["vertices"]],
-#'   truncatedIcosahedron[["faces"]],
+#'   mesh = truncatedIcosahedron,
 #'   triangulate = TRUE, normals = FALSE
 #' )
 #'
@@ -40,9 +39,7 @@
 #' cube <- translate3d( # (from the rgl package)
 #'   cube3d(), 2, 0, 0
 #' )
-#' vertices <- t(cube$vb[-4L, ])
-#' faces <- t(cube$ib)
-#' mesh2 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
+#' mesh2 <- Mesh(mesh = cube, triangulate = TRUE, normals = FALSE)
 #'
 #' # compute the intersection
 #' inter <- MeshesIntersection(list(mesh1, mesh2))
@@ -65,11 +62,9 @@
 #' library(rgl)
 #'
 #' cube <- cube3d()
-#' vertices <- t(cube$vb[-4L, ])
-#' faces <- t(cube$ib)
 #'
 #' rglmesh1 <- cube
-#' mesh1 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
+#' mesh1 <- Mesh(mesh = cube, triangulate = TRUE, normals = FALSE)
 #' mesh1$vertices <- as.bigq(mesh1$vertices)
 #'
 #' rotMatrix <- t(cbind( # pi/3 around a great diagonal
@@ -77,7 +72,7 @@
 #'   as.bigq(c(2, 2, -1), c(3, 3, 3)),
 #'   as.bigq(c(-1, 2, 2), c(3, 3, 3))
 #' ))
-#' mesh2 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
+#' mesh2 <- Mesh(mesh = cube, triangulate = TRUE, normals = FALSE)
 #' mesh2$vertices <- as.bigq(vertices) %*% rotMatrix
 #' rglmesh2 <- rotate3d(cube, pi/3, 1, 1, 1)
 #'
@@ -177,17 +172,13 @@ MeshesIntersection <- function(
 #'
 #' # mesh one: a cube; one has to triangulate it
 #' cube1 <- cube3d() # (from the rgl package)
-#' vertices <- t(cube1$vb[-4L, ])
-#' faces <- t(cube1$ib)
-#' mesh1 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
+#' mesh1 <- Mesh(mesh = cube1, triangulate = TRUE, normals = FALSE)
 #'
 #' # mesh two: another cube; one also has to triangulate it
 #' cube2 <- translate3d( # (from the rgl package)
 #'   cube3d(), 1, 1, 0
 #' )
-#' vertices <- t(cube2$vb[-4L, ])
-#' faces <- t(cube2$ib)
-#' mesh2 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
+#' mesh2 <- Mesh(mesh = cube2, triangulate = TRUE, normals = FALSE)
 #'
 #' # compute the difference
 #' differ <- MeshesDifference(mesh1, mesh2)
@@ -291,17 +282,13 @@ MeshesDifference <- function(
 #'
 #' # mesh one: a cube; one has to triangulate it
 #' cube1 <- cube3d() # (from the rgl package)
-#' vertices <- t(cube1$vb[-4L, ])
-#' faces <- t(cube1$ib)
-#' mesh1 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
+#' mesh1 <- Mesh(mesh = cube1, triangulate = TRUE, normals = FALSE)
 #'
 #' # mesh two: another cube; one also has to triangulate it
 #' cube2 <- translate3d( # (from the rgl package)
 #'   cube3d(), 1, 1, 1
 #' )
-#' vertices <- t(cube2$vb[-4L, ])
-#' faces <- t(cube2$ib)
-#' mesh2 <- Mesh(vertices, faces, triangulate = TRUE, normals = FALSE)
+#' mesh2 <- Mesh(mesh = cube2, triangulate = TRUE, normals = FALSE)
 #'
 #' # compute the union
 #' umesh <- MeshesUnion(list(mesh1, mesh2))

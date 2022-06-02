@@ -54,7 +54,7 @@ isotropicRemesh <- function(
   stopifnot(isBoolean(normals))
   if(!is.null(mesh)){
 	if(inherits(mesh, "mesh3d")){
-	  vft  <- getVFT(mesh)
+	  vft  <- getVFT(mesh, transposed = FALSE)
 	  mesh <- vft[["rmesh"]]
 	}
 	vertices <- mesh[["vertices"]]

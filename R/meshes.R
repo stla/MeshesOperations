@@ -122,6 +122,10 @@ checkMesh <- function(vertices, faces, gmp, aslist){
 #' @param faces either an integer matrix (each row provides the vertex indices
 #'   of the corresponding face) or a list of integer vectors, each one
 #'   providing the vertex indices of the corresponding face
+#' @param mesh if not \code{NULL}, this argument takes precedence over \code{vertices} 
+#'   and \code{faces}, and must be either a list containing the fields \code{vertices} 
+#'   and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh 
+#'   (i.e. a \code{mesh3d} object)
 #' @param triangulate Boolean, whether to triangulate the faces
 #' @param clean Boolean, whether to clean the mesh (merging duplicated
 #'   vertices, duplicated faces, removed isolated vertices)
@@ -210,8 +214,7 @@ checkMesh <- function(vertices, faces, gmp, aslist){
 #' truncatedIcosahedron[["faces"]]
 #' # so we triangulate them:
 #' mesh <- Mesh(
-#'   truncatedIcosahedron[["vertices"]],
-#'   truncatedIcosahedron[["faces"]],
+#'   mesh = truncatedIcosahedron,
 #'   triangulate = TRUE, normals = FALSE
 #' )
 #' # now we can plot the truncated icosahedron
@@ -219,12 +222,20 @@ checkMesh <- function(vertices, faces, gmp, aslist){
 #' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 #' shade3d(tmesh, color = "orange")
 Mesh <- function(
-    vertices, faces, triangulate = FALSE, clean = FALSE, normals = FALSE,
-    numbersType = "double", epsilon = 0
+    vertices, faces, mesh = NULL, triangulate = FALSE, clean = FALSE, 
+	normals = FALSE, numbersType = "double", epsilon = 0
 ){
   numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
   gmp <- numbersType == "gmp"
   stopifnot(epsilon >= 0)
+  if(!is.null(mesh)){
+	if(inherits(mesh, "mesh3d")){
+	  vft  <- getVFT(mesh)
+	  mesh <- vft[["rmesh"]]
+	}
+	vertices <- mesh[["vertices"]]
+	faces    <- mesh[["faces"]]
+  }
   checkedMesh <- checkMesh(vertices, faces, gmp = gmp, aslist = TRUE)
   vertices         <- checkedMesh[["vertices"]]
   faces            <- checkedMesh[["faces"]]
