@@ -52,8 +52,7 @@ Plot the given edges with \strong{rgl}.
 library(MeshesOperations)
 library(rgl)
 mesh <- Mesh(
-  truncatedIcosahedron[["vertices"]],
-  truncatedIcosahedron[["faces"]],
+  truncatedIcosahedron,
   triangulate = TRUE, normals = FALSE
 )
 # now we can plot the truncated icosahedron

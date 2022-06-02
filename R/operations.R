@@ -73,7 +73,7 @@
 #'   as.bigq(c(-1, 2, 2), c(3, 3, 3))
 #' ))
 #' mesh2 <- Mesh(mesh = cube, triangulate = TRUE, normals = FALSE)
-#' mesh2$vertices <- as.bigq(vertices) %*% rotMatrix
+#' mesh2$vertices <- as.bigq(mesh2$vertices) %*% rotMatrix
 #' rglmesh2 <- rotate3d(cube, pi/3, 1, 1, 1)
 #'
 #' inter <- MeshesIntersection(list(mesh1, mesh2), numbersType = "gmp")
