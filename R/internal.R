@@ -64,7 +64,7 @@ getVFT <- function(mesh, beforeCheck = FALSE){
 		rmesh <-
 				checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp = FALSE, aslist = TRUE)
 		isTriangle <- rmesh[["isTriangle"]]
-		if(!beforeCheck){
+		if(beforeCheck){
 			rmesh[["vertices"]] <- t(rmesh[["vertices"]])
 			rmesh[["faces"]] <- lapply(rmesh[["faces"]], function(face) face + 1L)
 		}

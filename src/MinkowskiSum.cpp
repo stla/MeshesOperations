@@ -15,7 +15,7 @@ Rcpp::List MinkowskiSumEK(const Rcpp::List rmesh1,
   Rcpp::IntegerMatrix Edges0;
   if(triangulate) {
     EMesh3 mesh0;
-    CGAL::convert_nef_polyhedron_to_polygon_mesh(nef, mesh0);
+    CGAL::convert_nef_polyhedron_to_polygon_mesh(nef, mesh0, false);
     Edges0 = getEdges2<EK, EMesh3, EPoint3>(mesh0, 0);
   }
   EMesh3 mesh;

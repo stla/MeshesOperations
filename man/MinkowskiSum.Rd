@@ -23,10 +23,9 @@ Returns the mesh defined as the Minkowski sum of the
   two input meshes.
 }
 \examples{
+# example 1: octahedron + sphere 
 library(MeshesOperations)
 library(rgl)
-
-# example 1: octahedron + sphere 
 library(Rvcg)
 mesh1 <- octahedron3d()
 mesh2 <- vcgSphere(subdivision = 2, normals = FALSE)
