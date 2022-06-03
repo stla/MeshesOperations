@@ -7,7 +7,9 @@ Rcpp::List MinkowskiSumEK(const Rcpp::List rmesh1,
                           const Rcpp::List rmesh2,
                           const bool triangulate,
                           const bool normals) {
+  Message("Processing mesh n\u00b01.\n");
   EMesh3 mesh1 = makeSurfMesh<EMesh3, EPoint3>(rmesh1, true);
+  Message("Processing mesh n\u00b02.\n");
   EMesh3 mesh2 = makeSurfMesh<EMesh3, EPoint3>(rmesh2, true);
   ENef3 nef1(mesh1);
   ENef3 nef2(mesh2);

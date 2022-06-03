@@ -117,6 +117,7 @@ MeshT Intersection(const Rcpp::List rmeshes,  // must be triangles
   const size_t nmeshes = rmeshes.size();
   std::vector<MeshT> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
+  Message("Processing mesh n\u00b01.\n");
   meshes[0] = makeSurfTMesh<MeshT, PointT>(rmesh, clean);
   if(exact) {
     checkMesh<MeshT>(meshes[0], 1);
@@ -126,6 +127,7 @@ MeshT Intersection(const Rcpp::List rmeshes,  // must be triangles
       checkMesh<MeshT>(meshes[i - 1], i);
     }
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
+    Message("Processing mesh n\u00b0" + std::to_string(i+1) + ".\n");
     MeshT mesh_i = makeSurfTMesh<MeshT, PointT>(rmesh_i, clean);
     checkMesh<MeshT>(mesh_i, i + 1);
     bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1], mesh_i,
@@ -160,10 +162,12 @@ Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
   const size_t nmeshes = rmeshes.size();
   std::vector<QMesh3> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
+  Message("Processing mesh n\u00b01.\n");
   meshes[0] = makeSurfTQMesh(rmesh, clean);
   checkMesh<QMesh3>(meshes[0], 0);
   for(size_t i = 1; i < nmeshes; i++) {
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
+    Message("Processing mesh n\u00b0" + std::to_string(i+1) + ".\n");
     QMesh3 mesh_i = makeSurfTQMesh(rmesh_i, clean);
     checkMesh<QMesh3>(mesh_i, i);
     bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1], mesh_i,
@@ -179,8 +183,10 @@ template <typename KernelT, typename MeshT, typename PointT>
 MeshT Difference(const Rcpp::List rmesh1,  // must be triangles
                  const Rcpp::List rmesh2,
                  const bool clean) {
+  Message("Processing mesh n\u00b01.\n");
   MeshT smesh1 = makeSurfTMesh<MeshT, PointT>(rmesh1, clean);
   checkMesh<MeshT>(smesh1, 1);
+  Message("Processing mesh n\u00b02.\n");
   MeshT smesh2 = makeSurfTMesh<MeshT, PointT>(rmesh2, clean);
   checkMesh<MeshT>(smesh2, 2);
   MeshT outmesh;
@@ -214,8 +220,10 @@ Rcpp::List Difference_Q(const Rcpp::List rmesh1,  // must be triangles
                         const Rcpp::List rmesh2,
                         const bool clean,
                         const bool normals) {
+  Message("Processing mesh n\u00b01.\n");
   QMesh3 smesh1 = makeSurfTQMesh(rmesh1, clean);
   checkMesh<QMesh3>(smesh1, 1);
+  Message("Processing mesh n\u00b02.\n");
   QMesh3 smesh2 = makeSurfTQMesh(rmesh2, clean);
   checkMesh<QMesh3>(smesh2, 2);
   QMesh3 outmesh;
@@ -233,6 +241,7 @@ MeshT Union(const Rcpp::List rmeshes,  // must be triangles
   const size_t nmeshes = rmeshes.size();
   std::vector<MeshT> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
+  Message("Processing mesh n\u00b01.\n");
   meshes[0] = makeSurfTMesh<MeshT, PointT>(rmesh, clean);
   if(exact) {
     checkMesh<MeshT>(meshes[0], 1);
@@ -242,6 +251,7 @@ MeshT Union(const Rcpp::List rmeshes,  // must be triangles
       checkMesh<MeshT>(meshes[i - 1], i);
     }
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
+    Message("Processing mesh n\u00b0" + std::to_string(i+1) + ".\n");
     MeshT mesh_i = makeSurfTMesh<MeshT, PointT>(rmesh_i, clean);
     checkMesh<MeshT>(mesh_i, i + 1);
     bool ok = PMP::corefine_and_compute_union(meshes[i - 1], mesh_i, meshes[i]);
@@ -275,10 +285,12 @@ Rcpp::List Union_Q(const Rcpp::List rmeshes,  // must be triangles
   const size_t nmeshes = rmeshes.size();
   std::vector<QMesh3> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
+  Message("Processing mesh n\u00b01.\n");
   meshes[0] = makeSurfTQMesh(rmesh, clean);
   checkMesh<QMesh3>(meshes[0], 0);
   for(size_t i = 1; i < nmeshes; i++) {
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
+    Message("Processing mesh n\u00b0" + std::to_string(i+1) + ".\n");
     QMesh3 mesh_i = makeSurfTQMesh(rmesh_i, clean);
     checkMesh<QMesh3>(mesh_i, i);
     bool ok = PMP::corefine_and_compute_union(meshes[i - 1], mesh_i, meshes[i]);
