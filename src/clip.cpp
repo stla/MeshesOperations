@@ -9,14 +9,16 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
                       const bool triangulate1,
                       const bool triangulate2,
                       const bool normals) {
-  Message("Processing mesh ro be clipped.\n");
+  Message("Processing mesh to be clipped.\n");
   EMesh3 mesh = makeSurfMesh<EMesh3, EPoint3>(rmesh, true);
   if(triangulate1) {
+    Message("triangulating");
     const bool success = PMP::triangulate_faces(mesh);
     if(!success) {
       const std::string msg = "Triangulation has failed.";
       Rcpp::stop(msg);
     }
+    Message("successful");
   }
   bool doNotModify = false;
   if(!clipVolume) {
@@ -26,7 +28,7 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
       Rcpp::stop("The mesh self-intersects.");
     }    
   } 
-  Message("Processing clipping mesh.\n");
+  Message("Processing the clipping mesh.\n");
   EMesh3 clipper = makeSurfMesh<EMesh3, EPoint3>(rclipper, true);
   if(triangulate2) {
     const bool success = PMP::triangulate_faces(clipper);
@@ -48,10 +50,14 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
   );
   if(!clipping) {
     Rcpp::stop("Clipping has failed.");
+  } else {
+    Message("Clipping successful.");
   }
+  mesh.collect_garbage();
   Rcpp::List routmesh = RSurfTEKMesh(mesh, normals, 0);
   Rcpp::List out;
   if(!doNotModify) {
+    clipper.collect_garbage();
     Rcpp::List routclipper = RSurfTEKMesh(clipper, normals, 0);
     out["mesh"] = routmesh;
     out["clipper"] = routclipper;
