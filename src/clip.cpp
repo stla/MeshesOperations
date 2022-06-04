@@ -12,13 +12,11 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
   Message("Processing mesh to be clipped.\n");
   EMesh3 mesh = makeSurfMesh<EMesh3, EPoint3>(rmesh, true);
   if(triangulate1) {
-    Message("triangulating");
     const bool success = PMP::triangulate_faces(mesh);
     if(!success) {
       const std::string msg = "Triangulation has failed.";
       Rcpp::stop(msg);
     }
-    Message("successful");
   }
   bool doNotModify = false;
   if(!clipVolume) {
@@ -50,8 +48,6 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
   );
   if(!clipping) {
     Rcpp::stop("Clipping has failed.");
-  } else {
-    Message("Clipping successful.");
   }
   mesh.collect_garbage();
   Rcpp::List routmesh = RSurfTEKMesh(mesh, normals, 0);
