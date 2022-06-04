@@ -45,42 +45,42 @@
 #' view3d(0, 0, zoom = 0.8)
 #' wire3d(rglmesh)
 isotropicRemesh <- function(
-  vertices, faces, mesh = NULL, targetEdgeLength, 
-  iterations = 1, relaxSteps = 1, normals = FALSE
+		vertices, faces, mesh = NULL, targetEdgeLength, 
+		iterations = 1, relaxSteps = 1, normals = FALSE
 ){
-  stopifnot(isPositiveNumber(targetEdgeLength))
-  stopifnot(isStrictPositiveInteger(iterations))
-  stopifnot(isStrictPositiveInteger(relaxSteps))
-  stopifnot(isBoolean(normals))
-  if(!is.null(mesh)){
-	if(inherits(mesh, "mesh3d")){
-	  vft  <- getVFT(mesh, beforeCheck = TRUE)
-	  mesh <- vft[["rmesh"]]
+	stopifnot(isPositiveNumber(targetEdgeLength))
+	stopifnot(isStrictPositiveInteger(iterations))
+	stopifnot(isStrictPositiveInteger(relaxSteps))
+	stopifnot(isBoolean(normals))
+	if(!is.null(mesh)){
+		if(inherits(mesh, "mesh3d")){
+			vft  <- getVFT(mesh, beforeCheck = TRUE)
+			mesh <- vft[["rmesh"]]
+		}
+		vertices <- mesh[["vertices"]]
+		faces    <- mesh[["faces"]]
 	}
-	vertices <- mesh[["vertices"]]
-	faces    <- mesh[["faces"]]
-  }
-  checkedMesh <- checkMesh(vertices, faces, gmp = FALSE, aslist = TRUE)
-  vertices         <- checkedMesh[["vertices"]]
-  faces            <- checkedMesh[["faces"]]
-  isTriangle       <- checkedMesh[["isTriangle"]]
-  rmesh <- list("vertices" = vertices, "faces" = faces)
-  triangulate <- !isTriangle
-  mesh <- isotropicRemeshingK(
-    rmesh, targetEdgeLength, as.integer(iterations), as.integer(relaxSteps), 
-    triangulate, normals
-  )
-  mesh[["vertices"]] <- t(mesh[["vertices"]])
-  mesh[["faces"]] <- t(mesh[["faces"]])
-  edges <- unname(t(mesh[["edges"]]))
-  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
-  mesh[["exteriorEdges"]] <- exteriorEdges
-  mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-  mesh[["edges"]] <- edges[, c(1L, 2L)]
-  if(normals){
-    mesh[["normals"]] <- t(mesh[["normals"]])
-  }
-  attr(mesh, "toRGL") <- 3L
-  class(mesh) <- "cgalMesh"
-  mesh
+	checkedMesh <- checkMesh(vertices, faces, gmp = FALSE, aslist = TRUE)
+	vertices         <- checkedMesh[["vertices"]]
+	faces            <- checkedMesh[["faces"]]
+	isTriangle       <- checkedMesh[["isTriangle"]]
+	rmesh <- list("vertices" = vertices, "faces" = faces)
+	triangulate <- !isTriangle
+	mesh <- isotropicRemeshingK(
+			rmesh, targetEdgeLength, as.integer(iterations), as.integer(relaxSteps), 
+			triangulate, normals
+	)
+	mesh[["vertices"]] <- t(mesh[["vertices"]])
+	mesh[["faces"]] <- t(mesh[["faces"]])
+	edges <- unname(t(mesh[["edges"]]))
+	exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+	mesh[["exteriorEdges"]] <- exteriorEdges
+	mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
+	mesh[["edges"]] <- edges[, c(1L, 2L)]
+	if(normals){
+		mesh[["normals"]] <- t(mesh[["normals"]])
+	}
+	attr(mesh, "toRGL") <- 3L
+	class(mesh) <- "cgalMesh"
+	mesh
 }

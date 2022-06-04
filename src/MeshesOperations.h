@@ -78,6 +78,8 @@
 #include <CGAL/boost/graph/convert_nef_polyhedron_to_polygon_mesh.h>
 #include <CGAL/minkowski_sum_3.h>
 
+#include <CGAL/Polygon_mesh_processing/clip.h>
+
 // #include <algorithm>
 // #include <array>
 // #include <map>

@@ -13,6 +13,10 @@ writeFile <- function(filename, binary, precision, Vertices, Faces) {
     invisible(.Call(`_MeshesOperations_writeFile`, filename, binary, precision, Vertices, Faces))
 }
 
+clipMeshEK <- function(rmesh, rclipper, clipVolume, triangulate1, triangulate2, normals) {
+    .Call(`_MeshesOperations_clipMeshEK`, rmesh, rclipper, clipVolume, triangulate1, triangulate2, normals)
+}
+
 connectedComponentsK <- function(rmesh0, isTriangle, triangulate, clean, normals, epsilon) {
     .Call(`_MeshesOperations_connectedComponentsK`, rmesh0, isTriangle, triangulate, clean, normals, epsilon)
 }

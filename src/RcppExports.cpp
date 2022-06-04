@@ -50,6 +50,22 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// clipMeshEK
+Rcpp::List clipMeshEK(const Rcpp::List rmesh, const Rcpp::List rclipper, const bool clipVolume, const bool triangulate1, const bool triangulate2, const bool normals);
+RcppExport SEXP _MeshesOperations_clipMeshEK(SEXP rmeshSEXP, SEXP rclipperSEXP, SEXP clipVolumeSEXP, SEXP triangulate1SEXP, SEXP triangulate2SEXP, SEXP normalsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh(rmeshSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List >::type rclipper(rclipperSEXP);
+    Rcpp::traits::input_parameter< const bool >::type clipVolume(clipVolumeSEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate1(triangulate1SEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate2(triangulate2SEXP);
+    Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
+    rcpp_result_gen = Rcpp::wrap(clipMeshEK(rmesh, rclipper, clipVolume, triangulate1, triangulate2, normals));
+    return rcpp_result_gen;
+END_RCPP
+}
 // connectedComponentsK
 Rcpp::List connectedComponentsK(const Rcpp::List rmesh0, const bool isTriangle, const bool triangulate, const bool clean, const bool normals, const double epsilon);
 RcppExport SEXP _MeshesOperations_connectedComponentsK(SEXP rmesh0SEXP, SEXP isTriangleSEXP, SEXP triangulateSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP epsilonSEXP) {
@@ -354,6 +370,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MeshesOperations_MinkowskiSumEK", (DL_FUNC) &_MeshesOperations_MinkowskiSumEK, 4},
     {"_MeshesOperations_readFile", (DL_FUNC) &_MeshesOperations_readFile, 1},
     {"_MeshesOperations_writeFile", (DL_FUNC) &_MeshesOperations_writeFile, 5},
+    {"_MeshesOperations_clipMeshEK", (DL_FUNC) &_MeshesOperations_clipMeshEK, 6},
     {"_MeshesOperations_connectedComponentsK", (DL_FUNC) &_MeshesOperations_connectedComponentsK, 6},
     {"_MeshesOperations_connectedComponentsEK", (DL_FUNC) &_MeshesOperations_connectedComponentsEK, 6},
     {"_MeshesOperations_connectedComponentsQ", (DL_FUNC) &_MeshesOperations_connectedComponentsQ, 6},
