@@ -28,7 +28,7 @@
 #' library(rgl)
 #' library(Rvcg)
 #' mesh    <- cube3d()
-#' clipper <- scale3d(vcgSphere), sqrt(2), sqrt(2), sqrt(2))
+#' clipper <- scale3d(vcgSphere(), sqrt(2), sqrt(2), sqrt(2))
 #' clippedMesh <- clipMesh(mesh, clipper, clipVolume = TRUE)
 #' open3d(windowRect = c(50, 50, 950, 500))
 #' mfrow3d(1, 2)

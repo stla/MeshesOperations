@@ -44,15 +44,15 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
   Message("Performing clipping.\n");
   const bool clipping = CGAL::Polygon_mesh_processing::clip(
     mesh, clipper, PMP::parameters::clip_volume(clipVolume),
-    PMP::parameters::do_not_modify(doNotModify)
+    PMP::parameters::clip_volume(clipVolume).do_not_modify(doNotModify)
   );
   if(!clipping) {
     Rcpp::stop("Clipping has failed.");
   }
-  Rcpp::List routmesh = RSurfEKMesh(mesh, normals, 0);
+  Rcpp::List routmesh = RSurfTEKMesh(mesh, normals, 0);
   Rcpp::List out;
   if(!doNotModify) {
-    Rcpp::List routclipper = RSurfEKMesh(clipper, normals, 0);
+    Rcpp::List routclipper = RSurfTEKMesh(clipper, normals, 0);
     out["mesh"] = routmesh;
     out["clipper"] = routclipper;
   } else {
