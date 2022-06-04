@@ -4,7 +4,7 @@
 \alias{clipMesh}
 \title{Clip a mesh}
 \usage{
-clipMesh(mesh, clipper, clipVolume, normals = FALSE)
+clipMesh(mesh, clipper, clipVolume = TRUE, normals = FALSE)
 }
 \arguments{
 \item{mesh}{a mesh given either as a list containing (at least) the fields 
@@ -37,12 +37,13 @@ If \code{clipVolume=TRUE}, the mesh to be clipped (\code{"mesh"}) must be
   without self-intersection.
 }
 \examples{
+# cube clipped to sphere
 library(MeshesOperations)
 library(rgl)
 library(Rvcg)
 mesh    <- cube3d()
 clipper <- scale3d(vcgSphere(), sqrt(2), sqrt(2), sqrt(2))
-clippedMesh <- clipMesh(mesh, clipper, clipVolume = TRUE)
+clippedMesh <- clipMesh(mesh, clipper)
 open3d(windowRect = c(50, 50, 950, 500))
 mfrow3d(1, 2)
 view3d(zoom = 0.9)
@@ -50,4 +51,45 @@ shade3d(toRGL(clippedMesh[["mesh"]]), color = "purple")
 next3d()
 view3d(zoom = 0.9)
 shade3d(toRGL(clippedMesh[["clipper"]]), color = "khaki")
+
+# Barth sextic ####
+library(MeshesOperations)
+library(rgl)
+library(rmarchingcubes)
+library(Rvcg)
+# isosurface function
+gold <- (1+sqrt(5))/2
+f <- function(x,y,z){
+	x2 <- x*x; y2 <- y*y; z2 <- z*z
+	4*(gold^2*x2-y2)*(gold^2*y2-z2)*(gold^2*z2-x2) - 
+			(1+2*gold)*(x2+y2+z2-1)^2
+}
+# grid
+n <- 200L
+x <- y <- z <- seq(-sqrt(3), sqrt(3), length.out = n) 
+g <- expand.grid(X = x, Y = y, Z = z)
+# calculate voxel
+voxel <- array(with(g, f(X, Y, Z)), dim = c(n, n, n))
+# calculate isosurface
+contour_shape <- contour3d(
+		griddata = voxel, level = 0, x = x, y = y, z = z
+)
+# make rgl mesh (plotted later)
+mesh <- tmesh3d(
+		vertices = t(contour_shape[["vertices"]]),
+		indices  = t(contour_shape[["triangles"]]),
+		normals  = contour_shape[["normals"]],
+		homogeneous = FALSE
+)
+# clip to sphere of radius sqrt(3)
+clipper <- scale3d(vcgSphere(normals = FALSE), sqrt(3), sqrt(3), sqrt(3))
+clippedMesh <- clipMesh(mesh, clipper, clipVolume = FALSE, normals = TRUE)
+# plot
+open3d(windowRect = c(50, 50, 950, 500))
+mfrow3d(1, 2)
+view3d(zoom=0.8)
+shade3d(mesh, color = "darkred")
+next3d()
+view3d(zoom=0.8)
+shade3d(clippedMesh, color = "darkred")
 }

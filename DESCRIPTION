@@ -9,7 +9,7 @@ Encoding: UTF-8
 License: GPL-3
 Imports: Rcpp (>= 1.0.7), rgl, Rvcg, data.table, gmp
 LinkingTo: Rcpp, RcppCGAL, RcppEigen
-Suggests: BH, misc3d
+Suggests: BH, misc3d, rmarchingcubes
 SystemRequirements: C++ 14, gmp, mpfr
 URL: https://github.com/stla/MeshesOperations
 BugReports: https://github.com/stla/MeshesOperations/issues
