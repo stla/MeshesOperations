@@ -96,7 +96,9 @@ MeshT soup2mesh(std::vector<PointT> points,
                 std::vector<std::vector<int>> faces,
                 const bool clean) {
   bool success = PMP::orient_polygon_soup(points, faces);
-  if(!success) {
+  if(success) {
+    Message("Successful polygon orientation.");
+  } else {
     Message("Polygon orientation failed.");
   }
   if(clean) {
@@ -104,10 +106,19 @@ MeshT soup2mesh(std::vector<PointT> points,
   }
   MeshT mesh;
   PMP::polygon_soup_to_polygon_mesh(points, faces, mesh);
-  std::string msg1, msg2;
+  const bool isTriangle = CGAL::is_triangle_mesh(mesh);
+  if(isTriangle) {
+    Message("The mesh is triangle.\n");
+  } else {
+    Message(
+      "The mesh is not triangle; no way to ensure it bounds a volume " 
+      "and whether it is outward oriented.\n"
+    );
+  }
+  std::string msg2;
   if(CGAL::is_closed(mesh)) {
-    msg1 = "The mesh is closed.\n";
-    if(CGAL::is_triangle_mesh(mesh)) {
+    Message("The mesh is closed.\n");
+    if(isTriangle) {
       if(!PMP::is_outward_oriented(mesh)) {
         PMP::reverse_face_orientations(mesh);
       }
@@ -119,15 +130,10 @@ MeshT soup2mesh(std::vector<PointT> points,
         PMP::orient_to_bound_a_volume(mesh);
       }
       Message(msg2);
-    } else {
-      Message(
-          "The mesh is not triangle. No way to ensure it is outward "
-          "oriented.\n");
     }
   } else {
-    msg1 = "The mesh is not closed.\n";
+    Message("The mesh is not closed.\n");
   }
-  Message(msg1);
   return mesh;
 }
 
