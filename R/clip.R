@@ -1,28 +1,27 @@
 #' @title Clip a mesh
 #' @description Clip a mesh to the volume bounded by another mesh.
 #'
-#' @param mesh a mesh given either as a list containing (at least) the fields 
-#'   \code{vertices} and \code{faces}, otherwise a \strong{rgl} mesh 
+#' @param mesh a mesh given either as a list containing (at least) the fields
+#'   \code{vertices} and \code{faces}, otherwise a \strong{rgl} mesh
 #'   (i.e. a \code{mesh3d} object)
-#' @param clipper a mesh given either as a list containing (at least) the fields 
-#'   \code{vertices} and \code{faces}, otherwise a \strong{rgl} mesh 
-#'   (i.e. a \code{mesh3d} object); if \code{clipVolume=TRUE}, this mesh will be 
+#' @param clipper a mesh given either as a list containing (at least) the fields
+#'   \code{vertices} and \code{faces}, otherwise a \strong{rgl} mesh
+#'   (i.e. a \code{mesh3d} object); if \code{clipVolume=TRUE}, this mesh will be
 #'   modified: it will be refined with the intersection with \code{mesh}
-#' @param clipVolume Boolean, whether the clipping has to be done on the volume 
-#'   bounded by \code{mesh} rather than on its surface (i.e. \code{mesh} will be 
+#' @param clipVolume Boolean, whether the clipping has to be done on the volume
+#'   bounded by \code{mesh} rather than on its surface (i.e. \code{mesh} will be
 #'   kept closed if it is closed)
-#' @param normals Boolean, whether to compute the vertex normals of the 
+#' @param normals Boolean, whether to compute the vertex normals of the
 #'   output mesh(es)
 #'
-#' @return If \code{clipVolume=FALSE}, a triangle mesh represented as the output of the 
-#'   \code{\link{Mesh}} function, otherwise a list of two such triangle meshes: the 
-#'   clipped mesh in the field \code{"mesh"} and the modified clipping mesh in the 
-#'   field \code{"clipper"}.
+#' @return A triangle mesh represented as the output of the
+#'   \code{\link{Mesh}} function.
+#'
 #' @export
 #'
-#' @note If \code{clipVolume=TRUE}, the mesh to be clipped (\code{"mesh"}) must be 
-#'   without self-intersection.
-#' 
+#' @note If \code{clipVolume=TRUE}, the mesh to be clipped (\code{"mesh"})
+#'   must be without self-intersection.
+#'
 #' @examples
 #' # cube clipped to sphere
 #' library(MeshesOperations)
@@ -31,14 +30,10 @@
 #' mesh    <- cube3d()
 #' clipper <- scale3d(vcgSphere(), sqrt(2), sqrt(2), sqrt(2))
 #' clippedMesh <- clipMesh(mesh, clipper)
-#' open3d(windowRect = c(50, 50, 950, 500))
-#' mfrow3d(1, 2)
+#' open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(zoom = 0.9)
-#' shade3d(toRGL(clippedMesh[["mesh"]]), color = "purple")
-#' next3d()
-#' view3d(zoom = 0.9)
-#' shade3d(toRGL(clippedMesh[["clipper"]]), color = "khaki")
-#' 
+#' shade3d(toRGL(clippedMesh), color = "purple")
+#'
 #' # Barth sextic ####
 #' library(MeshesOperations)
 #' library(rgl)
@@ -48,12 +43,12 @@
 #' gold <- (1+sqrt(5))/2
 #' f <- function(x,y,z){
 #' 	x2 <- x*x; y2 <- y*y; z2 <- z*z
-#' 	4*(gold^2*x2-y2)*(gold^2*y2-z2)*(gold^2*z2-x2) - 
+#' 	4*(gold^2*x2-y2)*(gold^2*y2-z2)*(gold^2*z2-x2) -
 #' 			(1+2*gold)*(x2+y2+z2-1)^2
 #' }
 #' # grid
 #' n <- 200L
-#' x <- y <- z <- seq(-sqrt(3), sqrt(3), length.out = n) 
+#' x <- y <- z <- seq(-sqrt(3), sqrt(3), length.out = n)
 #' g <- expand.grid(X = x, Y = y, Z = z)
 #' # calculate voxel
 #' voxel <- array(with(g, f(X, Y, Z)), dim = c(n, n, n))
@@ -106,28 +101,28 @@ clipMesh <- function(mesh, clipper, clipVolume = TRUE, normals = FALSE){
 	isTriangle       <- checkedMesh[["isTriangle"]]
 	rclipper <- list("vertices" = vertices, "faces" = faces)
 	triangulate2 <- !isTriangle
-	clip <- clipMeshEK(
+	mesh <- clipMeshEK(
 		rmesh, rclipper, clipVolume, triangulate1, triangulate2, normals
 	)
-	if(clipVolume){
-		mesh <- clip[["clipper"]]
-		mesh[["vertices"]] <- t(mesh[["vertices"]])
-		mesh[["faces"]] <- t(mesh[["faces"]])
-		edges <- unname(t(mesh[["edges"]]))
-		exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
-		mesh[["exteriorEdges"]] <- exteriorEdges
-		mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-		mesh[["edges"]] <- edges[, c(1L, 2L)]
-		if(normals){
-			mesh[["normals"]] <- t(mesh[["normals"]])
-		}
-		attr(mesh, "toRGL") <- 3L
-		class(mesh) <- "cgalMesh"
-		clipper <- mesh
-		mesh    <- clip[["mesh"]]
-	}else{
-		mesh <- clip
-	}
+	# if(clipVolume){
+	# 	mesh <- clip[["clipper"]]
+	# 	mesh[["vertices"]] <- t(mesh[["vertices"]])
+	# 	mesh[["faces"]] <- t(mesh[["faces"]])
+	# 	edges <- unname(t(mesh[["edges"]]))
+	# 	exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+	# 	mesh[["exteriorEdges"]] <- exteriorEdges
+	# 	mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
+	# 	mesh[["edges"]] <- edges[, c(1L, 2L)]
+	# 	if(normals){
+	# 		mesh[["normals"]] <- t(mesh[["normals"]])
+	# 	}
+	# 	attr(mesh, "toRGL") <- 3L
+	# 	class(mesh) <- "cgalMesh"
+	# 	clipper <- mesh
+	# 	mesh    <- clip[["mesh"]]
+	# }else{
+	# 	mesh <- clip
+	# }
 	mesh[["vertices"]] <- t(mesh[["vertices"]])
 	mesh[["faces"]] <- t(mesh[["faces"]])
 	edges <- unname(t(mesh[["edges"]]))
@@ -140,9 +135,10 @@ clipMesh <- function(mesh, clipper, clipVolume = TRUE, normals = FALSE){
 	}
 	attr(mesh, "toRGL") <- 3L
 	class(mesh) <- "cgalMesh"
-	if(clipVolume){
-		list("mesh" = mesh, "clipper" = clipper)
-	}else{
-		mesh
-	}
+	# if(clipVolume){
+	# 	list("mesh" = mesh, "clipper" = clipper)
+	# }else{
+	# 	mesh
+	# }
+	mesh
 }

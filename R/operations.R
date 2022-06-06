@@ -1,8 +1,8 @@
 #' @title Meshes intersection
 #' @description Computes the intersection of the given meshes.
 #'
-#' @param meshes a list of \emph{triangle} meshes, each being either a 
-#'   \strong{rgl} mesh, or as a list with (at least) two fields: 
+#' @param meshes a list of \emph{triangle} meshes, each being either a
+#'   \strong{rgl} mesh, or as a list with (at least) two fields:
 #'   \code{vertices} and \code{faces}; the \code{vertices}
 #'   matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 #'   otherwise it must be numeric
@@ -93,57 +93,57 @@
 #'   tubesRadius = 0.05, spheresRadius = 0.07
 #' )
 MeshesIntersection <- function(
-		meshes, clean = FALSE, normals = FALSE, numbersType = "double"
+    meshes, clean = FALSE, normals = FALSE, numbersType = "double"
 ){
-	numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
-	gmp <- numbersType == "gmp"
-	stopifnot(is.list(meshes))
-	checkMeshes <- lapply(meshes, function(mesh){
-				if(inherits(mesh, "mesh3d")){
-					vft  <- getVFT(mesh, beforeCheck = TRUE)
-					mesh <- vft[["rmesh"]]
-				}
-				checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
-			})
-	areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
-	if(!areTriangle){
-		stop("All meshes must be triangle.")
-	}
-	meshes <- lapply(checkMeshes, `[`, c("vertices", "faces"))
-	if(numbersType == "double"){
-		inter <- Intersection_K(meshes, clean, normals)
-	}else if(numbersType == "lazyExact"){
-		inter <- Intersection_EK(meshes, clean, normals)
-	}else{
-		inter <- Intersection_Q(meshes, clean, normals)
-	}
-	if(gmp){
-		vertices <- as.bigq(t(inter[["vertices"]]))
-		inter[["gmpVertices"]] <- vertices
-		vertices <- asNumeric(vertices)
-	}else{
-		vertices <- t(inter[["vertices"]])
-	}
-	inter[["vertices"]] <- vertices
-	edges <- unname(t(inter[["edges"]]))
-	exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
-	inter[["exteriorEdges"]] <- exteriorEdges
-	inter[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-	inter[["edges"]] <- edges[, c(1L, 2L)]
-	inter[["faces"]] <- t(inter[["faces"]])
-	if(normals){
-		inter[["normals"]] <- t(inter[["normals"]])
-	}
-	attr(inter, "toRGL") <- 3L
-	class(inter) <- "cgalMesh"
-	inter
+  numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
+  gmp <- numbersType == "gmp"
+  stopifnot(is.list(meshes))
+  checkMeshes <- lapply(meshes, function(mesh){
+    if(inherits(mesh, "mesh3d")){
+      vft  <- getVFT(mesh, beforeCheck = TRUE)
+      mesh <- vft[["rmesh"]]
+    }
+    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
+  })
+  areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
+  if(!areTriangle){
+    stop("All meshes must be triangle.")
+  }
+  meshes <- lapply(checkMeshes, `[`, c("vertices", "faces"))
+  if(numbersType == "double"){
+    inter <- Intersection_K(meshes, clean, normals)
+  }else if(numbersType == "lazyExact"){
+    inter <- Intersection_EK(meshes, clean, normals)
+  }else{
+    inter <- Intersection_Q(meshes, clean, normals)
+  }
+  if(gmp){
+    vertices <- as.bigq(t(inter[["vertices"]]))
+    inter[["gmpVertices"]] <- vertices
+    vertices <- asNumeric(vertices)
+  }else{
+    vertices <- t(inter[["vertices"]])
+  }
+  inter[["vertices"]] <- vertices
+  edges <- unname(t(inter[["edges"]]))
+  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+  inter[["exteriorEdges"]] <- exteriorEdges
+  inter[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
+  inter[["edges"]] <- edges[, c(1L, 2L)]
+  inter[["faces"]] <- t(inter[["faces"]])
+  if(normals){
+    inter[["normals"]] <- t(inter[["normals"]])
+  }
+  attr(inter, "toRGL") <- 3L
+  class(inter) <- "cgalMesh"
+  inter
 }
 
 #' @title Meshes difference
 #' @description Computes the difference between two meshes.
 #'
-#' @param mesh1,mesh2 two \emph{triangular} meshes, each being either a 
-#'   \strong{rgl} mesh, or as a list with (at least) two fields: 
+#' @param mesh1,mesh2 two \emph{triangular} meshes, each being either a
+#'   \strong{rgl} mesh, or as a list with (at least) two fields:
 #'   \code{vertices} and \code{faces}; the \code{vertices}
 #'   matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 #'   otherwise it must be numeric
@@ -194,66 +194,66 @@ MeshesIntersection <- function(
 #'   edgesAsTubes = TRUE, verticesAsSpheres = TRUE
 #' )
 MeshesDifference <- function(
-		mesh1, mesh2, clean = FALSE, normals = FALSE, numbersType = "double"
+    mesh1, mesh2, clean = FALSE, normals = FALSE, numbersType = "double"
 ){
-	stopifnot(is.list(mesh1))
-	stopifnot(is.list(mesh2))
-	numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
-	gmp <- numbersType == "gmp"
-	if(inherits(mesh1, "mesh3d")){
-		vft  <- getVFT(mesh1, beforeCheck = TRUE)
-		mesh1 <- vft[["rmesh"]]
-	}
-	checkMesh1 <-
-			checkMesh(mesh1[["vertices"]], mesh1[["faces"]], gmp, aslist = FALSE)
-	if(!checkMesh1[["isTriangle"]]){
-		stop("The first mesh is not triangular.")
-	}
-	if(inherits(mesh2, "mesh3d")){
-		vft  <- getVFT(mesh2, beforeCheck = TRUE)
-		mesh2 <- vft[["rmesh"]]
-	}
-	checkMesh2 <-
-			checkMesh(mesh2[["vertices"]], mesh2[["faces"]], gmp, aslist = FALSE)
-	if(!checkMesh2[["isTriangle"]]){
-		stop("The second mesh is not triangular.")
-	}
-	mesh1 <- checkMesh1[c("vertices", "faces")]
-	mesh2 <- checkMesh2[c("vertices", "faces")]
-	if(numbersType == "double"){
-		differ <- Difference_K(mesh1, mesh2, clean, normals)
-	}else if(numbersType == "lazyExact"){
-		differ <- Difference_EK(mesh1, mesh2, clean, normals)
-	}else{
-		differ <- Difference_Q(mesh1, mesh2, clean, normals)
-	}
-	if(gmp){
-		vertices <- as.bigq(t(differ[["vertices"]]))
-		differ[["gmpVertices"]] <- vertices
-		vertices <- asNumeric(vertices)
-	}else{
-		vertices <- t(differ[["vertices"]])
-	}
-	differ[["vertices"]] <- vertices
-	edges <- unname(t(differ[["edges"]]))
-	exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
-	differ[["exteriorEdges"]] <- exteriorEdges
-	differ[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-	differ[["edges"]] <- edges[, c(1L, 2L)]
-	differ[["faces"]] <- t(differ[["faces"]])
-	if(normals){
-		differ[["normals"]] <- t(differ[["normals"]])
-	}
-	attr(differ, "toRGL") <- 3L
-	class(differ) <- "cgalMesh"
-	differ
+  stopifnot(is.list(mesh1))
+  stopifnot(is.list(mesh2))
+  numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
+  gmp <- numbersType == "gmp"
+  if(inherits(mesh1, "mesh3d")){
+    vft  <- getVFT(mesh1, beforeCheck = TRUE)
+    mesh1 <- vft[["rmesh"]]
+  }
+  checkMesh1 <-
+    checkMesh(mesh1[["vertices"]], mesh1[["faces"]], gmp, aslist = FALSE)
+  if(!checkMesh1[["isTriangle"]]){
+    stop("The first mesh is not triangular.")
+  }
+  if(inherits(mesh2, "mesh3d")){
+    vft  <- getVFT(mesh2, beforeCheck = TRUE)
+    mesh2 <- vft[["rmesh"]]
+  }
+  checkMesh2 <-
+    checkMesh(mesh2[["vertices"]], mesh2[["faces"]], gmp, aslist = FALSE)
+  if(!checkMesh2[["isTriangle"]]){
+    stop("The second mesh is not triangular.")
+  }
+  mesh1 <- checkMesh1[c("vertices", "faces")]
+  mesh2 <- checkMesh2[c("vertices", "faces")]
+  if(numbersType == "double"){
+    differ <- Difference_K(mesh1, mesh2, clean, normals)
+  }else if(numbersType == "lazyExact"){
+    differ <- Difference_EK(mesh1, mesh2, clean, normals)
+  }else{
+    differ <- Difference_Q(mesh1, mesh2, clean, normals)
+  }
+  if(gmp){
+    vertices <- as.bigq(t(differ[["vertices"]]))
+    differ[["gmpVertices"]] <- vertices
+    vertices <- asNumeric(vertices)
+  }else{
+    vertices <- t(differ[["vertices"]])
+  }
+  differ[["vertices"]] <- vertices
+  edges <- unname(t(differ[["edges"]]))
+  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+  differ[["exteriorEdges"]] <- exteriorEdges
+  differ[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
+  differ[["edges"]] <- edges[, c(1L, 2L)]
+  differ[["faces"]] <- t(differ[["faces"]])
+  if(normals){
+    differ[["normals"]] <- t(differ[["normals"]])
+  }
+  attr(differ, "toRGL") <- 3L
+  class(differ) <- "cgalMesh"
+  differ
 }
 
 #' @title Meshes union
 #' @description Computes the union of the given meshes.
 #'
-#' @param meshes a list of two or more \emph{triangle} meshes, each being 
-#'   either a \strong{rgl} mesh, or as a list with (at least) two fields: 
+#' @param meshes a list of two or more \emph{triangle} meshes, each being
+#'   either a \strong{rgl} mesh, or as a list with (at least) two fields:
 #'   \code{vertices} and \code{faces}; the \code{vertices}
 #'   matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 #'   otherwise it must be numeric
@@ -302,48 +302,48 @@ MeshesDifference <- function(
 #'   edgesAsTubes = TRUE, verticesAsSpheres = TRUE
 #' )
 MeshesUnion <- function(
-		meshes, clean = FALSE, normals = FALSE, numbersType = "double"
+    meshes, clean = FALSE, normals = FALSE, numbersType = "double"
 ){
-	stopifnot(is.list(meshes))
-	numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
-	gmp <- numbersType == "gmp"
-	checkMeshes <- lapply(meshes, function(mesh){
-				if(inherits(mesh, "mesh3d")){
-					vft  <- getVFT(mesh, beforeCheck = TRUE)
-					mesh <- vft[["rmesh"]]
-				}
-				checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
-			})
-	areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
-	if(!areTriangle){
-		stop("All meshes must be triangular.")
-	}
-	meshes <- lapply(checkMeshes, `[`, c("vertices", "faces"))
-	if(numbersType == "double"){
-		umesh <- Union_K(meshes, clean, normals)
-	}else if(numbersType == "lazyExact"){
-		umesh <- Union_EK(meshes, clean, normals)
-	}else{
-		umesh <- Union_Q(meshes, clean, normals)
-	}
-	if(gmp){
-		vertices <- as.bigq(t(umesh[["vertices"]]))
-		umesh[["gmpVertices"]] <- vertices
-		vertices <- asNumeric(vertices)
-	}else{
-		vertices <- t(umesh[["vertices"]])
-	}
-	umesh[["vertices"]] <- vertices
-	edges <- unname(t(umesh[["edges"]]))
-	exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
-	umesh[["exteriorEdges"]] <- exteriorEdges
-	umesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-	umesh[["edges"]] <- edges[, c(1L, 2L)]
-	umesh[["faces"]] <- t(umesh[["faces"]])
-	if(normals){
-		umesh[["normals"]] <- t(umesh[["normals"]])
-	}
-	attr(umesh, "toRGL") <- 3L
-	class(umesh) <- "cgalMesh"
-	umesh
+  stopifnot(is.list(meshes))
+  numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
+  gmp <- numbersType == "gmp"
+  checkMeshes <- lapply(meshes, function(mesh){
+    if(inherits(mesh, "mesh3d")){
+      vft  <- getVFT(mesh, beforeCheck = TRUE)
+      mesh <- vft[["rmesh"]]
+    }
+    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
+  })
+  areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
+  if(!areTriangle){
+    stop("All meshes must be triangular.")
+  }
+  meshes <- lapply(checkMeshes, `[`, c("vertices", "faces"))
+  if(numbersType == "double"){
+    umesh <- Union_K(meshes, clean, normals)
+  }else if(numbersType == "lazyExact"){
+    umesh <- Union_EK(meshes, clean, normals)
+  }else{
+    umesh <- Union_Q(meshes, clean, normals)
+  }
+  if(gmp){
+    vertices <- as.bigq(t(umesh[["vertices"]]))
+    umesh[["gmpVertices"]] <- vertices
+    vertices <- asNumeric(vertices)
+  }else{
+    vertices <- t(umesh[["vertices"]])
+  }
+  umesh[["vertices"]] <- vertices
+  edges <- unname(t(umesh[["edges"]]))
+  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+  umesh[["exteriorEdges"]] <- exteriorEdges
+  umesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
+  umesh[["edges"]] <- edges[, c(1L, 2L)]
+  umesh[["faces"]] <- t(umesh[["faces"]])
+  if(normals){
+    umesh[["normals"]] <- t(umesh[["normals"]])
+  }
+  attr(umesh, "toRGL") <- 3L
+  class(umesh) <- "cgalMesh"
+  umesh
 }

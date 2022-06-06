@@ -24,8 +24,8 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
   } else {
     if(PMP::does_self_intersect(mesh)) {
       Rcpp::stop("The mesh self-intersects.");
-    }    
-  } 
+    }
+  }
   Message("Processing the clipping mesh.\n");
   EMesh3 clipper = makeSurfMesh<EMesh3, EPoint3>(rclipper, true);
   if(triangulate2) {
@@ -37,12 +37,12 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
   }
   if(PMP::does_self_intersect(clipper)) {
     Rcpp::stop("The clipping mesh self-intersects.");
-  }    
+  }
   if(!PMP::does_bound_a_volume(clipper)) {
     Rcpp::stop("The clipping mesh does not bound a volume.");
-  }    
+  }
   Message("Performing clipping.\n");
-  const bool clipping = CGAL::Polygon_mesh_processing::clip(
+  const bool clipping = PMP::clip(
     mesh, clipper, PMP::parameters::clip_volume(clipVolume),
     PMP::parameters::clip_volume(clipVolume).do_not_modify(doNotModify)
   );
@@ -51,14 +51,14 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
   }
   mesh.collect_garbage();
   Rcpp::List routmesh = RSurfTEKMesh(mesh, normals, 0);
-  Rcpp::List out;
-  if(!doNotModify) {
-    clipper.collect_garbage();
-    Rcpp::List routclipper = RSurfTEKMesh(clipper, normals, 0);
-    out["mesh"] = routmesh;
-    out["clipper"] = routclipper;
-  } else {
-    out = routmesh;
-  }
-  return out;
+  // Rcpp::List out;
+  // if(!doNotModify) {
+  //   clipper.collect_garbage();
+  //   Rcpp::List routclipper = RSurfTEKMesh(clipper, normals, 0);
+  //   out["mesh"] = routmesh;
+  //   out["clipper"] = routclipper;
+  // } else {
+  //   out = routmesh;
+  // }
+  return routmesh;
 }

@@ -7,8 +7,8 @@
 MeshesUnion(meshes, clean = FALSE, normals = FALSE, numbersType = "double")
 }
 \arguments{
-\item{meshes}{a list of two or more \emph{triangle} meshes, each being 
-either a \strong{rgl} mesh, or as a list with (at least) two fields: 
+\item{meshes}{a list of two or more \emph{triangle} meshes, each being
+either a \strong{rgl} mesh, or as a list with (at least) two fields:
 \code{vertices} and \code{faces}; the \code{vertices}
 matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 otherwise it must be numeric}
