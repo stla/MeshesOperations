@@ -187,41 +187,44 @@ BEGIN_RCPP
 END_RCPP
 }
 // Intersection_K
-Rcpp::List Intersection_K(const Rcpp::List rmeshes, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Intersection_K(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
+Rcpp::List Intersection_K(const Rcpp::List rmeshes, const bool clean, const bool normals, const Rcpp::LogicalVector triangulate);
+RcppExport SEXP _MeshesOperations_Intersection_K(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP triangulateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::List >::type rmeshes(rmeshesSEXP);
     Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Intersection_K(rmeshes, clean, normals));
+    Rcpp::traits::input_parameter< const Rcpp::LogicalVector >::type triangulate(triangulateSEXP);
+    rcpp_result_gen = Rcpp::wrap(Intersection_K(rmeshes, clean, normals, triangulate));
     return rcpp_result_gen;
 END_RCPP
 }
 // Intersection_EK
-Rcpp::List Intersection_EK(const Rcpp::List rmeshes, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Intersection_EK(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
+Rcpp::List Intersection_EK(const Rcpp::List rmeshes, const bool clean, const bool normals, const Rcpp::LogicalVector triangulate);
+RcppExport SEXP _MeshesOperations_Intersection_EK(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP triangulateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::List >::type rmeshes(rmeshesSEXP);
     Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Intersection_EK(rmeshes, clean, normals));
+    Rcpp::traits::input_parameter< const Rcpp::LogicalVector >::type triangulate(triangulateSEXP);
+    rcpp_result_gen = Rcpp::wrap(Intersection_EK(rmeshes, clean, normals, triangulate));
     return rcpp_result_gen;
 END_RCPP
 }
 // Intersection_Q
-Rcpp::List Intersection_Q(const Rcpp::List rmeshes, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Intersection_Q(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
+Rcpp::List Intersection_Q(const Rcpp::List rmeshes, const bool clean, const bool normals, const Rcpp::LogicalVector triangulate);
+RcppExport SEXP _MeshesOperations_Intersection_Q(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP triangulateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::List >::type rmeshes(rmeshesSEXP);
     Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Intersection_Q(rmeshes, clean, normals));
+    Rcpp::traits::input_parameter< const Rcpp::LogicalVector >::type triangulate(triangulateSEXP);
+    rcpp_result_gen = Rcpp::wrap(Intersection_Q(rmeshes, clean, normals, triangulate));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -379,9 +382,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MeshesOperations_SurfMesh", (DL_FUNC) &_MeshesOperations_SurfMesh, 6},
     {"_MeshesOperations_SurfEMesh", (DL_FUNC) &_MeshesOperations_SurfEMesh, 6},
     {"_MeshesOperations_SurfQMesh", (DL_FUNC) &_MeshesOperations_SurfQMesh, 6},
-    {"_MeshesOperations_Intersection_K", (DL_FUNC) &_MeshesOperations_Intersection_K, 3},
-    {"_MeshesOperations_Intersection_EK", (DL_FUNC) &_MeshesOperations_Intersection_EK, 3},
-    {"_MeshesOperations_Intersection_Q", (DL_FUNC) &_MeshesOperations_Intersection_Q, 3},
+    {"_MeshesOperations_Intersection_K", (DL_FUNC) &_MeshesOperations_Intersection_K, 4},
+    {"_MeshesOperations_Intersection_EK", (DL_FUNC) &_MeshesOperations_Intersection_EK, 4},
+    {"_MeshesOperations_Intersection_Q", (DL_FUNC) &_MeshesOperations_Intersection_Q, 4},
     {"_MeshesOperations_Difference_K", (DL_FUNC) &_MeshesOperations_Difference_K, 4},
     {"_MeshesOperations_Difference_EK", (DL_FUNC) &_MeshesOperations_Difference_EK, 4},
     {"_MeshesOperations_Difference_Q", (DL_FUNC) &_MeshesOperations_Difference_Q, 4},

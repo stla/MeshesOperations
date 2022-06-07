@@ -49,16 +49,16 @@ SurfQMesh <- function(rmesh, isTriangle, triangulate, clean, normals, epsilon) {
     .Call(`_MeshesOperations_SurfQMesh`, rmesh, isTriangle, triangulate, clean, normals, epsilon)
 }
 
-Intersection_K <- function(rmeshes, clean, normals) {
-    .Call(`_MeshesOperations_Intersection_K`, rmeshes, clean, normals)
+Intersection_K <- function(rmeshes, clean, normals, triangulate) {
+    .Call(`_MeshesOperations_Intersection_K`, rmeshes, clean, normals, triangulate)
 }
 
-Intersection_EK <- function(rmeshes, clean, normals) {
-    .Call(`_MeshesOperations_Intersection_EK`, rmeshes, clean, normals)
+Intersection_EK <- function(rmeshes, clean, normals, triangulate) {
+    .Call(`_MeshesOperations_Intersection_EK`, rmeshes, clean, normals, triangulate)
 }
 
-Intersection_Q <- function(rmeshes, clean, normals) {
-    .Call(`_MeshesOperations_Intersection_Q`, rmeshes, clean, normals)
+Intersection_Q <- function(rmeshes, clean, normals, triangulate) {
+    .Call(`_MeshesOperations_Intersection_Q`, rmeshes, clean, normals, triangulate)
 }
 
 Difference_K <- function(rmesh1, rmesh2, clean, normals) {

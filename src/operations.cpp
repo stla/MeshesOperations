@@ -2,99 +2,6 @@
 #include "MeshesOperations.h"
 #endif
 
-// [[Rcpp::export]]
-Rcpp::List SurfMesh(const Rcpp::List rmesh,
-                    const bool isTriangle,
-                    const bool triangulate,
-                    const bool clean,
-                    const bool normals,
-                    const double epsilon) {
-  Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, clean);
-  const bool really_triangulate = !isTriangle && triangulate;
-  Rcpp::IntegerMatrix Edges0;
-  Rcpp::NumericMatrix Normals0;
-  if(really_triangulate) {
-    Edges0 = getEdges2<K, Mesh3, Point3>(mesh, epsilon);
-    if(normals) {
-      Normals0 = getKNormals(mesh);
-    }
-    bool success = CGAL::Polygon_mesh_processing::triangulate_faces(mesh);
-    if(!success) {
-      Rcpp::stop("Triangulation has failed.");
-    }
-  }
-  Rcpp::List routmesh = RSurfKMesh(mesh, normals, epsilon);
-  if(really_triangulate) {
-    routmesh["edges0"] = Edges0;
-    if(normals) {
-      routmesh["normals0"] = Normals0;
-    }
-  }
-  return routmesh;
-}
-
-// [[Rcpp::export]]
-Rcpp::List SurfEMesh(const Rcpp::List rmesh,
-                     const bool isTriangle,
-                     const bool triangulate,
-                     const bool clean,
-                     const bool normals,
-                     const double epsilon) {
-  EMesh3 mesh = makeSurfMesh<EMesh3, EPoint3>(rmesh, clean);
-  const bool really_triangulate = !isTriangle && triangulate;
-  Rcpp::IntegerMatrix Edges0;
-  Rcpp::NumericMatrix Normals0;
-  if(really_triangulate) {
-    Edges0 = getEdges2<EK, EMesh3, EPoint3>(mesh, epsilon);
-    if(normals) {
-      Normals0 = getEKNormals(mesh);
-    }
-    bool success = CGAL::Polygon_mesh_processing::triangulate_faces(mesh);
-    if(!success) {
-      Rcpp::stop("Triangulation has failed.");
-    }
-  }
-  Rcpp::List routmesh = RSurfEKMesh(mesh, normals, epsilon);
-  if(really_triangulate) {
-    routmesh["edges0"] = Edges0;
-    if(normals) {
-      routmesh["normals0"] = Normals0;
-    }
-  }
-  return routmesh;
-}
-
-// [[Rcpp::export]]
-Rcpp::List SurfQMesh(const Rcpp::List rmesh,
-                     const bool isTriangle,
-                     const bool triangulate,
-                     const bool clean,
-                     const bool normals,
-                     const double epsilon) {
-  QMesh3 mesh = makeSurfQMesh(rmesh, clean);
-  const bool really_triangulate = !isTriangle && triangulate;
-  Rcpp::IntegerMatrix Edges0;
-  Rcpp::NumericMatrix Normals0;
-  if(really_triangulate) {
-    Edges0 = getEdges2<QK, QMesh3, QPoint3>(mesh, epsilon);
-    if(normals) {
-      Normals0 = getQNormals(mesh);
-    }
-    bool success = CGAL::Polygon_mesh_processing::triangulate_faces(mesh);
-    if(!success) {
-      Rcpp::stop("Triangulation has failed.");
-    }
-  }
-  Rcpp::List routmesh = RSurfQMesh(mesh, normals, epsilon);
-  if(really_triangulate) {
-    routmesh["edges0"] = Edges0;
-    if(normals) {
-      routmesh["normals0"] = Normals0;
-    }
-  }
-  return routmesh;
-}
-
 template <typename MeshT>
 void checkMesh(MeshT mesh, size_t i) {
   const bool si = PMP::does_self_intersect(mesh);
@@ -111,24 +18,39 @@ void checkMesh(MeshT mesh, size_t i) {
 }
 
 template <typename KernelT, typename MeshT, typename PointT>
-MeshT Intersection(const Rcpp::List rmeshes,  // must be triangles
+MeshT Intersection(const Rcpp::List rmeshes,
                    const bool clean,
-                   const bool exact) {
+                   const bool exact,  // ?
+                   const Rcpp::LogicalVector triangulate) {
   const size_t nmeshes = rmeshes.size();
   std::vector<MeshT> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
-  Message("Processing mesh n\u00b01.\n");
-  meshes[0] = makeSurfTMesh<MeshT, PointT>(rmesh, clean);
-  if(exact) {
-    checkMesh<MeshT>(meshes[0], 1);
-  }
-  for(size_t i = 1; i < nmeshes; i++) {
-    if(!exact) {
-      checkMesh<MeshT>(meshes[i - 1], i);
+  Message("Processing mesh n\u00b01...\n");
+  MeshT mesh_0 = makeSurfTMesh<MeshT, PointT>(rmesh, clean);
+  if(triangulate[0]) {
+    const bool success = PMP::triangulate_faces(mesh_0);
+    if(!success) {
+      Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
     }
+  }
+  if(true) {
+    checkMesh<MeshT>(mesh_0, 1);
+  }
+  meshes[0] = mesh_0;
+  for(size_t i = 1; i < nmeshes; i++) {
+    // if(true) {
+    //   checkMesh<MeshT>(meshes[i - 1], i);
+    // }
+    const std::string meshnum = std::to_string(i + 1);
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
-    Message("Processing mesh n\u00b0" + std::to_string(i+1) + ".\n");
+    Message("Processing mesh n\u00b0" + meshnum + "...\n");
     MeshT mesh_i = makeSurfTMesh<MeshT, PointT>(rmesh_i, clean);
+    if(triangulate[i]) {
+      const bool success = PMP::triangulate_faces(mesh_i);
+      if(!success) {
+        Rcpp::stop("Triangulation of mesh n\u00b0" + meshnum + " has failed.");
+      }
+    }
     checkMesh<MeshT>(mesh_i, i + 1);
     bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1], mesh_i,
                                                      meshes[i]);
@@ -142,33 +64,52 @@ MeshT Intersection(const Rcpp::List rmeshes,  // must be triangles
 // [[Rcpp::export]]
 Rcpp::List Intersection_K(const Rcpp::List rmeshes,
                           const bool clean,
-                          const bool normals) {
-  Mesh3 mesh = Intersection<K, Mesh3, Point3>(rmeshes, clean, false);
+                          const bool normals,
+                          const Rcpp::LogicalVector triangulate) {
+  Mesh3 mesh =
+      Intersection<K, Mesh3, Point3>(rmeshes, clean, false, triangulate);
   return RSurfTKMesh(mesh, normals, 0);
 }
 
 // [[Rcpp::export]]
 Rcpp::List Intersection_EK(const Rcpp::List rmeshes,
                            const bool clean,
-                           const bool normals) {
-  EMesh3 mesh = Intersection<EK, EMesh3, EPoint3>(rmeshes, clean, true);
+                           const bool normals,
+                           const Rcpp::LogicalVector triangulate) {
+  EMesh3 mesh =
+      Intersection<EK, EMesh3, EPoint3>(rmeshes, clean, true, triangulate);
   return RSurfTEKMesh(mesh, normals, 0);
 }
 
 // [[Rcpp::export]]
 Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
                           const bool clean,
-                          const bool normals) {
+                          const bool normals,
+                          const Rcpp::LogicalVector triangulate) {
   const size_t nmeshes = rmeshes.size();
   std::vector<QMesh3> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
-  Message("Processing mesh n\u00b01.\n");
-  meshes[0] = makeSurfTQMesh(rmesh, clean);
-  checkMesh<QMesh3>(meshes[0], 0);
+  Message("Processing mesh n\u00b01...\n");
+  QMesh3 mesh_0 = makeSurfTQMesh(rmesh, clean);
+  if(triangulate[0]) {
+    const bool success = PMP::triangulate_faces(mesh_0);
+    if(!success) {
+      Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
+    }
+  }
+  checkMesh<QMesh3>(mesh_0, 0);
+  meshes[0] = mesh_0;
   for(size_t i = 1; i < nmeshes; i++) {
+    const std::string meshnum = std::to_string(i + 1);
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
-    Message("Processing mesh n\u00b0" + std::to_string(i+1) + ".\n");
+    Message("Processing mesh n\u00b0" + meshnum + "...\n");
     QMesh3 mesh_i = makeSurfTQMesh(rmesh_i, clean);
+    if(triangulate[i]) {
+      const bool success = PMP::triangulate_faces(mesh_i);
+      if(!success) {
+        Rcpp::stop("Triangulation of mesh n\u00b0" + meshnum + " has failed.");
+      }
+    }
     checkMesh<QMesh3>(mesh_i, i);
     bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1], mesh_i,
                                                      meshes[i]);
@@ -251,7 +192,7 @@ MeshT Union(const Rcpp::List rmeshes,  // must be triangles
       checkMesh<MeshT>(meshes[i - 1], i);
     }
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
-    Message("Processing mesh n\u00b0" + std::to_string(i+1) + ".\n");
+    Message("Processing mesh n\u00b0" + std::to_string(i + 1) + ".\n");
     MeshT mesh_i = makeSurfTMesh<MeshT, PointT>(rmesh_i, clean);
     checkMesh<MeshT>(mesh_i, i + 1);
     bool ok = PMP::corefine_and_compute_union(meshes[i - 1], mesh_i, meshes[i]);
@@ -290,7 +231,7 @@ Rcpp::List Union_Q(const Rcpp::List rmeshes,  // must be triangles
   checkMesh<QMesh3>(meshes[0], 0);
   for(size_t i = 1; i < nmeshes; i++) {
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
-    Message("Processing mesh n\u00b0" + std::to_string(i+1) + ".\n");
+    Message("Processing mesh n\u00b0" + std::to_string(i + 1) + ".\n");
     QMesh3 mesh_i = makeSurfTQMesh(rmesh_i, clean);
     checkMesh<QMesh3>(mesh_i, i);
     bool ok = PMP::corefine_and_compute_union(meshes[i - 1], mesh_i, meshes[i]);

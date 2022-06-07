@@ -78,16 +78,18 @@ library(rgl)
 cube <- cube3d()
 
 rglmesh1 <- cube
-mesh1 <- Mesh(mesh = cube, triangulate = TRUE, normals = FALSE)
-mesh1$vertices <- as.bigq(mesh1$vertices)
+mesh1 <-
+  list(vertices = t(cube[["vb"]][-4L, ]), faces = t(cube[["ib"]]))
+mesh1[["vertices"]] <- as.bigq(mesh1[["vertices"]])
 
 rotMatrix <- t(cbind( # pi/3 around a great diagonal
   as.bigq(c(2, -1, 2), c(3, 3, 3)),
   as.bigq(c(2, 2, -1), c(3, 3, 3)),
   as.bigq(c(-1, 2, 2), c(3, 3, 3))
 ))
-mesh2 <- Mesh(mesh = cube, triangulate = TRUE, normals = FALSE)
-mesh2$vertices <- as.bigq(mesh2$vertices) \%*\% rotMatrix
+mesh2 <-
+  list(vertices = t(cube[["vb"]][-4L, ]), faces = t(cube[["ib"]]))
+mesh2[["vertices"]] <- as.bigq(mesh2[["vertices"]]) \%*\% rotMatrix
 rglmesh2 <- rotate3d(cube, pi/3, 1, 1, 1)
 
 inter <- MeshesIntersection(list(mesh1, mesh2), numbersType = "gmp")

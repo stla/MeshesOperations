@@ -13,15 +13,14 @@ clipMesh(mesh, clipper, clipVolume = TRUE, normals = FALSE)
 
 \item{clipper}{a mesh given either as a list containing (at least) the fields
 \code{vertices} and \code{faces}, otherwise a \strong{rgl} mesh
-(i.e. a \code{mesh3d} object); if \code{clipVolume=TRUE}, this mesh will be
-modified: it will be refined with the intersection with \code{mesh}}
+(i.e. a \code{mesh3d} object)}
 
 \item{clipVolume}{Boolean, whether the clipping has to be done on the volume
 bounded by \code{mesh} rather than on its surface (i.e. \code{mesh} will be
 kept closed if it is closed)}
 
 \item{normals}{Boolean, whether to compute the vertex normals of the
-output mesh(es)}
+output mesh}
 }
 \value{
 A triangle mesh represented as the output of the
@@ -81,9 +80,9 @@ clippedMesh <- clipMesh(mesh, clipper, clipVolume = FALSE, normals = TRUE)
 # plot
 open3d(windowRect = c(50, 50, 950, 500))
 mfrow3d(1, 2)
-view3d(zoom=0.8)
+view3d(zoom = 0.8)
 shade3d(mesh, color = "darkred")
 next3d()
-view3d(zoom=0.8)
+view3d(zoom = 0.8)
 shade3d(toRGL(clippedMesh), color = "darkred")
 }
