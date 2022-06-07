@@ -229,8 +229,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // Difference_K
-Rcpp::List Difference_K(const Rcpp::List rmesh1, const Rcpp::List rmesh2, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Difference_K(SEXP rmesh1SEXP, SEXP rmesh2SEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
+Rcpp::List Difference_K(const Rcpp::List rmesh1, const Rcpp::List rmesh2, const bool clean, const bool normals, const bool triangulate1, const bool triangulate2);
+RcppExport SEXP _MeshesOperations_Difference_K(SEXP rmesh1SEXP, SEXP rmesh2SEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP triangulate1SEXP, SEXP triangulate2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -238,13 +238,15 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh2(rmesh2SEXP);
     Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Difference_K(rmesh1, rmesh2, clean, normals));
+    Rcpp::traits::input_parameter< const bool >::type triangulate1(triangulate1SEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate2(triangulate2SEXP);
+    rcpp_result_gen = Rcpp::wrap(Difference_K(rmesh1, rmesh2, clean, normals, triangulate1, triangulate2));
     return rcpp_result_gen;
 END_RCPP
 }
 // Difference_EK
-Rcpp::List Difference_EK(const Rcpp::List rmesh1, const Rcpp::List rmesh2, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Difference_EK(SEXP rmesh1SEXP, SEXP rmesh2SEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
+Rcpp::List Difference_EK(const Rcpp::List rmesh1, const Rcpp::List rmesh2, const bool clean, const bool normals, const bool triangulate1, const bool triangulate2);
+RcppExport SEXP _MeshesOperations_Difference_EK(SEXP rmesh1SEXP, SEXP rmesh2SEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP triangulate1SEXP, SEXP triangulate2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -252,13 +254,15 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh2(rmesh2SEXP);
     Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Difference_EK(rmesh1, rmesh2, clean, normals));
+    Rcpp::traits::input_parameter< const bool >::type triangulate1(triangulate1SEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate2(triangulate2SEXP);
+    rcpp_result_gen = Rcpp::wrap(Difference_EK(rmesh1, rmesh2, clean, normals, triangulate1, triangulate2));
     return rcpp_result_gen;
 END_RCPP
 }
 // Difference_Q
-Rcpp::List Difference_Q(const Rcpp::List rmesh1, const Rcpp::List rmesh2, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Difference_Q(SEXP rmesh1SEXP, SEXP rmesh2SEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
+Rcpp::List Difference_Q(const Rcpp::List rmesh1, const Rcpp::List rmesh2, const bool clean, const bool normals, const bool triangulate1, const bool triangulate2);
+RcppExport SEXP _MeshesOperations_Difference_Q(SEXP rmesh1SEXP, SEXP rmesh2SEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP triangulate1SEXP, SEXP triangulate2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -266,7 +270,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh2(rmesh2SEXP);
     Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Difference_Q(rmesh1, rmesh2, clean, normals));
+    Rcpp::traits::input_parameter< const bool >::type triangulate1(triangulate1SEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate2(triangulate2SEXP);
+    rcpp_result_gen = Rcpp::wrap(Difference_Q(rmesh1, rmesh2, clean, normals, triangulate1, triangulate2));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -385,9 +391,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MeshesOperations_Intersection_K", (DL_FUNC) &_MeshesOperations_Intersection_K, 4},
     {"_MeshesOperations_Intersection_EK", (DL_FUNC) &_MeshesOperations_Intersection_EK, 4},
     {"_MeshesOperations_Intersection_Q", (DL_FUNC) &_MeshesOperations_Intersection_Q, 4},
-    {"_MeshesOperations_Difference_K", (DL_FUNC) &_MeshesOperations_Difference_K, 4},
-    {"_MeshesOperations_Difference_EK", (DL_FUNC) &_MeshesOperations_Difference_EK, 4},
-    {"_MeshesOperations_Difference_Q", (DL_FUNC) &_MeshesOperations_Difference_Q, 4},
+    {"_MeshesOperations_Difference_K", (DL_FUNC) &_MeshesOperations_Difference_K, 6},
+    {"_MeshesOperations_Difference_EK", (DL_FUNC) &_MeshesOperations_Difference_EK, 6},
+    {"_MeshesOperations_Difference_Q", (DL_FUNC) &_MeshesOperations_Difference_Q, 6},
     {"_MeshesOperations_Union_K", (DL_FUNC) &_MeshesOperations_Union_K, 3},
     {"_MeshesOperations_Union_EK", (DL_FUNC) &_MeshesOperations_Union_EK, 3},
     {"_MeshesOperations_Union_Q", (DL_FUNC) &_MeshesOperations_Union_Q, 3},

@@ -156,8 +156,11 @@ MeshT Difference(const Rcpp::List rmesh1,  // must be triangles
 Rcpp::List Difference_K(const Rcpp::List rmesh1,
                         const Rcpp::List rmesh2,
                         const bool clean,
-                        const bool normals) {
-  Mesh3 mesh = Difference<K, Mesh3, Point3>(rmesh1, rmesh2, clean);
+                        const bool normals,
+                        const bool triangulate1,
+                        const bool triangulate2) {
+  Mesh3 mesh = Difference<K, Mesh3, Point3>(rmesh1, rmesh2, clean, triangulate1,
+                                            triangulate2);
   return RSurfTKMesh(mesh, normals, 0);
 }
 
@@ -165,16 +168,21 @@ Rcpp::List Difference_K(const Rcpp::List rmesh1,
 Rcpp::List Difference_EK(const Rcpp::List rmesh1,
                          const Rcpp::List rmesh2,
                          const bool clean,
-                         const bool normals) {
-  EMesh3 mesh = Difference<EK, EMesh3, EPoint3>(rmesh1, rmesh2, clean);
+                         const bool normals,
+                         const bool triangulate1,
+                         const bool triangulate2) {
+  EMesh3 mesh = Difference<EK, EMesh3, EPoint3>(rmesh1, rmesh2, clean,
+                                                triangulate1, triangulate2);
   return RSurfTEKMesh(mesh, normals, 0);
 }
 
 // [[Rcpp::export]]
-Rcpp::List Difference_Q(const Rcpp::List rmesh1,  // must be triangles
+Rcpp::List Difference_Q(const Rcpp::List rmesh1,
                         const Rcpp::List rmesh2,
                         const bool clean,
-                        const bool normals) {
+                        const bool normals,
+                        const bool triangulate1,
+                        const bool triangulate2) {
   Message("Processing mesh n\u00b01...\n");
   QMesh3 smesh1 = makeSurfTQMesh(rmesh1, clean);
   if(triangulate1) {

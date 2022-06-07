@@ -61,16 +61,16 @@ Intersection_Q <- function(rmeshes, clean, normals, triangulate) {
     .Call(`_MeshesOperations_Intersection_Q`, rmeshes, clean, normals, triangulate)
 }
 
-Difference_K <- function(rmesh1, rmesh2, clean, normals) {
-    .Call(`_MeshesOperations_Difference_K`, rmesh1, rmesh2, clean, normals)
+Difference_K <- function(rmesh1, rmesh2, clean, normals, triangulate1, triangulate2) {
+    .Call(`_MeshesOperations_Difference_K`, rmesh1, rmesh2, clean, normals, triangulate1, triangulate2)
 }
 
-Difference_EK <- function(rmesh1, rmesh2, clean, normals) {
-    .Call(`_MeshesOperations_Difference_EK`, rmesh1, rmesh2, clean, normals)
+Difference_EK <- function(rmesh1, rmesh2, clean, normals, triangulate1, triangulate2) {
+    .Call(`_MeshesOperations_Difference_EK`, rmesh1, rmesh2, clean, normals, triangulate1, triangulate2)
 }
 
-Difference_Q <- function(rmesh1, rmesh2, clean, normals) {
-    .Call(`_MeshesOperations_Difference_Q`, rmesh1, rmesh2, clean, normals)
+Difference_Q <- function(rmesh1, rmesh2, clean, normals, triangulate1, triangulate2) {
+    .Call(`_MeshesOperations_Difference_Q`, rmesh1, rmesh2, clean, normals, triangulate1, triangulate2)
 }
 
 Union_K <- function(rmeshes, clean, normals) {

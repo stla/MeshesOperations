@@ -1,7 +1,7 @@
 Package: MeshesOperations
 Type: Package
 Title: Operations on 3D Meshes
-Version: 0.0.9010
+Version: 0.0.9011
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <stla@elude.in>
 Description: Uses the 'CGAL' C++ library to perform operations on 3D meshes: Boolean operations (intersection, union, difference), Minkowski sum, smoothing.

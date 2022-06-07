@@ -13,14 +13,14 @@ MeshesDifference(
 )
 }
 \arguments{
-\item{mesh1, mesh2}{two \emph{triangular} meshes, each being either a
+\item{mesh1, mesh2}{two meshes, each being either a
 \strong{rgl} mesh, or as a list with (at least) two fields:
 \code{vertices} and \code{faces}; the \code{vertices}
 matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 otherwise it must be numeric}
 
 \item{clean}{Boolean, whether to clean the input mesh (merging duplicated
-vertices, duplicated faces, removed isolated vertices) as well as the
+vertices, duplicated faces, removing isolated vertices) as well as the
 output mesh}
 
 \item{normals}{Boolean, whether to return the per-vertex normals of the
@@ -44,15 +44,17 @@ Computes the difference between two meshes.
 library(MeshesOperations)
 library(rgl)
 
-# mesh one: a cube; one has to triangulate it
+# mesh one: a cube
 cube1 <- cube3d() # (from the rgl package)
-mesh1 <- Mesh(mesh = cube1, triangulate = TRUE, normals = FALSE)
+mesh1 <-
+  list(vertices = t(cube1[["vb"]][-4L, ]), faces = t(cube1[["ib"]]))
 
-# mesh two: another cube; one also has to triangulate it
+# mesh two: another cube
 cube2 <- translate3d( # (from the rgl package)
   cube3d(), 1, 1, 0
 )
-mesh2 <- Mesh(mesh = cube2, triangulate = TRUE, normals = FALSE)
+mesh2 <-
+  list(vertices = t(cube2[["vb"]][-4L, ]), faces = t(cube2[["ib"]]))
 
 # compute the difference
 differ <- MeshesDifference(mesh1, mesh2)

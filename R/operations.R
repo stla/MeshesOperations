@@ -29,17 +29,18 @@
 #' library(MeshesOperations)
 #' library(rgl)
 #'
-#' # mesh one: truncated icosahedron; one has to triangulate it
+#' # mesh one: truncated icosahedron; we triangulate it for plotting
 #' mesh1 <- Mesh(
 #'   mesh = truncatedIcosahedron,
 #'   triangulate = TRUE, normals = FALSE
 #' )
 #'
-#' # mesh two: a cube; one also has to triangulate it
+#' # mesh two: a cube
 #' cube <- translate3d( # (from the rgl package)
 #'   cube3d(), 2, 0, 0
 #' )
-#' mesh2 <- Mesh(mesh = cube, triangulate = TRUE, normals = FALSE)
+#' mesh2 <-
+#'   list(vertices = t(cube[["vb"]][-4L, ]), faces = t(cube[["ib"]]))
 #'
 #' # compute the intersection
 #' inter <- MeshesIntersection(list(mesh1, mesh2))
@@ -170,15 +171,17 @@ MeshesIntersection <- function(
 #' library(MeshesOperations)
 #' library(rgl)
 #'
-#' # mesh one: a cube; one has to triangulate it
+#' # mesh one: a cube
 #' cube1 <- cube3d() # (from the rgl package)
-#' mesh1 <- Mesh(mesh = cube1, triangulate = TRUE, normals = FALSE)
+#' mesh1 <-
+#'   list(vertices = t(cube1[["vb"]][-4L, ]), faces = t(cube1[["ib"]]))
 #'
-#' # mesh two: another cube; one also has to triangulate it
+#' # mesh two: another cube
 #' cube2 <- translate3d( # (from the rgl package)
 #'   cube3d(), 1, 1, 0
 #' )
-#' mesh2 <- Mesh(mesh = cube2, triangulate = TRUE, normals = FALSE)
+#' mesh2 <-
+#'   list(vertices = t(cube2[["vb"]][-4L, ]), faces = t(cube2[["ib"]]))
 #'
 #' # compute the difference
 #' differ <- MeshesDifference(mesh1, mesh2)

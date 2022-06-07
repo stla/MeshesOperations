@@ -12,14 +12,14 @@ MeshesIntersection(
 )
 }
 \arguments{
-\item{meshes}{a list of \emph{triangle} meshes, each being either a
+\item{meshes}{a list of meshes, each being either a
 \strong{rgl} mesh, or as a list with (at least) two fields:
 \code{vertices} and \code{faces}; the \code{vertices}
 matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 otherwise it must be numeric}
 
 \item{clean}{Boolean, whether to clean the input meshes (merging
-duplicated vertices, duplicated faces, removed isolated vertices)
+duplicated vertices, duplicated faces, removing isolated vertices)
 as well as the output mesh}
 
 \item{normals}{Boolean, whether to return the per-vertex normals of the
@@ -43,17 +43,18 @@ Computes the intersection of the given meshes.
 library(MeshesOperations)
 library(rgl)
 
-# mesh one: truncated icosahedron; one has to triangulate it
+# mesh one: truncated icosahedron; we triangulate it for plotting
 mesh1 <- Mesh(
   mesh = truncatedIcosahedron,
   triangulate = TRUE, normals = FALSE
 )
 
-# mesh two: a cube; one also has to triangulate it
+# mesh two: a cube
 cube <- translate3d( # (from the rgl package)
   cube3d(), 2, 0, 0
 )
-mesh2 <- Mesh(mesh = cube, triangulate = TRUE, normals = FALSE)
+mesh2 <-
+  list(vertices = t(cube[["vb"]][-4L, ]), faces = t(cube[["ib"]]))
 
 # compute the intersection
 inter <- MeshesIntersection(list(mesh1, mesh2))
