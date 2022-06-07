@@ -7,12 +7,21 @@ void checkMesh(MeshT mesh, size_t i) {
   const bool si = PMP::does_self_intersect(mesh);
   if(si) {
     std::string msg = "Mesh n\u00b0" + std::to_string(i) + " self-intersects.";
-    Rcpp::stop(msg); // ce n'est pas la mesh i (pour inter et union) !
+    Rcpp::stop(msg);
   }
   const bool bv = PMP::does_bound_a_volume(mesh);
   if(!bv) {
     std::string msg =
         "Mesh n\u00b0" + std::to_string(i) + " does not bound a volume.";
+    Rcpp::stop(msg);
+  }
+}
+
+template <typename MeshT>
+void checkMesh2(MeshT mesh, std::string what) {
+  const bool si = PMP::does_self_intersect(mesh);
+  if(si) {
+    std::string msg = "The " + what + " self-intersects.";
     Rcpp::stop(msg);
   }
 }
@@ -33,14 +42,16 @@ MeshT Intersection(const Rcpp::List rmeshes,
       Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
     }
   }
-  if(true) {
-    checkMesh<MeshT>(mesh_0, 1);
-  }
+  // if(true) {
+  //   checkMesh<MeshT>(mesh_0, 1);
+  // }
   meshes[0] = mesh_0;
   for(size_t i = 1; i < nmeshes; i++) {
-    // if(true) {
-    //   checkMesh<MeshT>(meshes[i - 1], i);
-    // }
+    if(i == 1) {
+      checkMesh<MeshT>(meshes[0], 1);
+    } else {
+      checkMesh2<MeshT>(meshes[i - 1], "intersection");
+    }
     const std::string meshnum = std::to_string(i + 1);
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
     Message("Processing mesh n\u00b0" + meshnum + "...\n");
@@ -52,8 +63,8 @@ MeshT Intersection(const Rcpp::List rmeshes,
       }
     }
     checkMesh<MeshT>(mesh_i, i + 1);
-    bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1], mesh_i,
-                                                     meshes[i]);
+    const bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1],
+                                                           mesh_i, meshes[i]);
     if(!ok) {
       Rcpp::stop("Intersection computation has failed.");
     }
