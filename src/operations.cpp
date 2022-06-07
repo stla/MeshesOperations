@@ -26,7 +26,7 @@ MeshT Intersection(const Rcpp::List rmeshes,
   std::vector<MeshT> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
   Message("Processing mesh n\u00b01...\n");
-  MeshT mesh_0 = makeSurfTMesh<MeshT, PointT>(rmesh, clean);
+  MeshT mesh_0 = makeSurfMesh<MeshT, PointT>(rmesh, clean);
   if(triangulate[0]) {
     const bool success = PMP::triangulate_faces(mesh_0);
     if(!success) {
@@ -44,7 +44,7 @@ MeshT Intersection(const Rcpp::List rmeshes,
     const std::string meshnum = std::to_string(i + 1);
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
     Message("Processing mesh n\u00b0" + meshnum + "...\n");
-    MeshT mesh_i = makeSurfTMesh<MeshT, PointT>(rmesh_i, clean);
+    MeshT mesh_i = makeSurfMesh<MeshT, PointT>(rmesh_i, clean);
     if(triangulate[i]) {
       const bool success = PMP::triangulate_faces(mesh_i);
       if(!success) {
@@ -90,7 +90,7 @@ Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
   std::vector<QMesh3> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
   Message("Processing mesh n\u00b01...\n");
-  QMesh3 mesh_0 = makeSurfTQMesh(rmesh, clean);
+  QMesh3 mesh_0 = makeSurfQMesh(rmesh, clean);
   if(triangulate[0]) {
     const bool success = PMP::triangulate_faces(mesh_0);
     if(!success) {
@@ -103,7 +103,7 @@ Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
     const std::string meshnum = std::to_string(i + 1);
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
     Message("Processing mesh n\u00b0" + meshnum + "...\n");
-    QMesh3 mesh_i = makeSurfTQMesh(rmesh_i, clean);
+    QMesh3 mesh_i = makeSurfQMesh(rmesh_i, clean);
     if(triangulate[i]) {
       const bool success = PMP::triangulate_faces(mesh_i);
       if(!success) {
@@ -123,12 +123,26 @@ Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
 template <typename KernelT, typename MeshT, typename PointT>
 MeshT Difference(const Rcpp::List rmesh1,  // must be triangles
                  const Rcpp::List rmesh2,
-                 const bool clean) {
-  Message("Processing mesh n\u00b01.\n");
-  MeshT smesh1 = makeSurfTMesh<MeshT, PointT>(rmesh1, clean);
+                 const bool clean,
+                 const bool triangulate1,
+                 const bool triangulate2) {
+  Message("Processing mesh n\u00b01...\n");
+  MeshT smesh1 = makeSurfMesh<MeshT, PointT>(rmesh1, clean);
+  if(triangulate1) {
+    const bool success = PMP::triangulate_faces(smesh1);
+    if(!success) {
+      Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
+    }
+  }
   checkMesh<MeshT>(smesh1, 1);
-  Message("Processing mesh n\u00b02.\n");
-  MeshT smesh2 = makeSurfTMesh<MeshT, PointT>(rmesh2, clean);
+  Message("Processing mesh n\u00b02...\n");
+  MeshT smesh2 = makeSurfMesh<MeshT, PointT>(rmesh2, clean);
+  if(triangulate2) {
+    const bool success = PMP::triangulate_faces(smesh2);
+    if(!success) {
+      Rcpp::stop("Triangulation of mesh n\u00b02 has failed.");
+    }
+  }
   checkMesh<MeshT>(smesh2, 2);
   MeshT outmesh;
   bool ok = PMP::corefine_and_compute_difference(smesh1, smesh2, outmesh);
@@ -161,11 +175,23 @@ Rcpp::List Difference_Q(const Rcpp::List rmesh1,  // must be triangles
                         const Rcpp::List rmesh2,
                         const bool clean,
                         const bool normals) {
-  Message("Processing mesh n\u00b01.\n");
+  Message("Processing mesh n\u00b01...\n");
   QMesh3 smesh1 = makeSurfTQMesh(rmesh1, clean);
+  if(triangulate1) {
+    const bool success = PMP::triangulate_faces(smesh1);
+    if(!success) {
+      Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
+    }
+  }
   checkMesh<QMesh3>(smesh1, 1);
-  Message("Processing mesh n\u00b02.\n");
+  Message("Processing mesh n\u00b02...\n");
   QMesh3 smesh2 = makeSurfTQMesh(rmesh2, clean);
+  if(triangulate2) {
+    const bool success = PMP::triangulate_faces(smesh2);
+    if(!success) {
+      Rcpp::stop("Triangulation of mesh n\u00b02 has failed.");
+    }
+  }
   checkMesh<QMesh3>(smesh2, 2);
   QMesh3 outmesh;
   bool ok = PMP::corefine_and_compute_difference(smesh1, smesh2, outmesh);

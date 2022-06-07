@@ -1,13 +1,13 @@
 #' @title Meshes intersection
 #' @description Computes the intersection of the given meshes.
 #'
-#' @param meshes a list of \emph{triangle} meshes, each being either a
+#' @param meshes a list of meshes, each being either a
 #'   \strong{rgl} mesh, or as a list with (at least) two fields:
 #'   \code{vertices} and \code{faces}; the \code{vertices}
 #'   matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 #'   otherwise it must be numeric
 #' @param clean Boolean, whether to clean the input meshes (merging
-#'   duplicated vertices, duplicated faces, removed isolated vertices)
+#'   duplicated vertices, duplicated faces, removing isolated vertices)
 #'   as well as the output mesh
 #' @param normals Boolean, whether to return the per-vertex normals of the
 #'   output mesh
@@ -105,7 +105,7 @@ MeshesIntersection <- function(
       vft  <- getVFT(mesh, beforeCheck = TRUE)
       mesh <- vft[["rmesh"]]
     }
-    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
+    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = TRUE)
   })
   areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
   triangulate <- !areTriangle
@@ -142,13 +142,13 @@ MeshesIntersection <- function(
 #' @title Meshes difference
 #' @description Computes the difference between two meshes.
 #'
-#' @param mesh1,mesh2 two \emph{triangular} meshes, each being either a
+#' @param mesh1,mesh2 two meshes, each being either a
 #'   \strong{rgl} mesh, or as a list with (at least) two fields:
 #'   \code{vertices} and \code{faces}; the \code{vertices}
 #'   matrix must have the \code{bigq} class if \code{numbersType="gmp"},
 #'   otherwise it must be numeric
 #' @param clean Boolean, whether to clean the input mesh (merging duplicated
-#'   vertices, duplicated faces, removed isolated vertices) as well as the
+#'   vertices, duplicated faces, removing isolated vertices) as well as the
 #'   output mesh
 #' @param normals Boolean, whether to return the per-vertex normals of the
 #'   output mesh
@@ -205,27 +205,26 @@ MeshesDifference <- function(
     mesh1 <- vft[["rmesh"]]
   }
   checkMesh1 <-
-    checkMesh(mesh1[["vertices"]], mesh1[["faces"]], gmp, aslist = FALSE)
-  if(!checkMesh1[["isTriangle"]]){
-    stop("The first mesh is not triangular.")
-  }
+    checkMesh(mesh1[["vertices"]], mesh1[["faces"]], gmp, aslist = TRUE)
+  triangulate1 <- !checkMesh1[["isTriangle"]]
   if(inherits(mesh2, "mesh3d")){
     vft  <- getVFT(mesh2, beforeCheck = TRUE)
     mesh2 <- vft[["rmesh"]]
   }
   checkMesh2 <-
-    checkMesh(mesh2[["vertices"]], mesh2[["faces"]], gmp, aslist = FALSE)
-  if(!checkMesh2[["isTriangle"]]){
-    stop("The second mesh is not triangular.")
-  }
+    checkMesh(mesh2[["vertices"]], mesh2[["faces"]], gmp, aslist = TRUE)
+  triangulate2 <- !checkMesh2[["isTriangle"]]
   mesh1 <- checkMesh1[c("vertices", "faces")]
   mesh2 <- checkMesh2[c("vertices", "faces")]
   if(numbersType == "double"){
-    differ <- Difference_K(mesh1, mesh2, clean, normals)
+    differ <-
+      Difference_K(mesh1, mesh2, clean, normals, triangulate1, triangulate2)
   }else if(numbersType == "lazyExact"){
-    differ <- Difference_EK(mesh1, mesh2, clean, normals)
+    differ <-
+      Difference_EK(mesh1, mesh2, clean, normals, triangulate1, triangulate2)
   }else{
-    differ <- Difference_Q(mesh1, mesh2, clean, normals)
+    differ <-
+      Difference_Q(mesh1, mesh2, clean, normals, triangulate1, triangulate2)
   }
   if(gmp){
     vertices <- as.bigq(t(differ[["vertices"]]))
