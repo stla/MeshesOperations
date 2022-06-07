@@ -254,7 +254,7 @@ MeshesDifference <- function(
 #' @title Meshes union
 #' @description Computes the union of the given meshes.
 #'
-#' @param meshes a list of two or more \emph{triangle} meshes, each being
+#' @param meshes a list of two or more meshes, each being
 #'   either a \strong{rgl} mesh, or as a list with (at least) two fields:
 #'   \code{vertices} and \code{faces}; the \code{vertices}
 #'   matrix must have the \code{bigq} class if \code{numbersType="gmp"},
@@ -282,15 +282,13 @@ MeshesDifference <- function(
 #' library(MeshesOperations)
 #' library(rgl)
 #'
-#' # mesh one: a cube; one has to triangulate it
-#' cube1 <- cube3d() # (from the rgl package)
-#' mesh1 <- Mesh(mesh = cube1, triangulate = TRUE, normals = FALSE)
+#' # mesh one: a cube
+#' mesh1 <- cube3d() # (from the rgl package)
 #'
-#' # mesh two: another cube; one also has to triangulate it
-#' cube2 <- translate3d( # (from the rgl package)
+#' # mesh two: another cube
+#' mesh2 <- translate3d( # (from the rgl package)
 #'   cube3d(), 1, 1, 1
 #' )
-#' mesh2 <- Mesh(mesh = cube2, triangulate = TRUE, normals = FALSE)
 #'
 #' # compute the union
 #' umesh <- MeshesUnion(list(mesh1, mesh2))
@@ -304,9 +302,10 @@ MeshesDifference <- function(
 #'   edgesAsTubes = TRUE, verticesAsSpheres = TRUE
 #' )
 MeshesUnion <- function(
-    meshes, clean = FALSE, normals = FALSE, numbersType = "double"
+  meshes, clean = FALSE, normals = FALSE, numbersType = "double"
 ){
   stopifnot(is.list(meshes))
+  stopifnot(length(meshes) >= 2)
   numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
   gmp <- numbersType == "gmp"
   checkMeshes <- lapply(meshes, function(mesh){
@@ -316,17 +315,15 @@ MeshesUnion <- function(
     }
     checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
   })
-  areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
-  if(!areTriangle){
-    stop("All meshes must be triangular.")
-  }
+  areTriangle <- vapply(checkMeshes, `[[`, logical(1L), "isTriangle")
+  triangulate <- !areTriangle
   meshes <- lapply(checkMeshes, `[`, c("vertices", "faces"))
   if(numbersType == "double"){
-    umesh <- Union_K(meshes, clean, normals)
+    umesh <- Union_K(meshes, clean, normals, triangulate)
   }else if(numbersType == "lazyExact"){
-    umesh <- Union_EK(meshes, clean, normals)
+    umesh <- Union_EK(meshes, clean, normals, triangulate)
   }else{
-    umesh <- Union_Q(meshes, clean, normals)
+    umesh <- Union_Q(meshes, clean, normals, triangulate)
   }
   if(gmp){
     vertices <- as.bigq(t(umesh[["vertices"]]))

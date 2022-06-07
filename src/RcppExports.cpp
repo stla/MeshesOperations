@@ -277,41 +277,44 @@ BEGIN_RCPP
 END_RCPP
 }
 // Union_K
-Rcpp::List Union_K(const Rcpp::List rmeshes, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Union_K(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
+Rcpp::List Union_K(const Rcpp::List rmeshes, const bool clean, const bool normals, const Rcpp::LogicalVector triangulate);
+RcppExport SEXP _MeshesOperations_Union_K(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP triangulateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::List >::type rmeshes(rmeshesSEXP);
     Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Union_K(rmeshes, clean, normals));
+    Rcpp::traits::input_parameter< const Rcpp::LogicalVector >::type triangulate(triangulateSEXP);
+    rcpp_result_gen = Rcpp::wrap(Union_K(rmeshes, clean, normals, triangulate));
     return rcpp_result_gen;
 END_RCPP
 }
 // Union_EK
-Rcpp::List Union_EK(const Rcpp::List rmeshes, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Union_EK(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
+Rcpp::List Union_EK(const Rcpp::List rmeshes, const bool clean, const bool normals, const Rcpp::LogicalVector triangulate);
+RcppExport SEXP _MeshesOperations_Union_EK(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP triangulateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::List >::type rmeshes(rmeshesSEXP);
     Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Union_EK(rmeshes, clean, normals));
+    Rcpp::traits::input_parameter< const Rcpp::LogicalVector >::type triangulate(triangulateSEXP);
+    rcpp_result_gen = Rcpp::wrap(Union_EK(rmeshes, clean, normals, triangulate));
     return rcpp_result_gen;
 END_RCPP
 }
 // Union_Q
-Rcpp::List Union_Q(const Rcpp::List rmeshes, const bool clean, const bool normals);
-RcppExport SEXP _MeshesOperations_Union_Q(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP) {
+Rcpp::List Union_Q(const Rcpp::List rmeshes, const bool clean, const bool normals, const Rcpp::LogicalVector triangulate);
+RcppExport SEXP _MeshesOperations_Union_Q(SEXP rmeshesSEXP, SEXP cleanSEXP, SEXP normalsSEXP, SEXP triangulateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::List >::type rmeshes(rmeshesSEXP);
     Rcpp::traits::input_parameter< const bool >::type clean(cleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Union_Q(rmeshes, clean, normals));
+    Rcpp::traits::input_parameter< const Rcpp::LogicalVector >::type triangulate(triangulateSEXP);
+    rcpp_result_gen = Rcpp::wrap(Union_Q(rmeshes, clean, normals, triangulate));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -394,9 +397,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MeshesOperations_Difference_K", (DL_FUNC) &_MeshesOperations_Difference_K, 6},
     {"_MeshesOperations_Difference_EK", (DL_FUNC) &_MeshesOperations_Difference_EK, 6},
     {"_MeshesOperations_Difference_Q", (DL_FUNC) &_MeshesOperations_Difference_Q, 6},
-    {"_MeshesOperations_Union_K", (DL_FUNC) &_MeshesOperations_Union_K, 3},
-    {"_MeshesOperations_Union_EK", (DL_FUNC) &_MeshesOperations_Union_EK, 3},
-    {"_MeshesOperations_Union_Q", (DL_FUNC) &_MeshesOperations_Union_Q, 3},
+    {"_MeshesOperations_Union_K", (DL_FUNC) &_MeshesOperations_Union_K, 4},
+    {"_MeshesOperations_Union_EK", (DL_FUNC) &_MeshesOperations_Union_EK, 4},
+    {"_MeshesOperations_Union_Q", (DL_FUNC) &_MeshesOperations_Union_Q, 4},
     {"_MeshesOperations_isotropicRemeshingK", (DL_FUNC) &_MeshesOperations_isotropicRemeshingK, 6},
     {"_MeshesOperations_sampleMeshK", (DL_FUNC) &_MeshesOperations_sampleMeshK, 3},
     {"_MeshesOperations_smoothMeshK", (DL_FUNC) &_MeshesOperations_smoothMeshK, 5},

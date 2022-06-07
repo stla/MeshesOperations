@@ -7,7 +7,7 @@
 MeshesUnion(meshes, clean = FALSE, normals = FALSE, numbersType = "double")
 }
 \arguments{
-\item{meshes}{a list of two or more \emph{triangle} meshes, each being
+\item{meshes}{a list of two or more meshes, each being
 either a \strong{rgl} mesh, or as a list with (at least) two fields:
 \code{vertices} and \code{faces}; the \code{vertices}
 matrix must have the \code{bigq} class if \code{numbersType="gmp"},
@@ -38,15 +38,13 @@ Computes the union of the given meshes.
 library(MeshesOperations)
 library(rgl)
 
-# mesh one: a cube; one has to triangulate it
-cube1 <- cube3d() # (from the rgl package)
-mesh1 <- Mesh(mesh = cube1, triangulate = TRUE, normals = FALSE)
+# mesh one: a cube
+mesh1 <- cube3d() # (from the rgl package)
 
-# mesh two: another cube; one also has to triangulate it
-cube2 <- translate3d( # (from the rgl package)
+# mesh two: another cube
+mesh2 <- translate3d( # (from the rgl package)
   cube3d(), 1, 1, 1
 )
-mesh2 <- Mesh(mesh = cube2, triangulate = TRUE, normals = FALSE)
 
 # compute the union
 umesh <- MeshesUnion(list(mesh1, mesh2))

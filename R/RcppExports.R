@@ -73,16 +73,16 @@ Difference_Q <- function(rmesh1, rmesh2, clean, normals, triangulate1, triangula
     .Call(`_MeshesOperations_Difference_Q`, rmesh1, rmesh2, clean, normals, triangulate1, triangulate2)
 }
 
-Union_K <- function(rmeshes, clean, normals) {
-    .Call(`_MeshesOperations_Union_K`, rmeshes, clean, normals)
+Union_K <- function(rmeshes, clean, normals, triangulate) {
+    .Call(`_MeshesOperations_Union_K`, rmeshes, clean, normals, triangulate)
 }
 
-Union_EK <- function(rmeshes, clean, normals) {
-    .Call(`_MeshesOperations_Union_EK`, rmeshes, clean, normals)
+Union_EK <- function(rmeshes, clean, normals, triangulate) {
+    .Call(`_MeshesOperations_Union_EK`, rmeshes, clean, normals, triangulate)
 }
 
-Union_Q <- function(rmeshes, clean, normals) {
-    .Call(`_MeshesOperations_Union_Q`, rmeshes, clean, normals)
+Union_Q <- function(rmeshes, clean, normals, triangulate) {
+    .Call(`_MeshesOperations_Union_Q`, rmeshes, clean, normals, triangulate)
 }
 
 isotropicRemeshingK <- function(rmesh, targetEdgeLength, niters, nrelaxsteps, triangulate, normals) {
