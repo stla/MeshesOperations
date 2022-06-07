@@ -108,7 +108,7 @@ MeshesIntersection <- function(
     }
     checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = TRUE)
   })
-  areTriangle <- all(vapply(checkMeshes, `[[`, logical(1L), "isTriangle"))
+  areTriangle <- vapply(checkMeshes, `[[`, logical(1L), "isTriangle")
   triangulate <- !areTriangle
   meshes <- lapply(checkMeshes, `[`, c("vertices", "faces"))
   if(numbersType == "double"){

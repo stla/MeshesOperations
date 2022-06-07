@@ -7,7 +7,7 @@ void checkMesh(MeshT mesh, size_t i) {
   const bool si = PMP::does_self_intersect(mesh);
   if(si) {
     std::string msg = "Mesh n\u00b0" + std::to_string(i) + " self-intersects.";
-    Rcpp::stop(msg);
+    Rcpp::stop(msg); // ce n'est pas la mesh i (pour inter et union) !
   }
   const bool bv = PMP::does_bound_a_volume(mesh);
   if(!bv) {
