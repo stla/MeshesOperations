@@ -70,16 +70,16 @@ Rcpp::List smoothShapeK(const Rcpp::List rmesh,
   } else {
     word = " border vertex.\n";
   }
-  Rcpp::Rcout << "Constraining: " << nbv << word;
+  Message("Constraining: " + std::to_string(nbv) + word);
   CGAL::Boolean_property_map<std::set<Mesh3::Vertex_index>> vcmap(
       constrained_vertices);
   std::string tail;
   if(niters == 1) {
-    tail = " iteration).\n";
+    tail = "one iteration).\n";
   } else {
-    tail = " iterations).\n";
+    tail = std::to_string(niters) + " iterations).\n";
   }
-  Rcpp::Rcout << "Smoothing shape (" << niters << tail;
+  Message("Smoothing shape (" + tail);
   PMP::smooth_shape(
       mesh, time,
       PMP::parameters::number_of_iterations(niters).vertex_is_constrained_map(
