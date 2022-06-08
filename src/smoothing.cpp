@@ -47,25 +47,40 @@ Rcpp::List smoothShapeK(const Rcpp::List rmesh,
                         const unsigned niters,
                         const bool triangulate,
                         const bool normals) {
+  Message("\u2014 Processing mesh...");
   Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true);
   if(triangulate) {
+    Message("Triangulation.");
     const bool success = PMP::triangulate_faces(mesh);
     if(!success) {
       const std::string msg = "Triangulation has failed.";
       Rcpp::stop(msg);
     }
   }
+  Message("... done.\n");
   std::set<Mesh3::Vertex_index> constrained_vertices;
   for(Mesh3::Vertex_index v : mesh.vertices()) {
     if(mesh.is_border(v)) {
       constrained_vertices.insert(v);
     }
   }
-  Rcpp::Rcout << "Constraining: " << constrained_vertices.size()
-              << " border vertices.\n";
+  const size_t nbv = constrained_vertices.size();
+  std::string word;
+  if(nbv > 1) {
+    word = " border vertices.\n";
+  } else {
+    word = " border vertex.\n";
+  }
+  Rcpp::Rcout << "Constraining: " << nbv << word;
   CGAL::Boolean_property_map<std::set<Mesh3::Vertex_index>> vcmap(
       constrained_vertices);
-  Rcpp::Rcout << "Smoothing shape... (" << niters << " iterations).\n";
+  std::string tail;
+  if(niters == 1) {
+    tail = " iteration).\n";
+  } else {
+    tail = " iterations).\n";
+  }
+  Rcpp::Rcout << "Smoothing shape (" << niters << tail;
   PMP::smooth_shape(
       mesh, time,
       PMP::parameters::number_of_iterations(niters).vertex_is_constrained_map(
