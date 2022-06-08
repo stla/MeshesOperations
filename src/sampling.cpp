@@ -6,14 +6,16 @@
 Rcpp::NumericMatrix sampleMeshK(const unsigned nsims,
                                 const Rcpp::List rmesh,
                                 const bool triangulate) {
+  Message("\u2014 Processing mesh...");
   Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true);
   if(triangulate) {
+    Message("Triangulation.");
     const bool success = PMP::triangulate_faces(mesh);
     if(!success) {
-      const std::string msg = "Triangulation has failed.";
-      Rcpp::stop(msg);
+      Rcpp::stop("Triangulation has failed.");
     }
   }
+  Message("... done.\n");
   std::vector<Point3> sims;
   PMP::sample_triangle_mesh(mesh, std::back_inserter(sims),
                             PMP::parameters::number_of_points_on_faces(nsims)

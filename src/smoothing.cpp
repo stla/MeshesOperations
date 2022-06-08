@@ -53,8 +53,7 @@ Rcpp::List smoothShapeK(const Rcpp::List rmesh,
     Message("Triangulation.");
     const bool success = PMP::triangulate_faces(mesh);
     if(!success) {
-      const std::string msg = "Triangulation has failed.";
-      Rcpp::stop(msg);
+      Rcpp::stop("Triangulation has failed.");
     }
   }
   Message("... done.\n");
