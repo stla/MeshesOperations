@@ -9,7 +9,9 @@ Rcpp::List connectedComponentsK(const Rcpp::List rmesh0,
                                 const bool clean,
                                 const bool normals,
                                 const double epsilon) {
+  Message("\u2014 Processing mesh...");
   const Mesh3 mesh0 = makeSurfMesh<Mesh3, Point3>(rmesh0, clean);
+  Message("... done.\n");
   std::vector<Mesh3> cc_meshes;
   PMP::split_connected_components(mesh0, cc_meshes);
   const size_t ncc = cc_meshes.size();
@@ -57,7 +59,9 @@ Rcpp::List connectedComponentsEK(const Rcpp::List rmesh0,
                                  const bool clean,
                                  const bool normals,
                                  const double epsilon) {
+  Message("\u2014 Processing mesh...");
   const EMesh3 mesh0 = makeSurfMesh<EMesh3, EPoint3>(rmesh0, clean);
+  Message("... done.\n");
   std::vector<EMesh3> cc_meshes;
   PMP::split_connected_components(mesh0, cc_meshes);
   const size_t ncc = cc_meshes.size();
@@ -105,7 +109,9 @@ Rcpp::List connectedComponentsQ(const Rcpp::List rmesh0,
                                 const bool clean,
                                 const bool normals,
                                 const double epsilon) {
+  Message("\u2014 Processing mesh...");
   const QMesh3 mesh0 = makeSurfQMesh(rmesh0, clean);
+  Message("... done.\n");
   std::vector<QMesh3> cc_meshes;
   PMP::split_connected_components(mesh0, cc_meshes);
   const size_t ncc = cc_meshes.size();

@@ -9,6 +9,7 @@ Rcpp::List SurfMesh(const Rcpp::List rmesh,
                     const bool clean,
                     const bool normals,
                     const double epsilon) {
+  Message("\u2014 Processing mesh...");
   Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, clean);
   const bool really_triangulate = !isTriangle && triangulate;
   Rcpp::IntegerMatrix Edges0;
@@ -18,11 +19,13 @@ Rcpp::List SurfMesh(const Rcpp::List rmesh,
     if(normals) {
       Normals0 = getKNormals(mesh);
     }
-    bool success = CGAL::Polygon_mesh_processing::triangulate_faces(mesh);
+    Message("Triangulation.");
+    const bool success = PMP::triangulate_faces(mesh);
     if(!success) {
       Rcpp::stop("Triangulation has failed.");
     }
   }
+  Message("... done.\n");
   Rcpp::List routmesh = RSurfKMesh(mesh, normals, epsilon);
   if(really_triangulate) {
     routmesh["edges0"] = Edges0;
@@ -40,6 +43,7 @@ Rcpp::List SurfEMesh(const Rcpp::List rmesh,
                      const bool clean,
                      const bool normals,
                      const double epsilon) {
+  Message("\u2014 Processing mesh...");
   EMesh3 mesh = makeSurfMesh<EMesh3, EPoint3>(rmesh, clean);
   const bool really_triangulate = !isTriangle && triangulate;
   Rcpp::IntegerMatrix Edges0;
@@ -49,11 +53,13 @@ Rcpp::List SurfEMesh(const Rcpp::List rmesh,
     if(normals) {
       Normals0 = getEKNormals(mesh);
     }
-    bool success = CGAL::Polygon_mesh_processing::triangulate_faces(mesh);
+    Message("Triangulation.");
+    const bool success = PMP::triangulate_faces(mesh);
     if(!success) {
       Rcpp::stop("Triangulation has failed.");
     }
   }
+  Message("... done.\n");
   Rcpp::List routmesh = RSurfEKMesh(mesh, normals, epsilon);
   if(really_triangulate) {
     routmesh["edges0"] = Edges0;
@@ -71,6 +77,7 @@ Rcpp::List SurfQMesh(const Rcpp::List rmesh,
                      const bool clean,
                      const bool normals,
                      const double epsilon) {
+  Message("\u2014 Processing mesh...");
   QMesh3 mesh = makeSurfQMesh(rmesh, clean);
   const bool really_triangulate = !isTriangle && triangulate;
   Rcpp::IntegerMatrix Edges0;
@@ -80,11 +87,13 @@ Rcpp::List SurfQMesh(const Rcpp::List rmesh,
     if(normals) {
       Normals0 = getQNormals(mesh);
     }
-    bool success = CGAL::Polygon_mesh_processing::triangulate_faces(mesh);
+    Message("Triangulation.");
+    const bool success = PMP::triangulate_faces(mesh);
     if(!success) {
       Rcpp::stop("Triangulation has failed.");
     }
   }
+  Message("... done.\n");
   Rcpp::List routmesh = RSurfQMesh(mesh, normals, epsilon);
   if(really_triangulate) {
     routmesh["edges0"] = Edges0;
