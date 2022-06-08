@@ -108,31 +108,31 @@ MeshT soup2mesh(std::vector<PointT> points,
   PMP::polygon_soup_to_polygon_mesh(points, faces, mesh);
   const bool isTriangle = CGAL::is_triangle_mesh(mesh);
   if(isTriangle) {
-    Message("The mesh is triangle.\n");
+    Message("The mesh is triangle.");
   } else {
     Message(
-      "The mesh is not triangle; no way to ensure it bounds a volume " 
-      "and whether it is outward oriented.\n"
+      "The mesh is not triangle; no way to ensure it bounds a volume "
+      "and whether it is outward oriented."
     );
   }
-  std::string msg2;
   if(CGAL::is_closed(mesh)) {
-    Message("The mesh is closed.\n");
+    Message("The mesh is closed.");
     if(isTriangle) {
       if(!PMP::is_outward_oriented(mesh)) {
         PMP::reverse_face_orientations(mesh);
       }
       const bool bv = PMP::does_bound_a_volume(mesh);
+      std::string msg2;
       if(bv) {
-        msg2 = "The mesh bounds a volume.\n";
+        msg2 = "The mesh bounds a volume.";
       } else {
-        msg2 = "The mesh does not bound a volume - reorienting.\n";
+        msg2 = "The mesh does not bound a volume - reorienting.";
         PMP::orient_to_bound_a_volume(mesh);
       }
       Message(msg2);
     }
   } else {
-    Message("The mesh is not closed.\n");
+    Message("The mesh is not closed.");
   }
   return mesh;
 }

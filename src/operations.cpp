@@ -34,9 +34,10 @@ MeshT Intersection(const Rcpp::List rmeshes,
   const size_t nmeshes = rmeshes.size();
   std::vector<MeshT> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
-  Message("Processing mesh n\u00b01...\n");
+  Message("\u2014 Processing mesh n\u00b01...");
   MeshT mesh_0 = makeSurfMesh<MeshT, PointT>(rmesh, clean);
   if(triangulate[0]) {
+    Message("Triangulation.");
     const bool success = PMP::triangulate_faces(mesh_0);
     if(!success) {
       Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
@@ -49,20 +50,23 @@ MeshT Intersection(const Rcpp::List rmeshes,
   for(size_t i = 1; i < nmeshes; i++) {
     if(i == 1) {
       checkMesh<MeshT>(meshes[0], 1);
+      Message("... done.\n");
     } else {
       checkMesh2<MeshT>(meshes[i - 1], "intersection");
     }
     const std::string meshnum = std::to_string(i + 1);
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
-    Message("Processing mesh n\u00b0" + meshnum + "...\n");
+    Message("\u2014 Processing mesh n\u00b0" + meshnum + "...");
     MeshT mesh_i = makeSurfMesh<MeshT, PointT>(rmesh_i, clean);
     if(triangulate[i]) {
+      Message("Triangulation.");
       const bool success = PMP::triangulate_faces(mesh_i);
       if(!success) {
         Rcpp::stop("Triangulation of mesh n\u00b0" + meshnum + " has failed.");
       }
     }
     checkMesh<MeshT>(mesh_i, i + 1);
+    Message("... done.\n");
     const bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1],
                                                            mesh_i, meshes[i]);
     if(!ok) {
@@ -100,9 +104,10 @@ Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
   const size_t nmeshes = rmeshes.size();
   std::vector<QMesh3> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
-  Message("Processing mesh n\u00b01...\n");
+  Message("\u2014 Processing mesh n\u00b01...");
   QMesh3 mesh_0 = makeSurfQMesh(rmesh, clean);
   if(triangulate[0]) {
+    Message("Triangulation.");
     const bool success = PMP::triangulate_faces(mesh_0);
     if(!success) {
       Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
@@ -113,20 +118,23 @@ Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
   for(size_t i = 1; i < nmeshes; i++) {
     if(i == 1) {
       checkMesh<QMesh3>(meshes[0], 1);
+      Message("... done.\n");
     } else {
       checkMesh2<QMesh3>(meshes[i - 1], "intersection");
     }
     const std::string meshnum = std::to_string(i + 1);
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
-    Message("Processing mesh n\u00b0" + meshnum + "...\n");
+    Message("\u2014 Processing mesh n\u00b0" + meshnum + "...");
     QMesh3 mesh_i = makeSurfQMesh(rmesh_i, clean);
     if(triangulate[i]) {
+      Message("Triangulation.");
       const bool success = PMP::triangulate_faces(mesh_i);
       if(!success) {
         Rcpp::stop("Triangulation of mesh n\u00b0" + meshnum + " has failed.");
       }
     }
     checkMesh<QMesh3>(mesh_i, i);
+    Message("... done.\n");
     const bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1],
                                                            mesh_i, meshes[i]);
     if(!ok) {
@@ -142,24 +150,28 @@ MeshT Difference(const Rcpp::List rmesh1,
                  const bool clean,
                  const bool triangulate1,
                  const bool triangulate2) {
-  Message("Processing mesh n\u00b01...\n");
+  Message("\u2014 Processing mesh n\u00b01...");
   MeshT smesh1 = makeSurfMesh<MeshT, PointT>(rmesh1, clean);
   if(triangulate1) {
+    Message("Triangulation.");
     const bool success = PMP::triangulate_faces(smesh1);
     if(!success) {
       Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
     }
   }
   checkMesh<MeshT>(smesh1, 1);
-  Message("Processing mesh n\u00b02...\n");
+  Message("... done.\n");
+  Message("\u2014 Processing mesh n\u00b02...");
   MeshT smesh2 = makeSurfMesh<MeshT, PointT>(rmesh2, clean);
   if(triangulate2) {
+    Message("Triangulation");
     const bool success = PMP::triangulate_faces(smesh2);
     if(!success) {
       Rcpp::stop("Triangulation of mesh n\u00b02 has failed.");
     }
   }
   checkMesh<MeshT>(smesh2, 2);
+  Message("... done.\n");
   MeshT outmesh;
   bool ok = PMP::corefine_and_compute_difference(smesh1, smesh2, outmesh);
   if(!ok) {
@@ -199,16 +211,18 @@ Rcpp::List Difference_Q(const Rcpp::List rmesh1,
                         const bool normals,
                         const bool triangulate1,
                         const bool triangulate2) {
-  Message("Processing mesh n\u00b01...\n");
+  Message("\u2014 Processing mesh n\u00b01...");
   QMesh3 smesh1 = makeSurfTQMesh(rmesh1, clean);
   if(triangulate1) {
+    Message("Triangulation");
     const bool success = PMP::triangulate_faces(smesh1);
     if(!success) {
       Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
     }
   }
   checkMesh<QMesh3>(smesh1, 1);
-  Message("Processing mesh n\u00b02...\n");
+  Message("... done.\n");
+  Message("\u2014 Processing mesh n\u00b02...");
   QMesh3 smesh2 = makeSurfTQMesh(rmesh2, clean);
   if(triangulate2) {
     const bool success = PMP::triangulate_faces(smesh2);
@@ -217,6 +231,7 @@ Rcpp::List Difference_Q(const Rcpp::List rmesh1,
     }
   }
   checkMesh<QMesh3>(smesh2, 2);
+  Message("... done.\n");
   QMesh3 outmesh;
   bool ok = PMP::corefine_and_compute_difference(smesh1, smesh2, outmesh);
   if(!ok) {
@@ -233,9 +248,10 @@ MeshT Union(const Rcpp::List rmeshes,
   const size_t nmeshes = rmeshes.size();
   std::vector<MeshT> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
-  Message("Processing mesh n\u00b01...\n");
+  Message("\u2014 Processing mesh n\u00b01...");
   MeshT mesh_0 = makeSurfMesh<MeshT, PointT>(rmesh, clean);
   if(triangulate[0]) {
+    Message("Triangulation.");
     const bool success = PMP::triangulate_faces(mesh_0);
     if(!success) {
       Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
@@ -248,20 +264,23 @@ MeshT Union(const Rcpp::List rmeshes,
   for(size_t i = 1; i < nmeshes; i++) {
     if(i == 1) {
       checkMesh<MeshT>(meshes[0], 1);
+      Message("... done.\n");
     } else {
       checkMesh2<MeshT>(meshes[i - 1], "union");
     }
     const std::string meshnum = std::to_string(i + 1);
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
-    Message("Processing mesh n\u00b0" + std::to_string(i + 1) + "...\n");
+    Message("\u2014 Processing mesh n\u00b0" + meshnum + "...");
     MeshT mesh_i = makeSurfMesh<MeshT, PointT>(rmesh_i, clean);
     if(triangulate[i]) {
+      Message("Triangulation");
       const bool success = PMP::triangulate_faces(mesh_i);
       if(!success) {
         Rcpp::stop("Triangulation of mesh n\u00b0" + meshnum + " has failed.");
       }
     }
     checkMesh<MeshT>(mesh_i, i + 1);
+    Message("... done.\n");
     const bool ok =
         PMP::corefine_and_compute_union(meshes[i - 1], mesh_i, meshes[i]);
     if(!ok) {
@@ -297,9 +316,10 @@ Rcpp::List Union_Q(const Rcpp::List rmeshes,
   const size_t nmeshes = rmeshes.size();
   std::vector<QMesh3> meshes(nmeshes);
   Rcpp::List rmesh = Rcpp::as<Rcpp::List>(rmeshes(0));
-  Message("Processing mesh n\u00b01...\n");
+  Message("\u2014 Processing mesh n\u00b01...");
   QMesh3 mesh_0 = makeSurfQMesh(rmesh, clean);
   if(triangulate[0]) {
+    Message("Triangulation.");
     const bool success = PMP::triangulate_faces(mesh_0);
     if(!success) {
       Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
@@ -310,20 +330,23 @@ Rcpp::List Union_Q(const Rcpp::List rmeshes,
   for(size_t i = 1; i < nmeshes; i++) {
     if(i == 1) {
       checkMesh<QMesh3>(meshes[0], 1);
+      Message("... done.\n");
     } else {
       checkMesh2<QMesh3>(meshes[i - 1], "union");
     }
     const std::string meshnum = std::to_string(i + 1);
     Rcpp::List rmesh_i = Rcpp::as<Rcpp::List>(rmeshes(i));
-    Message("Processing mesh n\u00b0" + meshnum + "...\n");
+    Message("\u2014 Processing mesh n\u00b0" + meshnum + "...");
     QMesh3 mesh_i = makeSurfQMesh(rmesh_i, clean);
     if(triangulate[i]) {
+      Message("Triangulation.");
       const bool success = PMP::triangulate_faces(mesh_i);
       if(!success) {
         Rcpp::stop("Triangulation of mesh n\u00b0" + meshnum + " has failed.");
       }
     }
     checkMesh<QMesh3>(mesh_i, i + 1);
+    Message("... done.\n");
     const bool ok =
         PMP::corefine_and_compute_union(meshes[i - 1], mesh_i, meshes[i]);
     if(!ok) {
