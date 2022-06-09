@@ -269,8 +269,8 @@ Rcpp::IntegerMatrix getEdges2(MeshT mesh, const double epsilon) {
       col_i(2) = (int)exterior;
       Edges(Rcpp::_, i) = col_i;
       typename KernelT::FT el = PMP::edge_length(h0, mesh);
-      double elx = CGAL::to_double(el);
-      elMin = elMin < elx ? elMin : elx;
+      const double elx = CGAL::to_double(el);
+      elMin = (elMin > elx || elMin == 0) ? elx : elMin;
       elMax = elMax > elx ? elMax : elx;
       i++;
     }

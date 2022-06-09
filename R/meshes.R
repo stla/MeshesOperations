@@ -5,6 +5,9 @@ print.cgalMesh <- function(x, ...){
 	nf <- if(is.list(x[["faces"]])) length(x[["faces"]]) else nrow(x[["faces"]])
 	msg <- sprintf("Mesh with %d vertices and %d faces.\n", nv, nf)
 	cat(msg)
+	elr <- formatC(attr(x[["edges"]], "edgeLengthsRange"))
+	msg <- sprintf("The edge lengths vary from %s to %s.\n", elr[1L], elr[2L])
+	cat(msg)
 	is <- if(rgl == 3L) " is " else " is not "
 	msg <- paste0("This mesh", is, "triangle.\n")
 	cat(msg)
@@ -122,9 +125,9 @@ checkMesh <- function(vertices, faces, gmp, aslist){
 #' @param faces either an integer matrix (each row provides the vertex indices
 #'   of the corresponding face) or a list of integer vectors, each one
 #'   providing the vertex indices of the corresponding face
-#' @param mesh if not \code{NULL}, this argument takes precedence over \code{vertices} 
-#'   and \code{faces}, and must be either a list containing the fields \code{vertices} 
-#'   and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh 
+#' @param mesh if not \code{NULL}, this argument takes precedence over \code{vertices}
+#'   and \code{faces}, and must be either a list containing the fields \code{vertices}
+#'   and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh
 #'   (i.e. a \code{mesh3d} object)
 #' @param triangulate Boolean, whether to triangulate the faces
 #' @param clean Boolean, whether to clean the mesh (merging duplicated
@@ -222,7 +225,7 @@ checkMesh <- function(vertices, faces, gmp, aslist){
 #' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 #' shade3d(tmesh, color = "orange")
 Mesh <- function(
-		vertices, faces, mesh = NULL, triangulate = FALSE, clean = FALSE, 
+		vertices, faces, mesh = NULL, triangulate = FALSE, clean = FALSE,
 		normals = FALSE, numbersType = "double", epsilon = 0
 ){
 	numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
@@ -279,10 +282,13 @@ Mesh <- function(
 	}
 	mesh[["vertices"]] <- vertices
 	edges <- unname(t(mesh[["edges"]]))
+	elr <- attr(edges, "edgeLengthsRange")
 	exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
 	mesh[["exteriorEdges"]] <- exteriorEdges
 	mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-	mesh[["edges"]] <- edges[, c(1L, 2L)]
+	edges <- edges[, c(1L, 2L)]
+	attr(edges, "edgeLengthsRange") <- elr
+	mesh[["edges"]] <- edges
 	if(normals){
 		mesh[["normals"]] <- t(mesh[["normals"]])
 	}
