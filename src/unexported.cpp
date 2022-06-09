@@ -241,6 +241,8 @@ template <typename KernelT, typename MeshT, typename PointT>
 Rcpp::IntegerMatrix getEdges2(MeshT mesh, const double epsilon) {
   const size_t nedges = mesh.number_of_edges();
   Rcpp::IntegerMatrix Edges(3, nedges);
+  double elMin = 0;
+  double elMax = 0;
   {
     size_t i = 0;
     for(typename MeshT::Edge_index ed : mesh.edges()) {
@@ -266,8 +268,14 @@ Rcpp::IntegerMatrix getEdges2(MeshT mesh, const double epsilon) {
       }
       col_i(2) = (int)exterior;
       Edges(Rcpp::_, i) = col_i;
+      typename KernelT::FT el = PMP::edge_length(h0, mesh);
+      double elx = CGAL::to_double(el);
+      elMin = elMin < elx ? elMin : elx;
+      elMax = elMax > elx ? elMax : elx;
       i++;
     }
+    Rcpp::NumericVector edgesRange = Rcpp::NumericVector::create(elMin, elMax);
+    Edges.attr("edgeLengthsRange") = edgesRange;
   }
   Rcpp::CharacterVector rowNames =
       Rcpp::CharacterVector::create("i1", "i2", "exterior");
