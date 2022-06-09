@@ -1,20 +1,33 @@
-Package: MeshesOperations
 Type: Package
+Package: MeshesOperations
 Title: Operations on 3D Meshes
 Version: 0.0.9011
 Author: Stéphane Laurent
-Maintainer: Stéphane Laurent <stla@elude.in>
-Description: Uses the 'CGAL' C++ library to perform operations on 3D meshes: Boolean operations (intersection, union, difference), Minkowski sum, smoothing.
-Encoding: UTF-8
+Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
+Description: Uses the 'CGAL' C++ library to perform operations on 3D
+    meshes: Boolean operations (intersection, union, difference),
+    Minkowski sum, smoothing.
 License: GPL-3
-Imports: Rcpp (>= 1.0.7), rgl, Rvcg, data.table, gmp
-LinkingTo: Rcpp, RcppCGAL, RcppEigen
-Suggests: BH, misc3d, rmarchingcubes
-SystemRequirements: C++ 14, gmp, mpfr
 URL: https://github.com/stla/MeshesOperations
 BugReports: https://github.com/stla/MeshesOperations/issues
-RoxygenNote: 7.2.0
 Depends: 
     R (>= 3.1.0)
+Imports: 
+    data.table,
+    gmp,
+    Rcpp (>= 1.0.7),
+    rgl,
+    Rvcg
+Suggests: 
+    BH,
+    misc3d,
+    rmarchingcubes
+LinkingTo: 
+    Rcpp,
+    RcppCGAL,
+    RcppEigen
+Encoding: UTF-8
 LazyData: true
 LazyDataCompression: bzip2
+RoxygenNote: 7.2.0
+SystemRequirements: C++ 14, gmp, mpfr

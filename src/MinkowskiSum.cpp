@@ -11,8 +11,8 @@ Rcpp::List MinkowskiSumEK(const Rcpp::List rmesh1,
   EMesh3 mesh1 = makeSurfMesh<EMesh3, EPoint3>(rmesh1, true);
   Message("... done.\n");
   Message("\u2014 Processing mesh n\u00b02...");
-  Message("... done.\n");
   EMesh3 mesh2 = makeSurfMesh<EMesh3, EPoint3>(rmesh2, true);
+  Message("... done.\n");
   ENef3 nef1(mesh1);
   ENef3 nef2(mesh2);
   ENef3 nef = CGAL::minkowski_sum_3(nef1, nef2);
