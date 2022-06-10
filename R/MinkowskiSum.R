@@ -1,24 +1,24 @@
 #' @title Minkowski sum of two meshes
-#' @description Returns the mesh defined as the Minkowski sum of the 
+#' @description Returns the mesh defined as the Minkowski sum of the
 #'   two input meshes.
 #'
-#' @param mesh1,mesh2 two meshes, each one given either as a list containing 
-#'   (at least) the two fields \code{vertices} (numeric matrix with three columns) 
-#'   and \code{faces} (integer matrix or list of integer vectors), otherwise a 
+#' @param mesh1,mesh2 two meshes, each one given either as a list containing
+#'   (at least) the two fields \code{vertices} (numeric matrix with three columns)
+#'   and \code{faces} (integer matrix or list of integer vectors), otherwise a
 #'   \strong{rgl} mesh (i.e. a \code{mesh3d} object)
-#' @param triangulate Boolean, whether to triangulate the output mesh (note 
+#' @param triangulate Boolean, whether to triangulate the output mesh (note
 #'   that it is not necessarily triangle when the two input meshes are triangle)
-#' @param normals Boolean, whether to compute the vertex normals of the 
-#'   output mesh 
+#' @param normals Boolean, whether to compute the vertex normals of the
+#'   output mesh
 #'
 #' @return A mesh represented as the output of the \code{\link{Mesh}} function.
-#' 
+#'
 #' @export
 #'
 #' @importFrom data.table uniqueN
 #'
 #' @examples
-#' # example 1: octahedron + sphere 
+#' # example 1: octahedron + sphere
 #' library(MeshesOperations)
 #' library(rgl)
 #' library(Rvcg)
@@ -29,7 +29,7 @@
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(30, 30, zoom = 0.8)
 #' shade3d(rglmesh, color = "maroon")
-#' 
+#'
 #' # example2: truncated icosahedron + tetrahedron
 #' library(MeshesOperations)
 #' library(rgl)
@@ -50,7 +50,7 @@
 #' 		c(1L, 3L, 4L)
 #' )
 #' mesh2 <- list(vertices = vertices, faces = faces)
-#' # sum 
+#' # sum
 #' mesh <- MinkowskiSum(mesh1, mesh2, normals = FALSE)
 #' # plot
 #' rglmesh <- toRGL(mesh)
@@ -61,9 +61,13 @@
 MinkowskiSum <- function(mesh1, mesh2, triangulate = TRUE, normals = FALSE){
   stopifnot(isBoolean(normals))
   vft1 <- getVFT(mesh1)
+  triangulate1 <- !vft1[["isTriangle"]]
   vft2 <- getVFT(mesh2)
-  mesh <- 
-    MinkowskiSumEK(vft1[["rmesh"]], vft2[["rmesh"]], triangulate, normals)
+  triangulate2 <- !vft1[["isTriangle"]]
+  mesh <- MinkowskiSumEK(
+    vft1[["rmesh"]], vft2[["rmesh"]], triangulate, normals,
+    triangulate1, triangulate2
+  )
   mesh[["vertices"]] <- t(mesh[["vertices"]])
   toRGL <- FALSE
   faces <- mesh[["faces"]]

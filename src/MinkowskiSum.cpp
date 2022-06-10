@@ -6,12 +6,28 @@
 Rcpp::List MinkowskiSumEK(const Rcpp::List rmesh1,
                           const Rcpp::List rmesh2,
                           const bool triangulate,
-                          const bool normals) {
+                          const bool normals,
+                          const bool triangulate1,
+                          const bool triangulate2) {
   Message("\u2014 Processing mesh n\u00b01...");
   EMesh3 mesh1 = makeSurfMesh<EMesh3, EPoint3>(rmesh1, true);
+  if(triangulate1) {
+    Message("Triangulation.");
+    const bool success = PMP::triangulate_faces(mesh1);
+    if(!success) {
+      Rcpp::stop("Triangulation has failed.");
+    }
+  }
   Message("... done.\n");
   Message("\u2014 Processing mesh n\u00b02...");
   EMesh3 mesh2 = makeSurfMesh<EMesh3, EPoint3>(rmesh2, true);
+  if(triangulate2) {
+    Message("Triangulation.");
+    const bool success = PMP::triangulate_faces(mesh2);
+    if(!success) {
+      Rcpp::stop("Triangulation has failed.");
+    }
+  }
   Message("... done.\n");
   ENef3 nef1(mesh1);
   ENef3 nef2(mesh2);

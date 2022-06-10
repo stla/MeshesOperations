@@ -12,8 +12,8 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // MinkowskiSumEK
-Rcpp::List MinkowskiSumEK(const Rcpp::List rmesh1, const Rcpp::List rmesh2, const bool triangulate, const bool normals);
-RcppExport SEXP _MeshesOperations_MinkowskiSumEK(SEXP rmesh1SEXP, SEXP rmesh2SEXP, SEXP triangulateSEXP, SEXP normalsSEXP) {
+Rcpp::List MinkowskiSumEK(const Rcpp::List rmesh1, const Rcpp::List rmesh2, const bool triangulate, const bool normals, const bool triangulate1, const bool triangulate2);
+RcppExport SEXP _MeshesOperations_MinkowskiSumEK(SEXP rmesh1SEXP, SEXP rmesh2SEXP, SEXP triangulateSEXP, SEXP normalsSEXP, SEXP triangulate1SEXP, SEXP triangulate2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,7 +21,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::List >::type rmesh2(rmesh2SEXP);
     Rcpp::traits::input_parameter< const bool >::type triangulate(triangulateSEXP);
     Rcpp::traits::input_parameter< const bool >::type normals(normalsSEXP);
-    rcpp_result_gen = Rcpp::wrap(MinkowskiSumEK(rmesh1, rmesh2, triangulate, normals));
+    Rcpp::traits::input_parameter< const bool >::type triangulate1(triangulate1SEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate2(triangulate2SEXP);
+    rcpp_result_gen = Rcpp::wrap(MinkowskiSumEK(rmesh1, rmesh2, triangulate, normals, triangulate1, triangulate2));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -379,7 +381,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_MeshesOperations_MinkowskiSumEK", (DL_FUNC) &_MeshesOperations_MinkowskiSumEK, 4},
+    {"_MeshesOperations_MinkowskiSumEK", (DL_FUNC) &_MeshesOperations_MinkowskiSumEK, 6},
     {"_MeshesOperations_readFile", (DL_FUNC) &_MeshesOperations_readFile, 1},
     {"_MeshesOperations_writeFile", (DL_FUNC) &_MeshesOperations_writeFile, 5},
     {"_MeshesOperations_clipMeshEK", (DL_FUNC) &_MeshesOperations_clipMeshEK, 6},
