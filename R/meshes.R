@@ -283,6 +283,13 @@ Mesh <- function(
 	mesh[["vertices"]] <- vertices
 	edges <- unname(t(mesh[["edges"]]))
 	elr <- attr(edges, "edgeLengthsRange")
+	angles <- attr(edges, "angle")
+	edgesDF <- data.frame(
+	  i1    = edges[, 1L],
+	  i2    = edges[, 2L],
+	  angle = angles
+	)
+	mesh[["edgesDF"]] <- edgesDF
 	exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
 	mesh[["exteriorEdges"]] <- exteriorEdges
 	mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)

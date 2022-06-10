@@ -1,16 +1,17 @@
-library(MeshesOperations)
-library(SurfaceReconstruction)
-library(rgl)
+setwd("C:/SL/MyPackages/MeshesOperations/inst/trash")
 
-psr <- PoissonReconstruction(SolidMobiusStrip)
-shade3d(psr, color="yellow")
+mesh <- rgl::dodecahedron3d()
+vertices <- t(mesh$vb[-4L, ])
+faces <- t(mesh$it)
+MeshesOperations:::writeFile(
+  "dodecahedron.off",
+  FALSE,
+  17L,
+  t(vertices),
+  split(faces, 1:nrow(faces))
+)
 
-ms <- MinkowskiSum(scale3d(cube3d(),1/8,1/8,1/8), psr, normals = TRUE)
-rms <- toRGL(ms)
-shade3d(rms, color="yellow")
-wire3d(rms)
 
-################################################################################
 vertices <- rbind(
   c(1.61352, -0.43234, 1.1862),
   c(1.18118, -1.18118, 1.1862),
@@ -75,6 +76,7 @@ vertices <- rbind(
   c(0, 0, 2.04922),
   c(0, 0, -2.04922)
 )
+
 triangles <- lapply(list(
   c(36,60,47),
   c(37,60,36),
@@ -101,6 +103,7 @@ triangles <- lapply(list(
   c(58,61,57),
   c(59,61,58)
 ), function(x) x+1)
+
 quads <- lapply(list(
   c(0,11,24,35),
   c(10,25,24,11),
@@ -151,20 +154,13 @@ quads <- lapply(list(
   c(21,22,59,58),
   c(22,23,48,59)
 ), function(x) x+1)
+
 faces <- c(triangles, quads)
-mesh <- list(vertices = vertices, faces = faces)
 
-library(MeshesOperations)
-library(rgl)
-tLeo <- Mesh(mesh = mesh, triangulate = TRUE)
-ms <- MinkowskiSum(dodecahedron3d(), tLeo, triangulate = TRUE) #MinkowskiSum(octahedron3d(), mesh)
-x <- Mesh(mesh = ms)
-x$edgesDF
-edges <- as.matrix(subset(x$edgesDF, angle < 179))[, c("i1", "i2")]
-
-rms <- toRGL(ms)
-open3d(windowRect = c(50, 50, 562, 562), zoom = 0.8)
-shade3d(rms, color="navy")
-plotEdges(ms[["vertices"]], edges, color = "gold",
-          tubesRadius = 0.06, spheresRadius = 0.08)
-
+MeshesOperations:::writeFile(
+  "leonardo.off",
+  FALSE,
+  6L,
+  t(vertices),
+  faces
+)

@@ -49,8 +49,10 @@ std::vector<PointT> matrix_to_points3(const Rcpp::NumericMatrix M) {
   return points;
 }
 
-template std::vector<Point3> matrix_to_points3<Point3>(const Rcpp::NumericMatrix);
-template std::vector<EPoint3> matrix_to_points3<EPoint3>(const Rcpp::NumericMatrix);
+template std::vector<Point3> matrix_to_points3<Point3>(
+    const Rcpp::NumericMatrix);
+template std::vector<EPoint3> matrix_to_points3<EPoint3>(
+    const Rcpp::NumericMatrix);
 
 std::vector<QPoint3> matrix_to_qpoints3(const Rcpp::CharacterMatrix M) {
   const size_t npoints = M.ncol();
@@ -111,9 +113,8 @@ MeshT soup2mesh(std::vector<PointT> points,
     Message("The mesh is triangle.");
   } else {
     Message(
-      "The mesh is not triangle; no way to ensure it bounds a volume "
-      "and whether it is outward oriented."
-    );
+        "The mesh is not triangle; no way to ensure it bounds a volume "
+        "and whether it is outward oriented.");
   }
   if(CGAL::is_closed(mesh)) {
     Message("The mesh is closed.");
@@ -241,6 +242,8 @@ template <typename KernelT, typename MeshT, typename PointT>
 Rcpp::IntegerMatrix getEdges2(MeshT mesh, const double epsilon) {
   const size_t nedges = mesh.number_of_edges();
   Rcpp::IntegerMatrix Edges(3, nedges);
+  Rcpp::NumericVector TthdVol(nedges);
+  Rcpp::NumericVector Angle(nedges);
   double elMin = 0;
   double elMax = 0;
   {
@@ -258,13 +261,17 @@ Rcpp::IntegerMatrix getEdges2(MeshT mesh, const double epsilon) {
       points[2] = mesh.point(mesh.target(mesh.next(h0)));
       typename MeshT::Halfedge_index h1 = mesh.halfedge(ed, 1);
       points[3] = mesh.point(mesh.target(mesh.next(h1)));
+      typename KernelT::FT angle = CGAL::abs(CGAL::approximate_dihedral_angle(
+          points[0], points[1], points[2], points[3]));
+      Angle(i) = CGAL::to_double(angle);
+      typename KernelT::FT vol =
+          CGAL::abs(CGAL::volume(points[0], points[1], points[2], points[3]));
+      TthdVol(i) = CGAL::to_double(vol);
       bool exterior;
       if(epsilon == 0) {
         exterior = !CGAL::coplanar(points[0], points[1], points[2], points[3]);
       } else {
-        typename KernelT::FT vol =
-            CGAL::volume(points[0], points[1], points[2], points[3]);
-        exterior = CGAL::abs(vol) > epsilon;
+        exterior = vol > epsilon;
       }
       col_i(2) = (int)exterior;
       Edges(Rcpp::_, i) = col_i;
@@ -276,6 +283,8 @@ Rcpp::IntegerMatrix getEdges2(MeshT mesh, const double epsilon) {
     }
     Rcpp::NumericVector edgesRange = Rcpp::NumericVector::create(elMin, elMax);
     Edges.attr("edgeLengthsRange") = edgesRange;
+    Edges.attr("angle") = Angle;
+    Edges.attr("tthdVol") = TthdVol;
   }
   Rcpp::CharacterVector rowNames =
       Rcpp::CharacterVector::create("i1", "i2", "exterior");
