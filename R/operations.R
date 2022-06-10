@@ -126,11 +126,12 @@ MeshesIntersection <- function(
     vertices <- t(inter[["vertices"]])
   }
   inter[["vertices"]] <- vertices
-  edges <- unname(t(inter[["edges"]]))
-  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+  edgesDF <- inter[["edges"]]
+  inter[["edgesDF"]] <- edgesDF
+  inter[["edges"]] <- as.matrix(edgesDF[, c("i1", "i2")])
+  exteriorEdges <- subset(edgesDF, exterior)[, c("i1", "i2")]
   inter[["exteriorEdges"]] <- exteriorEdges
   inter[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-  inter[["edges"]] <- edges[, c(1L, 2L)]
   inter[["faces"]] <- t(inter[["faces"]])
   if(normals){
     inter[["normals"]] <- t(inter[["normals"]])
@@ -237,11 +238,12 @@ MeshesDifference <- function(
     vertices <- t(differ[["vertices"]])
   }
   differ[["vertices"]] <- vertices
-  edges <- unname(t(differ[["edges"]]))
-  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+  edgesDF <- differ[["edges"]]
+  differ[["edgesDF"]] <- edgesDF
+  differ[["edges"]] <- as.matrix(edgesDF[, c("i1", "i2")])
+  exteriorEdges <- subset(edgesDF, exterior)[, c("i1", "i2")]
   differ[["exteriorEdges"]] <- exteriorEdges
   differ[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-  differ[["edges"]] <- edges[, c(1L, 2L)]
   differ[["faces"]] <- t(differ[["faces"]])
   if(normals){
     differ[["normals"]] <- t(differ[["normals"]])
@@ -333,11 +335,12 @@ MeshesUnion <- function(
     vertices <- t(umesh[["vertices"]])
   }
   umesh[["vertices"]] <- vertices
-  edges <- unname(t(umesh[["edges"]]))
-  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+  edgesDF <- umesh[["edges"]]
+  umesh[["edgesDF"]] <- edgesDF
+  umesh[["edges"]] <- as.matrix(edgesDF[, c("i1", "i2")])
+  exteriorEdges <- subset(edgesDF, exterior)[, c("i1", "i2")]
   umesh[["exteriorEdges"]] <- exteriorEdges
   umesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-  umesh[["edges"]] <- edges[, c(1L, 2L)]
   umesh[["faces"]] <- t(umesh[["faces"]])
   if(normals){
     umesh[["normals"]] <- t(umesh[["normals"]])

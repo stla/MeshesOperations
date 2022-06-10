@@ -81,16 +81,19 @@ MinkowskiSum <- function(mesh1, mesh2, triangulate = TRUE, normals = FALSE){
   }else if(usizes == 2L && all(sizes %in% c(3L, 4L))){
     toRGL <- 34L
   }
-  edges <- unname(t(mesh[["edges"]]))
-  exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+  edgesDF <- mesh[["edges"]]
+  mesh[["edgesDF"]] <- edgesDF
+  mesh[["edges"]] <- as.matrix(edgesDF[, c("i1", "i2")])
+  exteriorEdges <- subset(edgesDF, exterior)[, c("i1", "i2")]
   mesh[["exteriorEdges"]] <- exteriorEdges
   mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-  mesh[["edges"]] <- edges[, c(1L, 2L)]
   if(normals){
     mesh[["normals"]] <- t(mesh[["normals"]])
   }
 	if(triangulate){
-		mesh[["edges0"]] <- t(mesh[["edges0"]][-3L, ])
+	  edges0DF <- mesh[["edges0"]]
+	  mesh[["edges0DF"]] <- edges0DF
+	  mesh[["edges0"]] <- as.matrix(edges0DF[, c("i1", "i2")])
 	}
   attr(mesh, "toRGL") <- toRGL
   class(mesh) <- "cgalMesh"
