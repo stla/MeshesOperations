@@ -16,7 +16,7 @@ Rcpp::List MinkowskiSumEK(const Rcpp::List rmesh1,
   ENef3 nef1(mesh1);
   ENef3 nef2(mesh2);
   ENef3 nef = CGAL::minkowski_sum_3(nef1, nef2);
-  Rcpp::IntegerMatrix Edges0;
+  Rcpp::DataFrame Edges0;
   if(triangulate) {
     EMesh3 mesh0;
     CGAL::convert_nef_polyhedron_to_polygon_mesh(nef, mesh0, false);

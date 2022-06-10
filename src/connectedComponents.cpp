@@ -25,7 +25,7 @@ Rcpp::List connectedComponentsK(const Rcpp::List rmesh0,
   Rcpp::List cc_rmeshes(ncc);
   size_t i = 0;
   for(auto mesh = cc_meshes.begin(); mesh != cc_meshes.end(); ++mesh) {
-    Rcpp::IntegerMatrix Edges0;
+    Rcpp::DataFrame Edges0;
     Rcpp::NumericMatrix Normals0;
     if(really_triangulate) {
       Edges0 = getEdges2<K, Mesh3, Point3>(*mesh, epsilon);
@@ -75,7 +75,7 @@ Rcpp::List connectedComponentsEK(const Rcpp::List rmesh0,
   Rcpp::List cc_rmeshes(ncc);
   size_t i = 0;
   for(auto mesh = cc_meshes.begin(); mesh != cc_meshes.end(); ++mesh) {
-    Rcpp::IntegerMatrix Edges0;
+    Rcpp::DataFrame Edges0;
     Rcpp::NumericMatrix Normals0;
     if(really_triangulate) {
       Edges0 = getEdges2<EK, EMesh3, EPoint3>(*mesh, epsilon);
@@ -125,7 +125,7 @@ Rcpp::List connectedComponentsQ(const Rcpp::List rmesh0,
   Rcpp::List cc_rmeshes(ncc);
   size_t i = 0;
   for(auto mesh = cc_meshes.begin(); mesh != cc_meshes.end(); ++mesh) {
-    Rcpp::IntegerMatrix Edges0;
+    Rcpp::DataFrame Edges0;
     Rcpp::NumericMatrix Normals0;
     if(really_triangulate) {
       Edges0 = getEdges2<QK, QMesh3, QPoint3>(*mesh, epsilon);

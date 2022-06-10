@@ -12,7 +12,7 @@ Rcpp::List SurfMesh(const Rcpp::List rmesh,
   Message("\u2014 Processing mesh...");
   Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, clean);
   const bool really_triangulate = !isTriangle && triangulate;
-  Rcpp::IntegerMatrix Edges0;
+  Rcpp::DataFrame Edges0;
   Rcpp::NumericMatrix Normals0;
   if(really_triangulate) {
     Edges0 = getEdges2<K, Mesh3, Point3>(mesh, epsilon);
@@ -46,7 +46,7 @@ Rcpp::List SurfEMesh(const Rcpp::List rmesh,
   Message("\u2014 Processing mesh...");
   EMesh3 mesh = makeSurfMesh<EMesh3, EPoint3>(rmesh, clean);
   const bool really_triangulate = !isTriangle && triangulate;
-  Rcpp::IntegerMatrix Edges0;
+  Rcpp::DataFrame Edges0;
   Rcpp::NumericMatrix Normals0;
   if(really_triangulate) {
     Edges0 = getEdges2<EK, EMesh3, EPoint3>(mesh, epsilon);
@@ -80,7 +80,7 @@ Rcpp::List SurfQMesh(const Rcpp::List rmesh,
   Message("\u2014 Processing mesh...");
   QMesh3 mesh = makeSurfQMesh(rmesh, clean);
   const bool really_triangulate = !isTriangle && triangulate;
-  Rcpp::IntegerMatrix Edges0;
+  Rcpp::DataFrame Edges0;
   Rcpp::NumericMatrix Normals0;
   if(really_triangulate) {
     Edges0 = getEdges2<QK, QMesh3, QPoint3>(mesh, epsilon);

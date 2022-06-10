@@ -130,7 +130,7 @@ QMesh3 makeSurfQMesh(const Rcpp::List, const bool);
 QMesh3 makeSurfTQMesh(const Rcpp::List, const bool);
 
 template <typename KernelT, typename MeshT, typename PointT>
-Rcpp::IntegerMatrix getEdges2(MeshT, const double);
+Rcpp::DataFrame getEdges2(MeshT, const double);
 
 Rcpp::NumericMatrix getKNormals(Mesh3);
 Rcpp::NumericMatrix getEKNormals(EMesh3);
