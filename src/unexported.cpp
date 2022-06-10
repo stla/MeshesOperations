@@ -266,7 +266,7 @@ Rcpp::DataFrame getEdges2(MeshT mesh, const double epsilon) {
       typename KernelT::FT angle = CGAL::abs(CGAL::approximate_dihedral_angle(
           points[0], points[1], points[2], points[3]));
       Angle(i) = CGAL::to_double(angle);
-      Exterior(i) = angle > 179.0 && angle < 181.0;
+      Exterior(i) = angle < 179.0 || angle > 181.0;
       // typename KernelT::FT vol =
       //     CGAL::abs(CGAL::volume(points[0], points[1], points[2], points[3]));
       // TthdVol(i) = CGAL::to_double(vol);
