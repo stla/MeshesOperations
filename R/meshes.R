@@ -293,7 +293,7 @@ Mesh <- function(
 	edgesDF <- mesh[["edges"]]
 	mesh[["edgesDF"]] <- edgesDF
 	mesh[["edges"]] <- as.matrix(edgesDF[, c("i1", "i2")])
-	exteriorEdges <- subset(edgesDF, exterior)[, c("i1", "i2")]
+	exteriorEdges <- as.matrix(subset(edgesDF, exterior)[, c("i1", "i2")])
 	mesh[["exteriorEdges"]] <- exteriorEdges
 	mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
 	if(normals){
