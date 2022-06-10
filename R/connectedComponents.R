@@ -8,9 +8,9 @@
 #' @param faces either an integer matrix (each row provides the vertex indices
 #'   of the corresponding face) or a list of integer vectors, each one
 #'   providing the vertex indices of the corresponding face
-#' @param mesh if not \code{NULL}, this argument takes precedence over \code{vertices} 
-#'   and \code{faces}, and must be either a list containing the fields \code{vertices} 
-#'   and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh 
+#' @param mesh if not \code{NULL}, this argument takes precedence over \code{vertices}
+#'   and \code{faces}, and must be either a list containing the fields \code{vertices}
+#'   and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh
 #'   (i.e. a \code{mesh3d} object)
 #' @param triangulate Boolean, whether to triangulate the faces
 #' @param clean Boolean, whether to clean the mesh (merging duplicated
@@ -66,7 +66,7 @@
 #' shade3d(tmesh1, color = "green", back = "culled")
 #' shade3d(tmesh2, color = "red", back = "culled")
 connectedComponents <- function(
-    vertices, faces, mesh = NULL, triangulate = FALSE, clean = FALSE, 
+    vertices, faces, mesh = NULL, triangulate = FALSE, clean = FALSE,
 	normals = FALSE, numbersType = "double", epsilon = 0
 ){
   numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
@@ -117,16 +117,19 @@ connectedComponents <- function(
       vertices <- t(mesh[["vertices"]])
     }
     mesh[["vertices"]] <- vertices
-    edges <- unname(t(mesh[["edges"]]))
-    exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+    edgesDF <- mesh[["edges"]]
+    mesh[["edgesDF"]] <- edgesDF
+    mesh[["edges"]] <- as.matrix(edgesDF[, c("i1", "i2")])
+    exteriorEdges <- as.matrix(subset(edgesDF, exterior)[, c("i1", "i2")])
     mesh[["exteriorEdges"]] <- exteriorEdges
     mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-    mesh[["edges"]] <- edges[, c(1L, 2L)]
     if(normals){
       mesh[["normals"]] <- t(mesh[["normals"]])
     }
     if(triangulate){
-      mesh[["edges0"]] <- t(mesh[["edges0"]])
+      edges0DF <- mesh[["edges0"]]
+      mesh[["edges0DF"]] <- edges0DF
+      mesh[["edges0"]] <- as.matrix(edges0DF[, c("i1", "i2")])
       if(normals){
         mesh[["normals0"]] <- t(mesh[["normals0"]])
       }

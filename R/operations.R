@@ -129,7 +129,7 @@ MeshesIntersection <- function(
   edgesDF <- inter[["edges"]]
   inter[["edgesDF"]] <- edgesDF
   inter[["edges"]] <- as.matrix(edgesDF[, c("i1", "i2")])
-  exteriorEdges <- subset(edgesDF, exterior)[, c("i1", "i2")]
+  exteriorEdges <- as.matrix(subset(edgesDF, exterior)[, c("i1", "i2")])
   inter[["exteriorEdges"]] <- exteriorEdges
   inter[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
   inter[["faces"]] <- t(inter[["faces"]])
@@ -241,7 +241,7 @@ MeshesDifference <- function(
   edgesDF <- differ[["edges"]]
   differ[["edgesDF"]] <- edgesDF
   differ[["edges"]] <- as.matrix(edgesDF[, c("i1", "i2")])
-  exteriorEdges <- subset(edgesDF, exterior)[, c("i1", "i2")]
+  exteriorEdges <- as.matrix(subset(edgesDF, exterior)[, c("i1", "i2")])
   differ[["exteriorEdges"]] <- exteriorEdges
   differ[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
   differ[["faces"]] <- t(differ[["faces"]])
@@ -338,7 +338,7 @@ MeshesUnion <- function(
   edgesDF <- umesh[["edges"]]
   umesh[["edgesDF"]] <- edgesDF
   umesh[["edges"]] <- as.matrix(edgesDF[, c("i1", "i2")])
-  exteriorEdges <- subset(edgesDF, exterior)[, c("i1", "i2")]
+  exteriorEdges <- as.matrix(subset(edgesDF, exterior)[, c("i1", "i2")])
   umesh[["exteriorEdges"]] <- exteriorEdges
   umesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
   umesh[["faces"]] <- t(umesh[["faces"]])

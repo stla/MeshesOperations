@@ -124,11 +124,12 @@ clipMesh <- function(mesh, clipper, clipVolume = TRUE, normals = FALSE){
 	# }
 	mesh[["vertices"]] <- t(mesh[["vertices"]])
 	mesh[["faces"]] <- t(mesh[["faces"]])
-	edges <- unname(t(mesh[["edges"]]))
-	exteriorEdges <- edges[edges[, 3L] == 1L, c(1L, 2L)]
+	edgesDF <- mesh[["edges"]]
+	mesh[["edgesDF"]] <- edgesDF
+	mesh[["edges"]] <- as.matrix(edgesDF[, c("i1", "i2")])
+	exteriorEdges <- as.matrix(subset(edgesDF, exterior)[, c("i1", "i2")])
 	mesh[["exteriorEdges"]] <- exteriorEdges
 	mesh[["exteriorVertices"]] <- which(table(exteriorEdges) != 2L)
-	mesh[["edges"]] <- edges[, c(1L, 2L)]
 	if(normals){
 		mesh[["normals"]] <- t(mesh[["normals"]])
 	}
