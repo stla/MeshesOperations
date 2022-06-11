@@ -80,6 +80,9 @@
 
 #include <CGAL/Polygon_mesh_processing/clip.h>
 
+#include <CGAL/property_map.h>
+#include <boost/iterator/transform_iterator.hpp>
+
 // #include <algorithm>
 // #include <array>
 // #include <map>

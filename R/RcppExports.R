@@ -29,6 +29,10 @@ connectedComponentsQ <- function(rmesh0, isTriangle, triangulate, clean, normals
     .Call(`_MeshesOperations_connectedComponentsQ`, rmesh0, isTriangle, triangulate, clean, normals)
 }
 
+distanceK <- function(rmesh, points, triangulate) {
+    .Call(`_MeshesOperations_distanceK`, rmesh, points, triangulate)
+}
+
 meshVolumeK <- function(rmesh, triangulate) {
     .Call(`_MeshesOperations_meshVolumeK`, rmesh, triangulate)
 }
