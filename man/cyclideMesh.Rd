@@ -22,6 +22,20 @@ A triangle \strong{rgl} mesh (class \code{mesh3d}) if
 \description{
 Triangle mesh of a Dupin cyclide.
 }
+\details{
+The Dupin cyclide in the plane z=0:
+
+\if{html}{
+
+  \out{<div style="text-align: center">}\figure{cyclide.png}{options: style="max-width:75\%;"}\out{</div>}
+
+}
+\if{latex}{
+
+  \out{\begin{center}}\figure{cyclide.png}\out{\end{center}}
+
+}
+}
 \examples{
 library(MeshesOperations)
 library(rgl)

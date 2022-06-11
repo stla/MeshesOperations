@@ -1,10 +1,10 @@
+
+# cyclide example ####
 library(MeshesOperations)
-
-
-mesh <- cyclideMesh(a = 1, c = 0.32, mu = 0.80, nu=350, nv=350)
-points <- c(0, 0, 0.32)
-
-distancesToMesh(mesh, points) # should be a - mu = 40
+a <- 100; c <- 30; mu <- 80
+mesh <- cyclideMesh(a, c, mu, nu = 100L, nv = 100L)
+points <- c(c, 0, 0)
+distancesToMesh(mesh, points) # should be a - mu = 20
 
 rgl::shade3d(mesh); rgl::points3d(rbind(c(0,0,0)), size=5)
 

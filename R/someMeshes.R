@@ -109,6 +109,21 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
 #' @return A triangle \strong{rgl} mesh (class \code{mesh3d}) if
 #'   \code{rgl=TRUE}, otherwise a \code{cgalMesh} list (vertices, faces,
 #'   and normals).
+#'
+#' @details The Dupin cyclide in the plane z=0:
+#'
+#' \if{html}{
+#'
+#'   \out{<div style="text-align: center">}\figure{cyclide.png}{options: style="max-width:75\%;"}\out{</div>}
+#'
+#' }
+#' \if{latex}{
+#'
+#'   \out{\begin{center}}\figure{cyclide.png}\out{\end{center}}
+#'
+#' }
+
+#'
 #' @export
 #'
 #' @importFrom rgl tmesh3d
@@ -141,9 +156,15 @@ cyclideMesh <- function(a, c, mu, nu = 90, nv = 40, rgl = TRUE){
   h <- (c * c) / ((a - c) * (mu - c) + bb)
   r <- (h * (mu - c)) / ((a + c) * (mu - c) + bb)
   R <- (h * (a - c)) / ((a - c) * (mu + c) + bb)
-  omegaT <- omega - (b2 * (omega - c)) /
-    ((a - c) * (mu + omega) - b2) /
-    ((a + c) * (omega - c) + b2)
+  bb2 <- b2 * (mu * mu - c * c)
+  denb1 <- c * (a*c - mu*c + c*c - a*mu - bb)
+  b1 <- (a*mu*(c-mu)*(a+c) - bb2 + c*c + bb*(c*(a-mu+c) - 2*a*mu))/denb1
+  denb2 <- c * (a*c - mu*c - c*c + a*mu + bb)
+  b2 <- (a*mu*(c+mu)*(a-c) + bb2 - c*c + bb*(c*(a-mu-c) + 2*a*mu))/denb2
+  omegaT <- (b1 + b2)/2
+  # omegaT <- omega - (b2 * (omega - c)) /
+  #   ((a - c) * (mu + omega) - b2) /
+  #   ((a + c) * (omega - c) + b2)
   OmegaT <- c(omegaT, 0, 0)
   tormesh <- torusMesh(R, r, nu, nv, rgl = FALSE)
   rtnormals <- r * tormesh[["normals"]]
