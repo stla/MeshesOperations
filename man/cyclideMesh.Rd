@@ -39,9 +39,11 @@ The Dupin cyclide in the plane \emph{z=0}:
 \examples{
 library(MeshesOperations)
 library(rgl)
-mesh <- cyclideMesh(a = 0.97, c = 0.32, mu = 0.56)
+mesh <- cyclideMesh(a = 97, c = 32, mu = 57)
+sphere <- sphereMesh(x = 32, y = 0, z = 0, r = 40)
 open3d(windowRect = c(50, 50, 562, 562))
 view3d(0, 0, zoom = 0.75)
 shade3d(mesh, color = "chartreuse")
 wire3d(mesh)
+shade3d(sphere, color = "red")
 }

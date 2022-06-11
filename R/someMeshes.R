@@ -81,19 +81,17 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
   k_ <- k1 + j_
   tris1[, k_] <- rbind(j_, l_, k_)
   tris2[, k_] <- rbind(j_, jp1_, l_)
+  tmesh <- tmesh3d(
+    vertices = vs,
+    indices = cbind(tris1, tris2),
+    normals = normals,
+    homogeneous = FALSE
+  )
   if(rgl){
-    tmesh3d(
-      vertices = vs,
-      indices = cbind(tris1, tris2),
-      normals = normals,
-      homogeneous = FALSE
-    )
+    tmesh
   }else{
-    out <- list(
-      "vertices" = t(vs), "faces" = t(cbind(tris1, tris2)), "normals" = normals
-    )
-    attr(out, "toRGL") <- 3L
-    class(out) <- "cgalMesh"
+    out <- Mesh(mesh = tmesh)
+    out[["normals"]] <- normals
     out
   }
 }
@@ -131,11 +129,13 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
 #' @examples
 #' library(MeshesOperations)
 #' library(rgl)
-#' mesh <- cyclideMesh(a = 0.97, c = 0.32, mu = 0.56)
+#' mesh <- cyclideMesh(a = 97, c = 32, mu = 57)
+#' sphere <- sphereMesh(x = 32, y = 0, z = 0, r = 40)
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(0, 0, zoom = 0.75)
 #' shade3d(mesh, color = "chartreuse")
 #' wire3d(mesh)
+#' shade3d(sphere, color = "red")
 cyclideMesh <- function(a, c, mu, nu = 90L, nv = 40L, rgl = TRUE){
   stopifnot(c > 0, a > mu, mu > c)
   stopifnot(nu >= 3, nv >= 3)
@@ -181,21 +181,17 @@ cyclideMesh <- function(a, c, mu, nu = 90L, nv = 40L, rgl = TRUE){
       normals[k, ] <- foo / sqrt(c(crossprod(foo)))
     }
   }
+  tmesh <- tmesh3d(
+    vertices    = vertices,
+    indices     = t(tormesh[["faces"]]),
+    normals     = normals,
+    homogeneous = FALSE
+  )
   if(rgl){
-    tmesh3d(
-      vertices    = vertices,
-      indices     = t(tormesh[["faces"]]),
-      normals     = normals,
-      homogeneous = FALSE
-    )
+    tmesh
   }else{
-    out <- list(
-      "vertices" = t(vertices),
-      "faces"    = tormesh[["faces"]],
-      "normals"  = normals
-    )
-    attr(out, "toRGL") <- 3L
-    class(out) <- "cgalMesh"
+    out <- Mesh(mesh = tmesh)
+    out[["normals"]] <- normals
     out
   }
 }
@@ -300,13 +296,26 @@ HopfTorusMesh <- function(
   if(rgl){
     rglmesh
   }else{
-    out <- list(
-      "vertices" = t(vs),
-      "faces"    = rbind(tris1, tris2),
-      "normals"  = rglmesh[["normals"]]
-    )
-    attr(out, "toRGL") <- 3L
-    class(out) <- "cgalMesh"
+    out <- Mesh(mesh = rglmesh)
+    out[["normals"]] <- t(rglmesh[["normals"]][1L:3L, ])
     out
   }
+}
+
+#' @title Sphere mesh
+#' @description Mesh of a sphere.
+#'
+#' @param x,y,z coordinates of the center
+#' @param r radius
+#' @param iterations number of iterations
+#'
+#' @return A \strong{rgl} mesh (class \code{mesh3d}).
+#' @export
+#'
+#' @importFrom rgl translate3d scale3d
+#' @importFrom Rvcg vcgSphere
+sphereMesh <- function(x = 0, y = 0, z = 0, r = 1, iterations = 3L){
+  translate3d(
+    scale3d(vcgSphere(iterations), r, r, r), x, y, z
+  )
 }
