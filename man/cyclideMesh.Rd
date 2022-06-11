@@ -4,11 +4,11 @@
 \alias{cyclideMesh}
 \title{Cyclide mesh}
 \usage{
-cyclideMesh(a, c, mu, nu = 90, nv = 40, rgl = TRUE)
+cyclideMesh(a, c, mu, nu = 90L, nv = 40L, rgl = TRUE)
 }
 \arguments{
 \item{a, c, mu}{cyclide parameters, positive numbers such that
-\code{c < a} and \code{c < mu}}
+\code{c < mu < a}}
 
 \item{nu, nv}{numbers of subdivisions, integers (at least 3)}
 
@@ -23,7 +23,7 @@ A triangle \strong{rgl} mesh (class \code{mesh3d}) if
 Triangle mesh of a Dupin cyclide.
 }
 \details{
-The Dupin cyclide in the plane z=0:
+The Dupin cyclide in the plane \emph{z=0}:
 
 \if{html}{
 

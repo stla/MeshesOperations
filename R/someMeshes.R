@@ -102,7 +102,7 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
 #' @description Triangle mesh of a Dupin cyclide.
 #'
 #' @param a,c,mu cyclide parameters, positive numbers such that
-#'   \code{c < a} and \code{c < mu}
+#'   \code{c < mu < a}
 #' @param nu,nv numbers of subdivisions, integers (at least 3)
 #' @param rgl Boolean, whether to return a \strong{rgl} mesh
 #'
@@ -110,7 +110,7 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
 #'   \code{rgl=TRUE}, otherwise a \code{cgalMesh} list (vertices, faces,
 #'   and normals).
 #'
-#' @details The Dupin cyclide in the plane z=0:
+#' @details The Dupin cyclide in the plane \emph{z=0}:
 #'
 #' \if{html}{
 #'
@@ -136,8 +136,8 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
 #' view3d(0, 0, zoom = 0.75)
 #' shade3d(mesh, color = "chartreuse")
 #' wire3d(mesh)
-cyclideMesh <- function(a, c, mu, nu = 90, nv = 40, rgl = TRUE){
-  stopifnot(c > 0, a > c, mu > c)
+cyclideMesh <- function(a, c, mu, nu = 90L, nv = 40L, rgl = TRUE){
+  stopifnot(c > 0, a > mu, mu > c)
   stopifnot(nu >= 3, nv >= 3)
   stopifnot(isBoolean(rgl))
   nu <- as.integer(nu)

@@ -35,7 +35,7 @@ distancesToMesh(mesh, points) # should be 1 and 0
 library(MeshesOperations)
 a <- 100; c <- 30; mu <- 80
 mesh <- cyclideMesh(a, c, mu, nu = 100L, nv = 100L)
-points <- c(c, 0, 0)
+O2 <- c(c, 0, 0)
 # should be a - mu = 20 (see ?cyclideMesh):
-distancesToMesh(mesh, points)
+distancesToMesh(mesh, O2)
 }
