@@ -138,10 +138,6 @@ checkMesh <- function(vertices, faces, gmp, aslist){
 #'   (a type provided by CGAL for exact computations), or \code{"gmp"}
 #'   (exact computations with rational numbers); using exact computations can
 #'   improve the detection of the exterior edges
-#' @param epsilon if the mesh is triangulated or if \code{triangulate=TRUE},
-#'   then \code{epsilon} is used in the detection of exterior edges (see the
-#'   \strong{Value} section); the higher value of \code{epsilon}, the lower
-#'   number of exterior edges
 #'
 #' @return A list giving the vertices, the edges, the faces of the mesh, the
 #'   exterior edges, the exterior vertices and optionally the normals. This
@@ -227,11 +223,10 @@ checkMesh <- function(vertices, faces, gmp, aslist){
 #' shade3d(tmesh, color = "orange")
 Mesh <- function(
 		vertices, faces, mesh = NULL, triangulate = FALSE, clean = FALSE,
-		normals = FALSE, numbersType = "double", epsilon = 0
+		normals = FALSE, numbersType = "double"
 ){
 	numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
 	gmp <- numbersType == "gmp"
-	stopifnot(epsilon >= 0)
 	if(!is.null(mesh)){
 		if(inherits(mesh, "mesh3d")){
 			vft  <- getVFT(mesh, beforeCheck = TRUE)
@@ -248,15 +243,15 @@ Mesh <- function(
 	rmesh <- list("vertices" = vertices, "faces" = faces)
 	if(numbersType == "double"){
 		mesh <- SurfMesh(
-				rmesh, isTriangle, triangulate, clean, normals, epsilon
+				rmesh, isTriangle, triangulate, clean, normals
 		)
 	}else if(numbersType == "lazyExact"){
 		mesh <- SurfEMesh(
-				rmesh, isTriangle, triangulate, clean, normals, epsilon
+				rmesh, isTriangle, triangulate, clean, normals
 		)
 	}else{
 		mesh <- SurfQMesh(
-				rmesh, isTriangle, triangulate, clean, normals, epsilon
+				rmesh, isTriangle, triangulate, clean, normals
 		)
 	}
 	if(triangulate && isTriangle){

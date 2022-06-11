@@ -83,7 +83,7 @@ Rcpp::List Intersection_K(const Rcpp::List rmeshes,
                           const Rcpp::LogicalVector triangulate) {
   Mesh3 mesh =
       Intersection<K, Mesh3, Point3>(rmeshes, clean, false, triangulate);
-  return RSurfTKMesh(mesh, normals, 0);
+  return RSurfTKMesh(mesh, normals);
 }
 
 // [[Rcpp::export]]
@@ -93,7 +93,7 @@ Rcpp::List Intersection_EK(const Rcpp::List rmeshes,
                            const Rcpp::LogicalVector triangulate) {
   EMesh3 mesh =
       Intersection<EK, EMesh3, EPoint3>(rmeshes, clean, true, triangulate);
-  return RSurfTEKMesh(mesh, normals, 0);
+  return RSurfTEKMesh(mesh, normals);
 }
 
 // [[Rcpp::export]]
@@ -141,7 +141,7 @@ Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
       Rcpp::stop("Intersection computation has failed.");
     }
   }
-  return RSurfTQMesh(meshes[nmeshes - 1], normals, 0);
+  return RSurfTQMesh(meshes[nmeshes - 1], normals);
 }
 
 template <typename KernelT, typename MeshT, typename PointT>
@@ -189,7 +189,7 @@ Rcpp::List Difference_K(const Rcpp::List rmesh1,
                         const bool triangulate2) {
   Mesh3 mesh = Difference<K, Mesh3, Point3>(rmesh1, rmesh2, clean, triangulate1,
                                             triangulate2);
-  return RSurfTKMesh(mesh, normals, 0);
+  return RSurfTKMesh(mesh, normals);
 }
 
 // [[Rcpp::export]]
@@ -201,7 +201,7 @@ Rcpp::List Difference_EK(const Rcpp::List rmesh1,
                          const bool triangulate2) {
   EMesh3 mesh = Difference<EK, EMesh3, EPoint3>(rmesh1, rmesh2, clean,
                                                 triangulate1, triangulate2);
-  return RSurfTEKMesh(mesh, normals, 0);
+  return RSurfTEKMesh(mesh, normals);
 }
 
 // [[Rcpp::export]]
@@ -237,7 +237,7 @@ Rcpp::List Difference_Q(const Rcpp::List rmesh1,
   if(!ok) {
     Rcpp::stop("Difference computation has failed.");
   }
-  return RSurfQMesh(outmesh, normals, 0);
+  return RSurfQMesh(outmesh, normals);
 }
 
 template <typename KernelT, typename MeshT, typename PointT>
@@ -296,7 +296,7 @@ Rcpp::List Union_K(const Rcpp::List rmeshes,
                    const bool normals,
                    const Rcpp::LogicalVector triangulate) {
   Mesh3 mesh = Union<K, Mesh3, Point3>(rmeshes, clean, false, triangulate);
-  return RSurfTKMesh(mesh, normals, 0);
+  return RSurfTKMesh(mesh, normals);
 }
 
 // [[Rcpp::export]]
@@ -305,7 +305,7 @@ Rcpp::List Union_EK(const Rcpp::List rmeshes,
                     const bool normals,
                     const Rcpp::LogicalVector triangulate) {
   EMesh3 mesh = Union<EK, EMesh3, EPoint3>(rmeshes, clean, true, triangulate);
-  return RSurfTEKMesh(mesh, normals, 0);
+  return RSurfTEKMesh(mesh, normals);
 }
 
 // [[Rcpp::export]]
@@ -353,5 +353,5 @@ Rcpp::List Union_Q(const Rcpp::List rmeshes,
       Rcpp::stop("Union computation has failed.");
     }
   }
-  return RSurfTQMesh(meshes[nmeshes - 1], normals, 0);
+  return RSurfTQMesh(meshes[nmeshes - 1], normals);
 }

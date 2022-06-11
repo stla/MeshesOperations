@@ -50,7 +50,7 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
     Rcpp::stop("Clipping has failed.");
   }
   mesh.collect_garbage();
-  Rcpp::List routmesh = RSurfTEKMesh(mesh, normals, 0);
+  Rcpp::List routmesh = RSurfTEKMesh(mesh, normals);
   // Rcpp::List out;
   // if(!doNotModify) {
   //   clipper.collect_garbage();

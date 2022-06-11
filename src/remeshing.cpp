@@ -30,7 +30,7 @@ Rcpp::List isotropicRemeshingK(const Rcpp::List rmesh,
       PMP::parameters::number_of_iterations(niters).number_of_relaxation_steps(
           nrelaxsteps));
   mesh.collect_garbage();
-  Rcpp::List routmesh = RSurfTKMesh(mesh, normals, 0);
+  Rcpp::List routmesh = RSurfTKMesh(mesh, normals);
   // if(triangulate) {
   //   routmesh["edges0"] = Edges0;
   //   if(normals) {

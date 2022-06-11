@@ -7,26 +7,26 @@
 MinkowskiSum(mesh1, mesh2, triangulate = TRUE, normals = FALSE)
 }
 \arguments{
-\item{mesh1, mesh2}{two meshes, each one given either as a list containing 
-(at least) the two fields \code{vertices} (numeric matrix with three columns) 
-and \code{faces} (integer matrix or list of integer vectors), otherwise a 
+\item{mesh1, mesh2}{two meshes, each one given either as a list containing
+(at least) the two fields \code{vertices} (numeric matrix with three columns)
+and \code{faces} (integer matrix or list of integer vectors), otherwise a
 \strong{rgl} mesh (i.e. a \code{mesh3d} object)}
 
-\item{triangulate}{Boolean, whether to triangulate the output mesh (note 
+\item{triangulate}{Boolean, whether to triangulate the output mesh (note
 that it is not necessarily triangle when the two input meshes are triangle)}
 
-\item{normals}{Boolean, whether to compute the vertex normals of the 
+\item{normals}{Boolean, whether to compute the vertex normals of the
 output mesh}
 }
 \value{
 A mesh represented as the output of the \code{\link{Mesh}} function.
 }
 \description{
-Returns the mesh defined as the Minkowski sum of the 
+Returns the mesh defined as the Minkowski sum of the
   two input meshes.
 }
 \examples{
-# example 1: octahedron + sphere 
+# example 1: octahedron + sphere
 library(MeshesOperations)
 library(rgl)
 library(Rvcg)
@@ -58,7 +58,7 @@ faces <- rbind(
 		c(1L, 3L, 4L)
 )
 mesh2 <- list(vertices = vertices, faces = faces)
-# sum 
+# sum
 mesh <- MinkowskiSum(mesh1, mesh2, normals = FALSE)
 # plot
 rglmesh <- toRGL(mesh)

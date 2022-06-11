@@ -2,7 +2,7 @@
 % Please edit documentation in R/connectedComponents.R
 \name{connectedComponents}
 \alias{connectedComponents}
-\title{Connected componets of a 3D mesh}
+\title{Connected components of a 3D mesh}
 \usage{
 connectedComponents(
   vertices,
@@ -11,8 +11,7 @@ connectedComponents(
   triangulate = FALSE,
   clean = FALSE,
   normals = FALSE,
-  numbersType = "double",
-  epsilon = 0
+  numbersType = "double"
 )
 }
 \arguments{
@@ -23,9 +22,9 @@ matrix with three columns if \code{numbersType="gmp"}}
 of the corresponding face) or a list of integer vectors, each one
 providing the vertex indices of the corresponding face}
 
-\item{mesh}{if not \code{NULL}, this argument takes precedence over \code{vertices} 
-and \code{faces}, and must be either a list containing the fields \code{vertices} 
-and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh 
+\item{mesh}{if not \code{NULL}, this argument takes precedence over \code{vertices}
+and \code{faces}, and must be either a list containing the fields \code{vertices}
+and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh
 (i.e. a \code{mesh3d} object)}
 
 \item{triangulate}{Boolean, whether to triangulate the faces}
@@ -40,10 +39,6 @@ computations; must be one of \code{"double"}, \code{"lazyExact"}
 (a type provided by CGAL for exact computations), or \code{"gmp"}
 (exact computations with rational numbers); using exact computations can
 improve the detection of the exterior edges}
-
-\item{epsilon}{if the mesh is triangulated or if \code{triangulate=TRUE},
-then \code{epsilon} is used in the detection of exterior edges (see the
-\strong{Value} section of \code{\link{Mesh}})}
 }
 \value{
 A list of meshes, the connected components, each one being

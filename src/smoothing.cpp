@@ -37,7 +37,7 @@ Rcpp::List smoothMeshK(const Rcpp::List rmesh,
                        .use_Delaunay_flips(false)
                        .use_safety_constraints(false)  // authorize all moves
                        .edge_is_constrained_map(eif));
-  Rcpp::List routmesh = RSurfTKMesh(mesh, normals, 0);
+  Rcpp::List routmesh = RSurfTKMesh(mesh, normals);
   return routmesh;
 }
 
@@ -84,7 +84,7 @@ Rcpp::List smoothShapeK(const Rcpp::List rmesh,
       mesh, time,
       PMP::parameters::number_of_iterations(niters).vertex_is_constrained_map(
           vcmap));
-  Rcpp::List routmesh = RSurfTKMesh(mesh, normals, 0);
+  Rcpp::List routmesh = RSurfTKMesh(mesh, normals);
   return routmesh;
 }
 

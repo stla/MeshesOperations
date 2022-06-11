@@ -21,23 +21,23 @@ isotropicRemesh(
 of the corresponding face) or a list of integer vectors, each one
 providing the vertex indices of the corresponding face}
 
-\item{mesh}{if not \code{NULL}, this argument takes precedence over \code{vertices} 
-and \code{faces}, and must be either a list containing the fields \code{vertices} 
-and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh 
+\item{mesh}{if not \code{NULL}, this argument takes precedence over \code{vertices}
+and \code{faces}, and must be either a list containing the fields \code{vertices}
+and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh
 (i.e. a \code{mesh3d} object)}
 
-\item{targetEdgeLength}{positive number, the target edge length of the 
+\item{targetEdgeLength}{positive number, the target edge length of the
 remeshed mesh}
 
 \item{iterations}{number of iterations, a positive integer}
 
 \item{relaxSteps}{number of relaxation steps, a positive integer}
 
-\item{normals}{Boolean, whether to compute the vertex normals of the 
+\item{normals}{Boolean, whether to compute the vertex normals of the
 output mesh}
 }
 \value{
-A triangle mesh represented as the output of the 
+A triangle mesh represented as the output of the
   \code{\link{Mesh}} function.
 }
 \description{
@@ -49,7 +49,7 @@ library(rgl)
 
 theta <- seq(0, 2*pi, length.out = 16)
 torus <- cylinder3d(
-  cbind(cos(theta), sin(theta), 0), 
+  cbind(cos(theta), sin(theta), 0),
   radius = 0.4, closed = TRUE
 )
 

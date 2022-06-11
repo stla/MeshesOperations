@@ -36,11 +36,11 @@ Rcpp::List MinkowskiSumEK(const Rcpp::List rmesh1,
   if(triangulate) {
     EMesh3 mesh0;
     CGAL::convert_nef_polyhedron_to_polygon_mesh(nef, mesh0, false);
-    Edges0 = getEdges2<EK, EMesh3, EPoint3>(mesh0, 0);
+    Edges0 = getEdges2<EK, EMesh3, EPoint3>(mesh0);
   }
   EMesh3 mesh;
   CGAL::convert_nef_polyhedron_to_polygon_mesh(nef, mesh, triangulate);
-  Rcpp::List rmesh = RSurfEKMesh(mesh, normals, 0);
+  Rcpp::List rmesh = RSurfEKMesh(mesh, normals);
   if(triangulate) {
     rmesh["edges0"] = Edges0;
   }

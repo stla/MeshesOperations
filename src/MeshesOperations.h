@@ -130,18 +130,18 @@ QMesh3 makeSurfQMesh(const Rcpp::List, const bool);
 QMesh3 makeSurfTQMesh(const Rcpp::List, const bool);
 
 template <typename KernelT, typename MeshT, typename PointT>
-Rcpp::DataFrame getEdges2(MeshT, const double);
+Rcpp::DataFrame getEdges2(MeshT);
 
 Rcpp::NumericMatrix getKNormals(Mesh3);
 Rcpp::NumericMatrix getEKNormals(EMesh3);
 Rcpp::NumericMatrix getQNormals(QMesh3);
 
-Rcpp::List RSurfKMesh(Mesh3, const bool, const double);
-Rcpp::List RSurfEKMesh(EMesh3, const bool, const double);
-Rcpp::List RSurfQMesh(QMesh3, const bool, const double);
-Rcpp::List RSurfTKMesh(Mesh3, const bool, const double);
-Rcpp::List RSurfTEKMesh(EMesh3, const bool, const double);
-Rcpp::List RSurfTQMesh(QMesh3, const bool, const double);
+Rcpp::List RSurfKMesh(Mesh3, const bool);
+Rcpp::List RSurfEKMesh(EMesh3, const bool);
+Rcpp::List RSurfQMesh(QMesh3, const bool);
+Rcpp::List RSurfTKMesh(Mesh3, const bool);
+Rcpp::List RSurfTEKMesh(EMesh3, const bool);
+Rcpp::List RSurfTQMesh(QMesh3, const bool);
 
 std::string q2str(CGAL::Gmpq);
 

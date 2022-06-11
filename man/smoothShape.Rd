@@ -20,9 +20,9 @@ smoothShape(
 of the corresponding face) or a list of integer vectors, each one
 providing the vertex indices of the corresponding face}
 
-\item{mesh}{if not \code{NULL}, this argument takes precedence over \code{vertices} 
-and \code{faces}, and must be either a list containing two fields \code{vertices} 
-and \code{faces} as described above, otherwise a \strong{rgl} mesh (i.e. a 
+\item{mesh}{if not \code{NULL}, this argument takes precedence over \code{vertices}
+and \code{faces}, and must be either a list containing two fields \code{vertices}
+and \code{faces} as described above, otherwise a \strong{rgl} mesh (i.e. a
 \code{mesh3d} object)}
 
 \item{time}{positive number, a time step that corresponds to the speed by

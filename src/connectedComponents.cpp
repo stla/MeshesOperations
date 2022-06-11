@@ -7,8 +7,7 @@ Rcpp::List connectedComponentsK(const Rcpp::List rmesh0,
                                 const bool isTriangle,
                                 const bool triangulate,
                                 const bool clean,
-                                const bool normals,
-                                const double epsilon) {
+                                const bool normals) {
   Message("\u2014 Processing mesh...");
   const Mesh3 mesh0 = makeSurfMesh<Mesh3, Point3>(rmesh0, clean);
   Message("... done.\n");
@@ -28,7 +27,7 @@ Rcpp::List connectedComponentsK(const Rcpp::List rmesh0,
     Rcpp::DataFrame Edges0;
     Rcpp::NumericMatrix Normals0;
     if(really_triangulate) {
-      Edges0 = getEdges2<K, Mesh3, Point3>(*mesh, epsilon);
+      Edges0 = getEdges2<K, Mesh3, Point3>(*mesh);
       if(normals) {
         Normals0 = getKNormals(*mesh);
       }
@@ -39,7 +38,7 @@ Rcpp::List connectedComponentsK(const Rcpp::List rmesh0,
         Rcpp::stop(msg);
       }
     }
-    Rcpp::List cc_rmesh_i = RSurfKMesh(*mesh, normals, epsilon);
+    Rcpp::List cc_rmesh_i = RSurfKMesh(*mesh, normals);
     if(really_triangulate) {
       cc_rmesh_i["edges0"] = Edges0;
       if(normals) {
@@ -57,8 +56,7 @@ Rcpp::List connectedComponentsEK(const Rcpp::List rmesh0,
                                  const bool isTriangle,
                                  const bool triangulate,
                                  const bool clean,
-                                 const bool normals,
-                                 const double epsilon) {
+                                 const bool normals) {
   Message("\u2014 Processing mesh...");
   const EMesh3 mesh0 = makeSurfMesh<EMesh3, EPoint3>(rmesh0, clean);
   Message("... done.\n");
@@ -78,7 +76,7 @@ Rcpp::List connectedComponentsEK(const Rcpp::List rmesh0,
     Rcpp::DataFrame Edges0;
     Rcpp::NumericMatrix Normals0;
     if(really_triangulate) {
-      Edges0 = getEdges2<EK, EMesh3, EPoint3>(*mesh, epsilon);
+      Edges0 = getEdges2<EK, EMesh3, EPoint3>(*mesh);
       if(normals) {
         Normals0 = getEKNormals(*mesh);
       }
@@ -89,7 +87,7 @@ Rcpp::List connectedComponentsEK(const Rcpp::List rmesh0,
         Rcpp::stop(msg);
       }
     }
-    Rcpp::List cc_rmesh_i = RSurfEKMesh(*mesh, normals, epsilon);
+    Rcpp::List cc_rmesh_i = RSurfEKMesh(*mesh, normals);
     if(really_triangulate) {
       cc_rmesh_i["edges0"] = Edges0;
       if(normals) {
@@ -107,8 +105,7 @@ Rcpp::List connectedComponentsQ(const Rcpp::List rmesh0,
                                 const bool isTriangle,
                                 const bool triangulate,
                                 const bool clean,
-                                const bool normals,
-                                const double epsilon) {
+                                const bool normals) {
   Message("\u2014 Processing mesh...");
   const QMesh3 mesh0 = makeSurfQMesh(rmesh0, clean);
   Message("... done.\n");
@@ -128,7 +125,7 @@ Rcpp::List connectedComponentsQ(const Rcpp::List rmesh0,
     Rcpp::DataFrame Edges0;
     Rcpp::NumericMatrix Normals0;
     if(really_triangulate) {
-      Edges0 = getEdges2<QK, QMesh3, QPoint3>(*mesh, epsilon);
+      Edges0 = getEdges2<QK, QMesh3, QPoint3>(*mesh);
       if(normals) {
         Normals0 = getQNormals(*mesh);
       }
@@ -139,7 +136,7 @@ Rcpp::List connectedComponentsQ(const Rcpp::List rmesh0,
         Rcpp::stop(msg);
       }
     }
-    Rcpp::List cc_rmesh_i = RSurfQMesh(*mesh, normals, epsilon);
+    Rcpp::List cc_rmesh_i = RSurfQMesh(*mesh, normals);
     if(really_triangulate) {
       cc_rmesh_i["edges0"] = Edges0;
       if(normals) {

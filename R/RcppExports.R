@@ -17,16 +17,16 @@ clipMeshEK <- function(rmesh, rclipper, clipVolume, triangulate1, triangulate2, 
     .Call(`_MeshesOperations_clipMeshEK`, rmesh, rclipper, clipVolume, triangulate1, triangulate2, normals)
 }
 
-connectedComponentsK <- function(rmesh0, isTriangle, triangulate, clean, normals, epsilon) {
-    .Call(`_MeshesOperations_connectedComponentsK`, rmesh0, isTriangle, triangulate, clean, normals, epsilon)
+connectedComponentsK <- function(rmesh0, isTriangle, triangulate, clean, normals) {
+    .Call(`_MeshesOperations_connectedComponentsK`, rmesh0, isTriangle, triangulate, clean, normals)
 }
 
-connectedComponentsEK <- function(rmesh0, isTriangle, triangulate, clean, normals, epsilon) {
-    .Call(`_MeshesOperations_connectedComponentsEK`, rmesh0, isTriangle, triangulate, clean, normals, epsilon)
+connectedComponentsEK <- function(rmesh0, isTriangle, triangulate, clean, normals) {
+    .Call(`_MeshesOperations_connectedComponentsEK`, rmesh0, isTriangle, triangulate, clean, normals)
 }
 
-connectedComponentsQ <- function(rmesh0, isTriangle, triangulate, clean, normals, epsilon) {
-    .Call(`_MeshesOperations_connectedComponentsQ`, rmesh0, isTriangle, triangulate, clean, normals, epsilon)
+connectedComponentsQ <- function(rmesh0, isTriangle, triangulate, clean, normals) {
+    .Call(`_MeshesOperations_connectedComponentsQ`, rmesh0, isTriangle, triangulate, clean, normals)
 }
 
 meshVolumeK <- function(rmesh, triangulate) {
@@ -37,16 +37,16 @@ meshAreaK <- function(rmesh, triangulate) {
     .Call(`_MeshesOperations_meshAreaK`, rmesh, triangulate)
 }
 
-SurfMesh <- function(rmesh, isTriangle, triangulate, clean, normals, epsilon) {
-    .Call(`_MeshesOperations_SurfMesh`, rmesh, isTriangle, triangulate, clean, normals, epsilon)
+SurfMesh <- function(rmesh, isTriangle, triangulate, clean, normals) {
+    .Call(`_MeshesOperations_SurfMesh`, rmesh, isTriangle, triangulate, clean, normals)
 }
 
-SurfEMesh <- function(rmesh, isTriangle, triangulate, clean, normals, epsilon) {
-    .Call(`_MeshesOperations_SurfEMesh`, rmesh, isTriangle, triangulate, clean, normals, epsilon)
+SurfEMesh <- function(rmesh, isTriangle, triangulate, clean, normals) {
+    .Call(`_MeshesOperations_SurfEMesh`, rmesh, isTriangle, triangulate, clean, normals)
 }
 
-SurfQMesh <- function(rmesh, isTriangle, triangulate, clean, normals, epsilon) {
-    .Call(`_MeshesOperations_SurfQMesh`, rmesh, isTriangle, triangulate, clean, normals, epsilon)
+SurfQMesh <- function(rmesh, isTriangle, triangulate, clean, normals) {
+    .Call(`_MeshesOperations_SurfQMesh`, rmesh, isTriangle, triangulate, clean, normals)
 }
 
 Intersection_K <- function(rmeshes, clean, normals, triangulate) {

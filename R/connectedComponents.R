@@ -1,4 +1,4 @@
-#' @title Connected componets of a 3D mesh
+#' @title Connected components of a 3D mesh
 #' @description Computes the connected components of a 3D mesh; for each
 #'   returned component, its faces are coherently oriented, its normals are
 #'   computed if desired, and it is triangulated if desired.
@@ -21,9 +21,6 @@
 #'   (a type provided by CGAL for exact computations), or \code{"gmp"}
 #'   (exact computations with rational numbers); using exact computations can
 #'   improve the detection of the exterior edges
-#' @param epsilon if the mesh is triangulated or if \code{triangulate=TRUE},
-#'   then \code{epsilon} is used in the detection of exterior edges (see the
-#'   \strong{Value} section of \code{\link{Mesh}})
 #'
 #' @return A list of meshes, the connected components, each one being
 #'   represented as the output of the \code{\link{Mesh}} function.
@@ -66,12 +63,11 @@
 #' shade3d(tmesh1, color = "green", back = "culled")
 #' shade3d(tmesh2, color = "red", back = "culled")
 connectedComponents <- function(
-    vertices, faces, mesh = NULL, triangulate = FALSE, clean = FALSE,
-	normals = FALSE, numbersType = "double", epsilon = 0
+  vertices, faces, mesh = NULL, triangulate = FALSE, clean = FALSE,
+	normals = FALSE, numbersType = "double"
 ){
   numbersType <- match.arg(numbersType, c("double", "lazyExact", "gmp"))
   gmp <- numbersType == "gmp"
-  stopifnot(epsilon >= 0)
   if(!is.null(mesh)){
 	if(inherits(mesh, "mesh3d")){
 	  vft  <- getVFT(mesh)
@@ -88,15 +84,15 @@ connectedComponents <- function(
   rmesh <- list("vertices" = vertices, "faces" = faces)
   if(numbersType == "double"){
     ccmeshes <- connectedComponentsK(
-      rmesh, isTriangle, triangulate, clean, normals, epsilon
+      rmesh, isTriangle, triangulate, clean, normals
     )
   }else if(numbersType == "lazyExact"){
     ccmeshes <- connectedComponentsEK(
-      rmesh, isTriangle, triangulate, clean, normals, epsilon
+      rmesh, isTriangle, triangulate, clean, normals
     )
   }else{
     ccmeshes <- connectedComponentsQ(
-      rmesh, isTriangle, triangulate, clean, normals, epsilon
+      rmesh, isTriangle, triangulate, clean, normals
     )
   }
   if(triangulate && isTriangle){
