@@ -2,21 +2,31 @@
 % Please edit documentation in R/distances.R
 \name{distancesToMesh}
 \alias{distancesToMesh}
-\title{Title}
+\title{Distance to a mesh}
 \usage{
 distancesToMesh(mesh, points)
 }
 \arguments{
-\item{mesh}{x}
+\item{mesh}{a mesh given either as a list containing (at least) the fields
+\code{vertices} and \code{faces}, otherwise a \strong{rgl} mesh
+(i.e. a \code{mesh3d} object)}
 
-\item{points}{x}
+\item{points}{either one point given as a numeric vector or several points
+given as a numeric matrix with three columns}
 }
 \value{
-x
+A numeric vector providing the distances between the given point(s)
+  to the mesh.
 }
 \description{
-Title
+Computes the distances from given points to a mesh.
 }
 \examples{
-#
+library(MeshesOperations)
+mesh <- rgl::cube3d()
+points <- rbind(
+  c(0, 0, 0),
+  c(1, 1, 1)
+)
+distancesToMesh(mesh, points) # should be 1 and 0
 }

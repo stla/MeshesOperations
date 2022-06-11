@@ -1,16 +1,39 @@
-#' Title
+#' @title Distance to a mesh
 #'
-#' @param mesh x
-#' @param points x
+#' @description Computes the distances from given points to a mesh.
 #'
-#' @return x
+#' @param mesh a mesh given either as a list containing (at least) the fields
+#'   \code{vertices} and \code{faces}, otherwise a \strong{rgl} mesh
+#'   (i.e. a \code{mesh3d} object)
+#' @param points either one point given as a numeric vector or several points
+#'   given as a numeric matrix with three columns
+#'
+#' @return A numeric vector providing the distances between the given point(s)
+#'   to the mesh.
 #' @export
 #'
 #' @examples
-#'#
+#' library(MeshesOperations)
+#' mesh <- rgl::cube3d()
+#' points <- rbind(
+#'   c(0, 0, 0),
+#'   c(1, 1, 1)
+#' )
+#' distancesToMesh(mesh, points) # should be 1 and 0
 distancesToMesh <- function(mesh, points){
   if(!is.matrix(points)){
     points <- rbind(points)
+  }
+  if(ncol(points) != 3L){
+    stop(
+      "The `points` argument must be a vector of length 3 or ",
+      "a matrix with three columns."
+    )
+  }
+  stopifnot(is.numeric(points))
+  storage.mode(points) <- "double"
+  if(anyNA(points)){
+    stop("Found missing values in `points`.")
   }
   tpoints <- t(points)
   if(inherits(mesh, "mesh3d")){

@@ -4,7 +4,7 @@
 
 Mesh3 Triangulation(const Rcpp::List rmesh) {
   EMesh3 emesh = makeSurfMesh<EMesh3, EPoint3>(rmesh, true);
-//  Message("Triangulation.");
+  Message("Triangulation.");
   const bool success = PMP::triangulate_faces(emesh);
   if(!success) {
     Rcpp::stop("Triangulation has failed.");
@@ -43,18 +43,18 @@ Rcpp::NumericVector distanceK(const Rcpp::List rmesh,
   Message("\u2014 Processing mesh...");
   Mesh3 mesh;
   if(triangulate) {
-    Message("Triangulation.");
     mesh = Triangulation(rmesh);
   } else {
     mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true);
   }
   Message("... done.\n");
-  std::vector<Point3> pts = matrix_to_points3<Point3>(points);
   const size_t npoints = points.ncol();
   Rcpp::NumericVector distances(npoints);
   for(size_t i = 0; i < npoints; i++){
+    Rcpp::NumericVector point_i = points(Rcpp::_, i);
+    std::vector<Point3> pt = {Point3(point_i(0), point_i(1), point_i(2))};
     distances(i) = PMP::max_distance_to_triangle_mesh<CGAL::Sequential_tag>(
-      pts, mesh
+      pt, mesh
     );
   }
   return distances;
