@@ -1,11 +1,11 @@
-# MeshesOperations: Boolean operations on 3D meshes with R
+# MeshesOperations: operations on 3D meshes with R
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/stla/MeshesOperations/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stla/MeshesOperations/actions/workflows/R-CMD-check.yaml)
 [![R-CMD-check-valgrind](https://github.com/stla/MeshesOperations/actions/workflows/R-CMD-check-valgrind.yaml/badge.svg)](https://github.com/stla/MeshesOperations/actions/workflows/R-CMD-check-valgrind.yaml)
 <!-- badges: end -->
 
-Using the C++ library **CGAL** to perform Boolean operations on 3D Meshes.
+Using the C++ library **CGAL** to perform operations on 3D Meshes.
 
 
 ## Boolean operations on meshes
@@ -41,6 +41,11 @@ Using the C++ library **CGAL** to perform Boolean operations on 3D Meshes.
 - Tetrahedron + truncated icosahedron:
 
 ![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/TetrahedronPlusTruncatedIcosahedron.gif)
+
+
+## Decomposition in convex parts
+
+![](https://raw.githubusercontent.com/stla/MeshesOperations/master/inst/screenshots/pentagrammicPrism.png)
 
 
 ## License
