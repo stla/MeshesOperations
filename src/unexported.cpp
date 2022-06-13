@@ -96,7 +96,8 @@ std::vector<std::vector<int>> list_to_faces(const Rcpp::List L) {
 template <typename MeshT, typename PointT>
 MeshT soup2mesh(std::vector<PointT> points,
                 std::vector<std::vector<int>> faces,
-                const bool clean) {
+                const bool clean,
+                const bool triangulate) {
   bool success = PMP::orient_polygon_soup(points, faces);
   if(success) {
     Message("Successful polygon orientation.");
@@ -108,7 +109,17 @@ MeshT soup2mesh(std::vector<PointT> points,
   }
   MeshT mesh;
   PMP::polygon_soup_to_polygon_mesh(points, faces, mesh);
-  const bool isTriangle = CGAL::is_triangle_mesh(mesh);
+  bool isTriangle;
+  if(triangulate) {
+    Message("Triangulation.");
+    const bool success = PMP::triangulate_faces(mesh);
+    if(!success) {
+      Rcpp::stop("Triangulation has failed.");
+    }
+    isTriangle = true;
+  } else {
+    isTriangle = CGAL::is_triangle_mesh(mesh);
+  } 
   if(isTriangle) {
     Message("The mesh is triangle.");
   } else {
@@ -139,49 +150,65 @@ MeshT soup2mesh(std::vector<PointT> points,
 }
 
 template <typename MeshT, typename PointT>
-MeshT makeSurfMesh(const Rcpp::List rmesh, const bool clean) {
+MeshT makeSurfMesh(
+  const Rcpp::List rmesh, const bool clean, const bool triangulate
+) {
   const Rcpp::NumericMatrix vertices =
       Rcpp::as<Rcpp::NumericMatrix>(rmesh["vertices"]);
   const Rcpp::List rfaces = Rcpp::as<Rcpp::List>(rmesh["faces"]);
   std::vector<PointT> points = matrix_to_points3<PointT>(vertices);
   std::vector<std::vector<int>> faces = list_to_faces(rfaces);
-  return soup2mesh<MeshT, PointT>(points, faces, clean);
+  return soup2mesh<MeshT, PointT>(points, faces, clean, triangulate);
 }
 
-template Mesh3 makeSurfMesh<Mesh3, Point3>(const Rcpp::List, const bool);
-template EMesh3 makeSurfMesh<EMesh3, EPoint3>(const Rcpp::List, const bool);
+template Mesh3 makeSurfMesh<Mesh3, Point3>(
+  const Rcpp::List, const bool, const bool
+);
+template EMesh3 makeSurfMesh<EMesh3, EPoint3>(
+  const Rcpp::List, const bool, const bool
+);
 
 template <typename MeshT, typename PointT>
-MeshT makeSurfTMesh(const Rcpp::List rmesh, const bool clean) {
+MeshT makeSurfTMesh(
+  const Rcpp::List rmesh, const bool clean, const bool triangulate
+) {
   const Rcpp::NumericMatrix vertices =
       Rcpp::as<Rcpp::NumericMatrix>(rmesh["vertices"]);
   const Rcpp::IntegerMatrix rfaces =
       Rcpp::as<Rcpp::IntegerMatrix>(rmesh["faces"]);
   std::vector<PointT> points = matrix_to_points3<PointT>(vertices);
   std::vector<std::vector<int>> faces = matrix_to_Tfaces(rfaces);
-  return soup2mesh<MeshT, PointT>(points, faces, clean);
+  return soup2mesh<MeshT, PointT>(points, faces, clean, triangulate);
 }
 
-template Mesh3 makeSurfTMesh<Mesh3, Point3>(const Rcpp::List, const bool);
-template EMesh3 makeSurfTMesh<EMesh3, EPoint3>(const Rcpp::List, const bool);
+template Mesh3 makeSurfTMesh<Mesh3, Point3>(
+  const Rcpp::List, const bool, const bool
+);
+template EMesh3 makeSurfTMesh<EMesh3, EPoint3>(
+  const Rcpp::List, const bool, const bool
+);
 
-QMesh3 makeSurfQMesh(const Rcpp::List rmesh, const bool clean) {
+QMesh3 makeSurfQMesh(
+  const Rcpp::List rmesh, const bool clean, const bool triangulate
+) {
   const Rcpp::CharacterMatrix vertices =
       Rcpp::as<Rcpp::CharacterMatrix>(rmesh["vertices"]);
   const Rcpp::List rfaces = Rcpp::as<Rcpp::List>(rmesh["faces"]);
   std::vector<QPoint3> points = matrix_to_qpoints3(vertices);
   std::vector<std::vector<int>> faces = list_to_faces(rfaces);
-  return soup2mesh<QMesh3, QPoint3>(points, faces, clean);
+  return soup2mesh<QMesh3, QPoint3>(points, faces, clean, triangulate);
 }
 
-QMesh3 makeSurfTQMesh(const Rcpp::List rmesh, const bool clean) {
+QMesh3 makeSurfTQMesh(
+  const Rcpp::List rmesh, const bool clean, const bool triangulate
+) {
   const Rcpp::CharacterMatrix vertices =
       Rcpp::as<Rcpp::CharacterMatrix>(rmesh["vertices"]);
   const Rcpp::IntegerMatrix rfaces =
       Rcpp::as<Rcpp::IntegerMatrix>(rmesh["faces"]);
   std::vector<QPoint3> points = matrix_to_qpoints3(vertices);
   std::vector<std::vector<int>> faces = matrix_to_Tfaces(rfaces);
-  return soup2mesh<QMesh3, QPoint3>(points, faces, clean);
+  return soup2mesh<QMesh3, QPoint3>(points, faces, clean, triangulate);
 }
 
 Rcpp::NumericMatrix getVertices_K(Mesh3 mesh) {

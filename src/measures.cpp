@@ -4,17 +4,16 @@
 
 // [[Rcpp::export]]
 double meshVolumeK(const Rcpp::List rmesh, const bool triangulate) {
-  Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true);
-  if(triangulate) {
-    const bool success = PMP::triangulate_faces(mesh);
-    if(!success) {
-      const std::string msg = "Triangulation has failed.";
-      Rcpp::stop(msg);
-    }
-  }
+  Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true, triangulate);
+  // if(triangulate) {
+  //   const bool success = PMP::triangulate_faces(mesh);
+  //   if(!success) {
+  //     const std::string msg = "Triangulation has failed.";
+  //     Rcpp::stop(msg);
+  //   }
+  // }
   if(!CGAL::is_closed(mesh)) {
-    const std::string msg = "The mesh is not closed.";
-    Rcpp::stop(msg);
+    Rcpp::stop("The mesh is not closed.");
   }
   // std::string msg;
   // const bool bv = PMP::does_bound_a_volume(mesh);
@@ -31,14 +30,14 @@ double meshVolumeK(const Rcpp::List rmesh, const bool triangulate) {
 
 // [[Rcpp::export]]
 double meshAreaK(const Rcpp::List rmesh, const bool triangulate) {
-  Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true);
-  if(triangulate) {
-    const bool success = PMP::triangulate_faces(mesh);
-    if(!success) {
-      const std::string msg = "Triangulation has failed.";
-      Rcpp::stop(msg);
-    }
-  }
+  Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true, triangulate);
+  // if(triangulate) {
+  //   const bool success = PMP::triangulate_faces(mesh);
+  //   if(!success) {
+  //     const std::string msg = "Triangulation has failed.";
+  //     Rcpp::stop(msg);
+  //   }
+  // }
   const K::FT ar = PMP::area(mesh);
   return CGAL::to_double<K::FT>(ar);
 }

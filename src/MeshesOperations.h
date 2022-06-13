@@ -124,13 +124,13 @@ template <typename PointT>
 std::vector<PointT> matrix_to_points3(const Rcpp::NumericMatrix);
 
 template <typename MeshT, typename PointT>
-MeshT makeSurfMesh(const Rcpp::List, const bool);
+MeshT makeSurfMesh(const Rcpp::List, const bool, const bool);
 
 template <typename MeshT, typename PointT>
-MeshT makeSurfTMesh(const Rcpp::List, const bool);
+MeshT makeSurfTMesh(const Rcpp::List, const bool, const bool);
 
-QMesh3 makeSurfQMesh(const Rcpp::List, const bool);
-QMesh3 makeSurfTQMesh(const Rcpp::List, const bool);
+QMesh3 makeSurfQMesh(const Rcpp::List, const bool, const bool);
+QMesh3 makeSurfTQMesh(const Rcpp::List, const bool, const bool);
 
 template <typename KernelT, typename MeshT, typename PointT>
 Rcpp::DataFrame getEdges2(MeshT);

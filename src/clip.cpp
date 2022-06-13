@@ -10,15 +10,15 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
                       const bool triangulate2,
                       const bool normals) {
   Message("\u2014 Processing mesh to be clipped...");
-  EMesh3 mesh = makeSurfMesh<EMesh3, EPoint3>(rmesh, true);
-  if(triangulate1) {
-    Message("Triangulation.");
-    const bool success = PMP::triangulate_faces(mesh);
-    if(!success) {
-      const std::string msg = "Triangulation has failed.";
-      Rcpp::stop(msg);
-    }
-  }
+  EMesh3 mesh = makeSurfMesh<EMesh3, EPoint3>(rmesh, true, triangulate1);
+  // if(triangulate1) {
+  //   Message("Triangulation.");
+  //   const bool success = PMP::triangulate_faces(mesh);
+  //   if(!success) {
+  //     const std::string msg = "Triangulation has failed.";
+  //     Rcpp::stop(msg);
+  //   }
+  // }
   bool doNotModify = false;
   if(!clipVolume) {
     doNotModify = true;
@@ -29,15 +29,15 @@ Rcpp::List clipMeshEK(const Rcpp::List rmesh,
   }
   Message("... done.\n");
   Message("\u2014 Processing the clipping mesh...");
-  EMesh3 clipper = makeSurfMesh<EMesh3, EPoint3>(rclipper, true);
-  if(triangulate2) {
-    Message("Triangulation.");
-    const bool success = PMP::triangulate_faces(clipper);
-    if(!success) {
-      const std::string msg = "Triangulation has failed.";
-      Rcpp::stop(msg);
-    }
-  }
+  EMesh3 clipper = makeSurfMesh<EMesh3, EPoint3>(rclipper, true, triangulate2);
+  // if(triangulate2) {
+  //   Message("Triangulation.");
+  //   const bool success = PMP::triangulate_faces(clipper);
+  //   if(!success) {
+  //     const std::string msg = "Triangulation has failed.";
+  //     Rcpp::stop(msg);
+  //   }
+  // }
   if(PMP::does_self_intersect(clipper)) {
     Rcpp::stop("The clipping mesh self-intersects.");
   }

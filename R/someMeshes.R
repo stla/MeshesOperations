@@ -136,6 +136,7 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
 #' shade3d(mesh, color = "chartreuse")
 #' wire3d(mesh)
 #' shade3d(sphere, color = "red")
+#' wire3d(sphere)
 cyclideMesh <- function(a, c, mu, nu = 90L, nv = 40L, rgl = TRUE){
   stopifnot(c > 0, a > mu, mu > c)
   stopifnot(nu >= 3, nv >= 3)

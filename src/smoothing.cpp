@@ -8,14 +8,14 @@ Rcpp::List smoothMeshK(const Rcpp::List rmesh,
                        const unsigned niters,
                        const bool triangulate,
                        const bool normals) {
-  Mesh3 mesh0 = makeSurfMesh<Mesh3, Point3>(rmesh, true);
-  if(triangulate) {
-    const bool success = PMP::triangulate_faces(mesh0);
-    if(!success) {
-      const std::string msg = "Triangulation has failed.";
-      Rcpp::stop(msg);
-    }
-  }
+  Mesh3 mesh0 = makeSurfMesh<Mesh3, Point3>(rmesh, true, triangulate);
+  // if(triangulate) {
+  //   const bool success = PMP::triangulate_faces(mesh0);
+  //   if(!success) {
+  //     const std::string msg = "Triangulation has failed.";
+  //     Rcpp::stop(msg);
+  //   }
+  // }
   // remove degenerate faces
   Mesh3 mesh = removeDegenerateFaces<Mesh3>(mesh0);
   // Constrain edges with a dihedral angle over the given angle
@@ -48,14 +48,14 @@ Rcpp::List smoothShapeK(const Rcpp::List rmesh,
                         const bool triangulate,
                         const bool normals) {
   Message("\u2014 Processing mesh...");
-  Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true);
-  if(triangulate) {
-    Message("Triangulation.");
-    const bool success = PMP::triangulate_faces(mesh);
-    if(!success) {
-      Rcpp::stop("Triangulation has failed.");
-    }
-  }
+  Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true, triangulate);
+  // if(triangulate) {
+  //   Message("Triangulation.");
+  //   const bool success = PMP::triangulate_faces(mesh);
+  //   if(!success) {
+  //     Rcpp::stop("Triangulation has failed.");
+  //   }
+  // }
   Message("... done.\n");
   std::set<Mesh3::Vertex_index> constrained_vertices;
   for(Mesh3::Vertex_index v : mesh.vertices()) {
