@@ -11,8 +11,8 @@ readMeshFile(filepath)
 \code{ply}, \code{obj} and \code{off}}
 }
 \value{
-A list with two fields: \code{vertices}, a numeric matrix with three 
-  columns, and \code{faces}, either a list of integer vectors or, in the 
+A list with two fields: \code{vertices}, a numeric matrix with three
+  columns, and \code{faces}, either a list of integer vectors or, in the
   case if all faces have the same number of sides, an integer matrix.
 }
 \description{

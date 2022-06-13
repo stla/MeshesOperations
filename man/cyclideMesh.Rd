@@ -46,4 +46,5 @@ view3d(0, 0, zoom = 0.75)
 shade3d(mesh, color = "chartreuse")
 wire3d(mesh)
 shade3d(sphere, color = "red")
+wire3d(sphere)
 }

@@ -41,6 +41,10 @@ Rcpp::List readFile(const std::string filename) {
   if(ext == "ply") {
     ok = CGAL::IO::read_PLY(infile, points, faces,
                             CGAL::parameters::use_binary_mode(binary));
+    if(!ok && !binary) {
+      ok = CGAL::IO::read_PLY(infile, points, faces,
+                              CGAL::parameters::use_binary_mode(true));
+    }
   } else if(ext == "stl") {
     ok = CGAL::IO::read_STL(filename, points, faces,
                             CGAL::parameters::use_binary_mode(binary));

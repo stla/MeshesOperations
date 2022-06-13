@@ -22,6 +22,10 @@ isBoolean <- function(x){
 	is.logical(x) && length(x) == 1L && !is.na(x)
 }
 
+isString <- function(x){
+  is.character(x) && length(x) == 1L && !is.na(x)
+}
+
 #' @importFrom gmp `%*%`
 #' @noRd
 `%^%` <- function(A, n){
