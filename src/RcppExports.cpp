@@ -113,6 +113,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// convexDecomposition
+Rcpp::List convexDecomposition(Rcpp::List rmesh, const bool triangulate);
+RcppExport SEXP _MeshesOperations_convexDecomposition(SEXP rmeshSEXP, SEXP triangulateSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type rmesh(rmeshSEXP);
+    Rcpp::traits::input_parameter< const bool >::type triangulate(triangulateSEXP);
+    rcpp_result_gen = Rcpp::wrap(convexDecomposition(rmesh, triangulate));
+    return rcpp_result_gen;
+END_RCPP
+}
 // distanceK
 Rcpp::NumericVector distanceK(const Rcpp::List rmesh, const Rcpp::NumericMatrix points, const bool triangulate);
 RcppExport SEXP _MeshesOperations_distanceK(SEXP rmeshSEXP, SEXP pointsSEXP, SEXP triangulateSEXP) {
@@ -395,6 +407,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MeshesOperations_connectedComponentsK", (DL_FUNC) &_MeshesOperations_connectedComponentsK, 5},
     {"_MeshesOperations_connectedComponentsEK", (DL_FUNC) &_MeshesOperations_connectedComponentsEK, 5},
     {"_MeshesOperations_connectedComponentsQ", (DL_FUNC) &_MeshesOperations_connectedComponentsQ, 5},
+    {"_MeshesOperations_convexDecomposition", (DL_FUNC) &_MeshesOperations_convexDecomposition, 2},
     {"_MeshesOperations_distanceK", (DL_FUNC) &_MeshesOperations_distanceK, 3},
     {"_MeshesOperations_meshVolumeK", (DL_FUNC) &_MeshesOperations_meshVolumeK, 2},
     {"_MeshesOperations_meshAreaK", (DL_FUNC) &_MeshesOperations_meshAreaK, 2},

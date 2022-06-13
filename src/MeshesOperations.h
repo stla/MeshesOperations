@@ -83,6 +83,11 @@
 #include <CGAL/property_map.h>
 #include <boost/iterator/transform_iterator.hpp>
 
+#include <CGAL/Nef_3/SNC_indexed_items.h>
+#include <CGAL/convex_decomposition_3.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/boost/graph/copy_face_graph.h>
+
 // #include <algorithm>
 // #include <array>
 // #include <map>
@@ -111,6 +116,9 @@ typedef QK::Point_3 QPoint3;
 typedef QK::Vector_3 QVector3;
 
 typedef CGAL::Nef_polyhedron_3<EK> ENef3;
+
+typedef CGAL::Nef_polyhedron_3<EK, CGAL::SNC_indexed_items> NefPol;
+typedef CGAL::Polyhedron_3<EK> EPolyhedron;
 
 // -------------------------------------------------------------------------- //
 namespace PMP = CGAL::Polygon_mesh_processing;

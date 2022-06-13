@@ -29,6 +29,10 @@ connectedComponentsQ <- function(rmesh0, isTriangle, triangulate, clean, normals
     .Call(`_MeshesOperations_connectedComponentsQ`, rmesh0, isTriangle, triangulate, clean, normals)
 }
 
+convexDecomposition <- function(rmesh, triangulate) {
+    .Call(`_MeshesOperations_convexDecomposition`, rmesh, triangulate)
+}
+
 distanceK <- function(rmesh, points, triangulate) {
     .Call(`_MeshesOperations_distanceK`, rmesh, points, triangulate)
 }

@@ -70,7 +70,7 @@ connectedComponents <- function(
   gmp <- numbersType == "gmp"
   if(!is.null(mesh)){
 	if(inherits(mesh, "mesh3d")){
-	  vft  <- getVFT(mesh)
+	  vft  <- getVFT(mesh, beforeCheck = TRUE)
 	  mesh <- vft[["rmesh"]]
 	}
 	vertices <- mesh[["vertices"]]
