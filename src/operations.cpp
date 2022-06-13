@@ -29,7 +29,6 @@ void checkMesh2(MeshT mesh, const std::string& what) {
 template <typename KernelT, typename MeshT, typename PointT>
 MeshT Intersection(const Rcpp::List rmeshes,
                    const bool clean,
-                   const bool exact,  // ?
                    const Rcpp::LogicalVector triangulate) {
   const size_t nmeshes = rmeshes.size();
   std::vector<MeshT> meshes(nmeshes);
@@ -43,9 +42,6 @@ MeshT Intersection(const Rcpp::List rmeshes,
       Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
     }
   }
-  // if(true) {
-  //   checkMesh<MeshT>(mesh_0, 1);
-  // }
   meshes[0] = mesh_0;
   for(size_t i = 1; i < nmeshes; i++) {
     if(i == 1) {
@@ -67,8 +63,9 @@ MeshT Intersection(const Rcpp::List rmeshes,
     }
     checkMesh<MeshT>(mesh_i, i + 1);
     Message("... done.\n");
-    const bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1],
-                                                           mesh_i, meshes[i]);
+    const bool ok = PMP::corefine_and_compute_intersection(
+      meshes[i - 1], mesh_i, meshes[i]
+    );
     if(!ok) {
       Rcpp::stop("Intersection computation has failed.");
     }
@@ -82,7 +79,7 @@ Rcpp::List Intersection_K(const Rcpp::List rmeshes,
                           const bool normals,
                           const Rcpp::LogicalVector triangulate) {
   Mesh3 mesh =
-      Intersection<K, Mesh3, Point3>(rmeshes, clean, false, triangulate);
+      Intersection<K, Mesh3, Point3>(rmeshes, clean, triangulate);
   return RSurfTKMesh(mesh, normals);
 }
 
@@ -92,7 +89,7 @@ Rcpp::List Intersection_EK(const Rcpp::List rmeshes,
                            const bool normals,
                            const Rcpp::LogicalVector triangulate) {
   EMesh3 mesh =
-      Intersection<EK, EMesh3, EPoint3>(rmeshes, clean, true, triangulate);
+      Intersection<EK, EMesh3, EPoint3>(rmeshes, clean, triangulate);
   return RSurfTEKMesh(mesh, normals);
 }
 
@@ -135,8 +132,9 @@ Rcpp::List Intersection_Q(const Rcpp::List rmeshes,  // must be triangles
     }
     checkMesh<QMesh3>(mesh_i, i);
     Message("... done.\n");
-    const bool ok = PMP::corefine_and_compute_intersection(meshes[i - 1],
-                                                           mesh_i, meshes[i]);
+    const bool ok = PMP::corefine_and_compute_intersection(
+      meshes[i - 1], mesh_i, meshes[i]
+    );
     if(!ok) {
       Rcpp::stop("Intersection computation has failed.");
     }
@@ -187,8 +185,9 @@ Rcpp::List Difference_K(const Rcpp::List rmesh1,
                         const bool normals,
                         const bool triangulate1,
                         const bool triangulate2) {
-  Mesh3 mesh = Difference<K, Mesh3, Point3>(rmesh1, rmesh2, clean, triangulate1,
-                                            triangulate2);
+  Mesh3 mesh = Difference<K, Mesh3, Point3>(
+    rmesh1, rmesh2, clean, triangulate1, triangulate2
+  );
   return RSurfTKMesh(mesh, normals);
 }
 
@@ -199,8 +198,9 @@ Rcpp::List Difference_EK(const Rcpp::List rmesh1,
                          const bool normals,
                          const bool triangulate1,
                          const bool triangulate2) {
-  EMesh3 mesh = Difference<EK, EMesh3, EPoint3>(rmesh1, rmesh2, clean,
-                                                triangulate1, triangulate2);
+  EMesh3 mesh = Difference<EK, EMesh3, EPoint3>(
+    rmesh1, rmesh2, clean, triangulate1, triangulate2
+  );
   return RSurfTEKMesh(mesh, normals);
 }
 
@@ -243,7 +243,6 @@ Rcpp::List Difference_Q(const Rcpp::List rmesh1,
 template <typename KernelT, typename MeshT, typename PointT>
 MeshT Union(const Rcpp::List rmeshes,
             const bool clean,
-            const bool exact,  // ?
             const Rcpp::LogicalVector triangulate) {
   const size_t nmeshes = rmeshes.size();
   std::vector<MeshT> meshes(nmeshes);
@@ -257,9 +256,6 @@ MeshT Union(const Rcpp::List rmeshes,
       Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
     }
   }
-  // if(exact) {
-  //   checkMesh<MeshT>(meshes[0], 1);
-  // }
   meshes[0] = mesh_0;
   for(size_t i = 1; i < nmeshes; i++) {
     if(i == 1) {
@@ -295,7 +291,7 @@ Rcpp::List Union_K(const Rcpp::List rmeshes,
                    const bool clean,
                    const bool normals,
                    const Rcpp::LogicalVector triangulate) {
-  Mesh3 mesh = Union<K, Mesh3, Point3>(rmeshes, clean, false, triangulate);
+  Mesh3 mesh = Union<K, Mesh3, Point3>(rmeshes, clean, triangulate);
   return RSurfTKMesh(mesh, normals);
 }
 
@@ -304,7 +300,7 @@ Rcpp::List Union_EK(const Rcpp::List rmeshes,
                     const bool clean,
                     const bool normals,
                     const Rcpp::LogicalVector triangulate) {
-  EMesh3 mesh = Union<EK, EMesh3, EPoint3>(rmeshes, clean, true, triangulate);
+  EMesh3 mesh = Union<EK, EMesh3, EPoint3>(rmeshes, clean, triangulate);
   return RSurfTEKMesh(mesh, normals);
 }
 
@@ -325,7 +321,6 @@ Rcpp::List Union_Q(const Rcpp::List rmeshes,
       Rcpp::stop("Triangulation of mesh n\u00b01 has failed.");
     }
   }
-  // checkMesh<QMesh3>(meshes[0], 0);
   meshes[0] = mesh_0;
   for(size_t i = 1; i < nmeshes; i++) {
     if(i == 1) {
