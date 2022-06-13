@@ -18,14 +18,13 @@
 #'
 #' @export
 #'
-#' @note If \code{clipVolume=TRUE}, the mesh to be clipped (\code{"mesh"})
+#' @note If \code{clipVolume=TRUE}, the mesh to be clipped (\code{mesh})
 #'   must be without self-intersection.
 #'
 #' @examples
 #' # cube clipped to sphere
 #' library(MeshesOperations)
 #' library(rgl)
-#' library(Rvcg)
 #' mesh    <- cube3d()
 #' clipper <- sphereMesh(r= sqrt(2))
 #' clippedMesh <- clipMesh(mesh, clipper)
@@ -37,7 +36,6 @@
 #' library(MeshesOperations)
 #' library(rgl)
 #' library(rmarchingcubes)
-#' library(Rvcg)
 #' # isosurface function
 #' gold <- (1+sqrt(5))/2
 #' f <- function(x,y,z){

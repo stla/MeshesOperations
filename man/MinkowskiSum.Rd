@@ -29,7 +29,6 @@ Returns the mesh defined as the Minkowski sum of the
 # example 1: octahedron + sphere
 library(MeshesOperations)
 library(rgl)
-library(Rvcg)
 mesh1 <- octahedron3d()
 mesh2 <- sphereMesh(iterations = 2L)
 mesh <- MinkowskiSum(mesh1, mesh2, normals = TRUE)
