@@ -114,9 +114,9 @@ MeshT soup2mesh(std::vector<PointT> points,
     Message("Triangulation.");
     const bool success = PMP::triangulate_faces(mesh);
     if(!success) {
-      Message("Warning: Triangulation has failed!");
+      Rcpp::stop("Triangulation has failed.");
     }
-    isTriangle = success;
+    isTriangle = true;
   } else {
     isTriangle = CGAL::is_triangle_mesh(mesh);
   } 

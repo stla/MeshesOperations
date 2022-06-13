@@ -1,16 +1,17 @@
 library(MeshesOperations)
 library(rgl)
 library(randomcoloR)
-
-cxp <- convexParts(mesh = NonConvexPolyhedron)
-ncp <- length(cxp)
-colors <- distinctColorPalette(ncp)
-
+meshes <- convexParts(mesh = NonConvexPolyhedron)
+ncp <- length(meshes)
+colors <- randomColor(ncp, hue = "random", luminosity = "bright")
 open3d(windowRect = c(50, 50, 562, 562), zoom = 0.8)
 for(i in seq_len(ncp)){
-  shade3d(toRGL(cxp[[i]]), color = colors[i])
+  shade3d(toRGL(meshes[[i]]), color = colors[i])
 }
-plotEdges(NonConvexPolyhedron$vertices, NonConvexPolyhedron$edges)
+plotEdges(
+  NonConvexPolyhedron[["vertices"]],
+  NonConvexPolyhedron[["edges"]]
+)
 
 
 # mesh one: a cube

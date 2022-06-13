@@ -102,9 +102,5 @@ faces <- list(
   1L + c( 11L, 35L, 43L, 39L, 31L )
 )
 
-truncatedIcosahedron <- list(
-  "vertices" = vertices,
-  "faces"    = faces
-)
-attr(truncatedIcosahedron, "toRGL") <- FALSE
-class(truncatedIcosahedron) <- "cgalMesh"
+library(MeshesOperations)
+truncatedIcosahedron <- Mesh(vertices, faces)

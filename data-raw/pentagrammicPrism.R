@@ -44,22 +44,4 @@ rectangles <- list(
 faces <- c(triangles, rectangles, pentagons)
 
 library(MeshesOperations)
-mesh <- Mesh(vertices, faces, triangulate = TRUE, numbersType = "lazyExact")
-
-# pentagrammic prism ####
-library(MeshesOperations)
-library(rgl)
-library(randomcoloR)
-meshes <- convexParts(mesh = pentagrammicPrism)
-ncp <- length(meshes)
-colors <- randomColor(ncp, hue = "random", luminosity = "bright")
-open3d(windowRect = c(50, 50, 562, 562), zoom = 0.8)
-for(i in seq_len(ncp)){
-  shade3d(toRGL(meshes[[i]]), color = colors[i])
-}
-plotEdges(
-  pentagrammicPrism[["vertices"]],
-  pentagrammicPrism[["edges"]],
-  tubesRadius = 0.01,
-  spheresRadius = 0.02
-)
+pentagrammicPrism <- Mesh(vertices, faces)

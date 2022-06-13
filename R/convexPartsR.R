@@ -1,15 +1,55 @@
 #' Title
 #'
-#' @param vertices x
-#' @param faces x
-#' @param mesh x
-#' @param triangulate x
+#' @param vertices a numeric matrix with three columns, or a \code{bigq}
+#'   matrix with three columns if \code{numbersType="gmp"}
+#' @param faces either an integer matrix (each row provides the vertex indices
+#'   of the corresponding face) or a list of integer vectors, each one
+#'   providing the vertex indices of the corresponding face
+#' @param mesh if not \code{NULL}, this argument takes precedence over
+#'   \code{vertices} and \code{faces}, and must be either a list containing
+#'   the fields \code{vertices} and \code{faces} (objects as described above),
+#'   otherwise a \strong{rgl} mesh (i.e. a \code{mesh3d} object)
+#' @param triangulate Boolean, whether to triangulate the convex parts
 #'
-#' @return x
+#' @return A list of \code{cgalMesh} lists, each corresponding to a convex part.
 #' @export
 #'
+#' @importFrom data.table uniqueN
+#'
 #' @examples
-#' #
+#' # a non-convex polyhedron ####
+#' library(MeshesOperations)
+#' library(rgl)
+#' library(randomcoloR)
+#' meshes <- convexParts(mesh = NonConvexPolyhedron)
+#' ncp <- length(meshes)
+#' colors <- randomColor(ncp, hue = "random", luminosity = "bright")
+#' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.8)
+#' for(i in seq_len(ncp)){
+#'   shade3d(toRGL(meshes[[i]]), color = colors[i])
+#' }
+#' plotEdges(
+#'   NonConvexPolyhedron[["vertices"]],
+#'   NonConvexPolyhedron[["edges"]]
+#' )
+#'
+#' # pentagrammic prism ####
+#' library(MeshesOperations)
+#' library(rgl)
+#' library(randomcoloR)
+#' meshes <- convexParts(mesh = pentagrammicPrism)
+#' ncp <- length(meshes)
+#' colors <- randomColor(ncp, hue = "random", luminosity = "bright")
+#' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.8)
+#' for(i in seq_len(ncp)){
+#'   shade3d(toRGL(meshes[[i]]), color = colors[i])
+#' }
+#' plotEdges(
+#'   pentagrammicPrism[["vertices"]],
+#'   pentagrammicPrism[["edges"]],
+#'   tubesRadius = 0.01,
+#'   spheresRadius = 0.02
+#' )
 convexParts <- function(
   vertices, faces, mesh = NULL, triangulate = TRUE
 ){
@@ -45,9 +85,9 @@ convexParts <- function(
     #     mesh[["normals0"]] <- t(mesh[["normals0"]])
     #   }
     # }
-    if(FALSE && (triangulate || homogeneousFaces)){
+    if(triangulate){
       mesh[["faces"]] <- do.call(rbind, mesh[["faces"]])
-      toRGL <- ifelse(triangulate, 3L, homogeneousFaces)
+      toRGL <- 3L
     }else{
       sizes <- lengths(mesh[["faces"]])
       usizes <- uniqueN(sizes)

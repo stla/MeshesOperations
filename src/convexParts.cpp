@@ -33,7 +33,7 @@ Rcpp::List convexDecomposition(Rcpp::List rmesh, const bool triangulate){
   Rcpp::List out(ncp);
   size_t i = 0;
   for(EMesh3 cmesh : convex_parts){
-    if(triangulate){
+    if(triangulate && !CGAL::is_triangle_mesh(cmesh)){
       Message(
         "Triangulation of convex part n\u00b0" + std::to_string(i+1) + "."
       );
