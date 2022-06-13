@@ -27,7 +27,7 @@
 #' library(rgl)
 #' library(Rvcg)
 #' mesh    <- cube3d()
-#' clipper <- scale3d(vcgSphere(), sqrt(2), sqrt(2), sqrt(2))
+#' clipper <- sphereMesh(r= sqrt(2))
 #' clippedMesh <- clipMesh(mesh, clipper)
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(zoom = 0.9)
@@ -63,7 +63,7 @@
 #' 		homogeneous = FALSE
 #' )
 #' # clip to sphere of radius sqrt(3)
-#' clipper <- scale3d(vcgSphere(normals = FALSE), sqrt(3), sqrt(3), sqrt(3))
+#' clipper <- sphereMesh(r= sqrt(3))
 #' clippedMesh <- clipMesh(mesh, clipper, clipVolume = FALSE, normals = TRUE)
 #' # plot
 #' open3d(windowRect = c(50, 50, 950, 500))
