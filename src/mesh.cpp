@@ -23,6 +23,20 @@ Rcpp::List SurfMesh(const Rcpp::List rmesh,
     if(!success) {
       Rcpp::stop("Triangulation has failed.");
     }
+    if(CGAL::is_closed(mesh)) {
+      if(!PMP::is_outward_oriented(mesh)) {
+        PMP::reverse_face_orientations(mesh);
+      }
+      const bool bv = PMP::does_bound_a_volume(mesh);
+      std::string msg2;
+      if(bv) {
+        msg2 = "The mesh bounds a volume.";
+      } else {
+        msg2 = "The mesh does not bound a volume - reorienting.";
+        PMP::orient_to_bound_a_volume(mesh);
+      }
+      Message(msg2);
+    }
   }
   Message("... done.\n");
   Rcpp::List routmesh = RSurfKMesh(mesh, normals);
@@ -56,6 +70,20 @@ Rcpp::List SurfEMesh(const Rcpp::List rmesh,
     if(!success) {
       Rcpp::stop("Triangulation has failed.");
     }
+    if(CGAL::is_closed(mesh)) {
+      if(!PMP::is_outward_oriented(mesh)) {
+        PMP::reverse_face_orientations(mesh);
+      }
+      const bool bv = PMP::does_bound_a_volume(mesh);
+      std::string msg2;
+      if(bv) {
+        msg2 = "The mesh bounds a volume.";
+      } else {
+        msg2 = "The mesh does not bound a volume - reorienting.";
+        PMP::orient_to_bound_a_volume(mesh);
+      }
+      Message(msg2);
+    }
   }
   Message("... done.\n");
   Rcpp::List routmesh = RSurfEKMesh(mesh, normals);
@@ -88,6 +116,20 @@ Rcpp::List SurfQMesh(const Rcpp::List rmesh,
     const bool success = PMP::triangulate_faces(mesh);
     if(!success) {
       Rcpp::stop("Triangulation has failed.");
+    }
+    if(CGAL::is_closed(mesh)) {
+      if(!PMP::is_outward_oriented(mesh)) {
+        PMP::reverse_face_orientations(mesh);
+      }
+      const bool bv = PMP::does_bound_a_volume(mesh);
+      std::string msg2;
+      if(bv) {
+        msg2 = "The mesh bounds a volume.";
+      } else {
+        msg2 = "The mesh does not bound a volume - reorienting.";
+        PMP::orient_to_bound_a_volume(mesh);
+      }
+      Message(msg2);
     }
   }
   Message("... done.\n");

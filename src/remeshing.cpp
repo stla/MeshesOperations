@@ -11,18 +11,12 @@ Rcpp::List isotropicRemeshingK(const Rcpp::List rmesh,
                                const bool normals) {
   Message("\u2014 Processing mesh...");
   Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true, triangulate);
-  // if(triangulate) {
-  //   Message("Triangulation.");
-  //   const bool success = PMP::triangulate_faces(mesh);
-  //   if(!success) {
-  //     Rcpp::stop("Triangulation has failed.");
-  //   }
-  // }
   Message("... done.\n");
   PMP::isotropic_remeshing(
-      mesh.faces(), targetEdgeLength, mesh,
-      PMP::parameters::number_of_iterations(niters).number_of_relaxation_steps(
-          nrelaxsteps));
+    mesh.faces(), targetEdgeLength, mesh,
+    PMP::parameters::number_of_iterations(niters)
+                    .number_of_relaxation_steps(nrelaxsteps)
+  );
   mesh.collect_garbage();
   Rcpp::List routmesh = RSurfTKMesh(mesh, normals);
   return routmesh;

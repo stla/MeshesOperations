@@ -21,8 +21,10 @@ std::pair<std::vector<std::vector<int>>, bool> list_to_faces2(
   for(size_t i = 0; i < nfaces; i++) {
     Rcpp::IntegerVector face_rcpp = Rcpp::as<Rcpp::IntegerVector>(L(i));
     std::vector<int> face(face_rcpp.begin(), face_rcpp.end());
-    std::transform(face.begin(), face.end(), face.begin(),
-                   std::bind2nd(std::minus<int>(), 1));
+    std::transform(
+      face.begin(), face.end(), face.begin(),
+      std::bind2nd(std::minus<int>(), 1)
+    );
     faces.emplace_back(face);
     triangle = triangle && (face.size() == 3);
   }
@@ -39,15 +41,21 @@ Rcpp::List readFile(const std::string filename) {
   std::vector<std::vector<int>> faces;
   bool ok = false;
   if(ext == "ply") {
-    ok = CGAL::IO::read_PLY(infile, points, faces,
-                            CGAL::parameters::use_binary_mode(binary));
+    ok = CGAL::IO::read_PLY(
+      infile, points, faces,
+      CGAL::parameters::use_binary_mode(binary)
+    );
     if(!ok && !binary) {
-      ok = CGAL::IO::read_PLY(infile, points, faces,
-                              CGAL::parameters::use_binary_mode(true));
+      ok = CGAL::IO::read_PLY(
+        infile, points, faces,
+        CGAL::parameters::use_binary_mode(true)
+      );
     }
   } else if(ext == "stl") {
-    ok = CGAL::IO::read_STL(filename, points, faces,
-                            CGAL::parameters::use_binary_mode(binary));
+    ok = CGAL::IO::read_STL(
+      filename, points, faces,
+      CGAL::parameters::use_binary_mode(binary)
+    );
   } else if(ext == "obj") {
     ok = CGAL::IO::read_OBJ(infile, points, faces);
   } else if(ext == "off") {
@@ -94,21 +102,27 @@ void writeFile(const std::string filename,
   bool ok = false;
   if(ext == "ply") {
     ok = CGAL::IO::write_PLY(
-        filename, points, faces.first,
-        CGAL::parameters::use_binary_mode(binary).stream_precision(precision));
+      filename, points, faces.first,
+      CGAL::parameters::use_binary_mode(binary).stream_precision(precision)
+    );
   } else if(ext == "stl") {
     if(!faces.second) {
       Rcpp::stop("STL files only accept triangular faces.");
     }
     ok = CGAL::IO::write_STL(
-        filename, points, faces.first,
-        CGAL::parameters::use_binary_mode(binary).stream_precision(precision));
+      filename, points, faces.first,
+      CGAL::parameters::use_binary_mode(binary).stream_precision(precision)
+    );
   } else if(ext == "obj") {
-    ok = CGAL::IO::write_OBJ(filename, points, faces.first,
-                             CGAL::parameters::stream_precision(precision));
+    ok = CGAL::IO::write_OBJ(
+      filename, points, faces.first,
+      CGAL::parameters::stream_precision(precision)
+    );
   } else if(ext == "off") {
-    ok = CGAL::IO::write_OFF(filename, points, faces.first,
-                             CGAL::parameters::stream_precision(precision));
+    ok = CGAL::IO::write_OFF(
+      filename, points, faces.first,
+      CGAL::parameters::stream_precision(precision)
+    );
   } else {
     Rcpp::stop("Unknown file extension.");
   }

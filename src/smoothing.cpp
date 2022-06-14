@@ -49,13 +49,6 @@ Rcpp::List smoothShapeK(const Rcpp::List rmesh,
                         const bool normals) {
   Message("\u2014 Processing mesh...");
   Mesh3 mesh = makeSurfMesh<Mesh3, Point3>(rmesh, true, triangulate);
-  // if(triangulate) {
-  //   Message("Triangulation.");
-  //   const bool success = PMP::triangulate_faces(mesh);
-  //   if(!success) {
-  //     Rcpp::stop("Triangulation has failed.");
-  //   }
-  // }
   Message("... done.\n");
   std::set<Mesh3::Vertex_index> constrained_vertices;
   for(Mesh3::Vertex_index v : mesh.vertices()) {
@@ -72,7 +65,8 @@ Rcpp::List smoothShapeK(const Rcpp::List rmesh,
   }
   Message("Constraining: " + std::to_string(nbv) + word);
   CGAL::Boolean_property_map<std::set<Mesh3::Vertex_index>> vcmap(
-      constrained_vertices);
+    constrained_vertices
+  );
   std::string tail;
   if(niters == 1) {
     tail = "one iteration).\n";
@@ -81,9 +75,10 @@ Rcpp::List smoothShapeK(const Rcpp::List rmesh,
   }
   Message("Smoothing shape (" + tail);
   PMP::smooth_shape(
-      mesh, time,
-      PMP::parameters::number_of_iterations(niters).vertex_is_constrained_map(
-          vcmap));
+    mesh, time,
+    PMP::parameters::number_of_iterations(niters)
+                    .vertex_is_constrained_map(vcmap)
+  );
   Rcpp::List routmesh = RSurfTKMesh(mesh, normals);
   return routmesh;
 }

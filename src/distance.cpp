@@ -4,11 +4,6 @@
 
 Mesh3 Triangulation(const Rcpp::List rmesh) {
   EMesh3 emesh = makeSurfMesh<EMesh3, EPoint3>(rmesh, true, true);
-  // Message("Triangulation.");
-  // const bool success = PMP::triangulate_faces(emesh);
-  // if(!success) {
-  //   Rcpp::stop("Triangulation has failed.");
-  // }
   const size_t nvertices = emesh.number_of_vertices();
   const size_t nedges    = emesh.number_of_edges();
   const size_t nfaces    = emesh.number_of_faces();
