@@ -1,4 +1,5 @@
-#' Title
+#' @title Decomposition into convex parts
+#' @description Decomposition of a mesh into convex parts.
 #'
 #' @param vertices a numeric matrix with three columns, or a \code{bigq}
 #'   matrix with three columns if \code{numbersType="gmp"}

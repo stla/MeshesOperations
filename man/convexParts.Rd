@@ -2,7 +2,7 @@
 % Please edit documentation in R/convexPartsR.R
 \name{convexParts}
 \alias{convexParts}
-\title{Title}
+\title{Decomposition into convex parts}
 \usage{
 convexParts(vertices, faces, mesh = NULL, triangulate = TRUE)
 }
@@ -25,7 +25,7 @@ otherwise a \strong{rgl} mesh (i.e. a \code{mesh3d} object)}
 A list of \code{cgalMesh} lists, each corresponding to a convex part.
 }
 \description{
-Title
+Decomposition of a mesh into convex parts.
 }
 \examples{
 # a non-convex polyhedron ####
