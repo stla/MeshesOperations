@@ -32,7 +32,8 @@
 #' # mesh one: truncated icosahedron; we triangulate it for plotting
 #' mesh1 <- Mesh(
 #'   mesh = truncatedIcosahedron,
-#'   triangulate = TRUE, normals = FALSE
+#'   triangulate = TRUE, normals = FALSE,
+#'   numbersType = "lazyExact"
 #' )
 #'
 #' # mesh two: a cube
