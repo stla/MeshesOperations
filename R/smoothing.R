@@ -52,8 +52,7 @@
 #'   system.file("extdata", "bunny.off", package = "MeshesOperations")
 #' )
 #' mesh <- Mesh(
-#'   vf[["vertices"]], vf[["faces"]], normals = TRUE,
-#'   numbersType = "lazyExact"
+#'   vf[["vertices"]], vf[["faces"]], normals = TRUE
 #' )
 #' rglmesh <- toRGL(mesh)
 #' smesh <- smoothShape(

@@ -18,8 +18,7 @@
 #'   system.file("extdata", "beethoven.ply", package = "MeshesOperations")
 #' )
 #' mesh <- Mesh(
-#'   vf[["vertices"]], vf[["faces"]], normals = TRUE,
-#'   numbersType = "lazyExact"
+#'   vf[["vertices"]], vf[["faces"]], normals = TRUE, clean = TRUE
 #' )
 #' rglmesh <- toRGL(mesh)
 #' open3d(windowRect = c(50, 50, 562, 562))
