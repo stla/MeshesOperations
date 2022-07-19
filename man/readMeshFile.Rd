@@ -24,7 +24,10 @@ library(rgl)
 vf <- readMeshFile(
   system.file("extdata", "beethoven.ply", package = "MeshesOperations")
 )
-mesh <- Mesh(vf[["vertices"]], vf[["faces"]], normals = TRUE)
+mesh <- Mesh(
+  vf[["vertices"]], vf[["faces"]], normals = TRUE,
+  numbersType = "lazyExact"
+)
 rglmesh <- toRGL(mesh)
 open3d(windowRect = c(50, 50, 562, 562))
 view3d(0, 0, zoom = 0.8)

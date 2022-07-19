@@ -72,7 +72,10 @@ wire3d(sparabola)
 vf <- readMeshFile(
   system.file("extdata", "bunny.off", package = "MeshesOperations")
 )
-mesh <- Mesh(vf[["vertices"]], vf[["faces"]], normals = TRUE)
+mesh <- Mesh(
+  vf[["vertices"]], vf[["faces"]], normals = TRUE,
+  numbersType = "lazyExact"
+)
 rglmesh <- toRGL(mesh)
 smesh <- smoothShape(
   mesh = mesh,
