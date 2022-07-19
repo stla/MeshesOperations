@@ -11,3 +11,4 @@
 ^\.settings$
 ^\.project$
 
+^cran-comments\.md$

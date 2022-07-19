@@ -1,12 +1,12 @@
 Type: Package
 Package: MeshesOperations
 Title: Operations on 3D Meshes
-Version: 0.0.9012
+Version: 0.1.0
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Uses the 'CGAL' C++ library to perform operations on 3D
     meshes: Boolean operations (intersection, union, difference),
-    Minkowski sum, smoothing.
+    Minkowski sum, smoothing, clipping.
 License: GPL-3
 URL: https://github.com/stla/MeshesOperations
 BugReports: https://github.com/stla/MeshesOperations/issues
@@ -19,14 +19,14 @@ Imports:
     rgl,
     Rvcg
 Suggests: 
-    BH,
     misc3d,
     rmarchingcubes,
     randomcoloR
 LinkingTo: 
     Rcpp,
     RcppCGAL,
-    RcppEigen
+    RcppEigen,
+    BH
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: bzip2
