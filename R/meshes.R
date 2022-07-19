@@ -402,7 +402,8 @@ toRGL <- function(mesh, ...){
 #' library(rgl)
 #' mesh <- Mesh(
 #'   mesh = truncatedIcosahedron,
-#'   triangulate = TRUE, normals = FALSE
+#'   triangulate = TRUE, normals = FALSE,
+#'   numbersType = "lazyExact"
 #' )
 #' # now we can plot the truncated icosahedron
 #' tmesh <- toRGL(mesh)
