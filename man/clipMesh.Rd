@@ -45,7 +45,7 @@ view3d(zoom = 0.9)
 shade3d(toRGL(clippedMesh), color = "purple")
 
 # Barth sextic ####
-library(MeshesOperations)
+\donttest{library(MeshesOperations)
 library(rgl)
 library(rmarchingcubes)
 # isosurface function
@@ -82,5 +82,5 @@ view3d(zoom = 0.8)
 shade3d(mesh, color = "darkred")
 next3d()
 view3d(zoom = 0.8)
-shade3d(toRGL(clippedMesh), color = "darkred")
+shade3d(toRGL(clippedMesh), color = "darkred")}
 }
