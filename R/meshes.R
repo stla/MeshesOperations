@@ -329,7 +329,7 @@ Mesh <- function(
 #' library(rgl)
 #' mesh <- Mesh(
 #'   truncatedIcosahedron[["vertices"]], truncatedIcosahedron[["faces"]],
-#'   triangulate = TRUE
+#'   triangulate = TRUE, numbersType = "lazyExact"
 #' )
 #' rglmesh <- toRGL(mesh, segments = t(mesh[["edges"]]))
 #' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
