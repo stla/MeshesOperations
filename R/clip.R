@@ -61,7 +61,7 @@
 #' 		homogeneous = FALSE
 #' )
 #' # clip to sphere of radius sqrt(3)
-#' clipper <- sphereMesh(r= sqrt(3))
+#' clipper <- sphereMesh(r = sqrt(3))
 #' clippedMesh <- clipMesh(mesh, clipper, clipVolume = FALSE, normals = TRUE)
 #' # plot
 #' open3d(windowRect = c(50, 50, 950, 500))
