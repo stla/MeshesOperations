@@ -30,5 +30,5 @@ LinkingTo:
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: bzip2
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 SystemRequirements: C++ 14, gmp, mpfr

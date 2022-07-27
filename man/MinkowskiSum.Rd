@@ -27,7 +27,7 @@ Returns the mesh defined as the Minkowski sum of the
 }
 \examples{
 # example 1: octahedron + sphere
-library(MeshesOperations)
+\donttest{library(MeshesOperations)
 library(rgl)
 mesh1 <- octahedron3d()
 mesh2 <- sphereMesh(iterations = 2L)
@@ -35,7 +35,7 @@ mesh <- MinkowskiSum(mesh1, mesh2, normals = TRUE)
 rglmesh <- toRGL(mesh)
 open3d(windowRect = c(50, 50, 562, 562))
 view3d(30, 30, zoom = 0.8)
-shade3d(rglmesh, color = "maroon")
+shade3d(rglmesh, color = "maroon")}
 
 # example2: truncated icosahedron + tetrahedron
 library(MeshesOperations)

@@ -27,7 +27,9 @@ and \code{faces}, and must be either a list containing the fields \code{vertices
 and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh
 (i.e. a \code{mesh3d} object)}
 
-\item{triangulate}{Boolean, whether to triangulate the faces}
+\item{triangulate}{Boolean, whether to triangulate the faces; if \code{TRUE},
+it is highly recommended to use an exact type of numbers, i.e. 
+\code{numbersType="lazyExact"} or \code{numbersType="gmp"}}
 
 \item{clean}{Boolean, whether to clean the mesh (merging duplicated
 vertices, duplicated faces, removed isolated vertices)}
