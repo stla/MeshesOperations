@@ -167,14 +167,14 @@ cyclideMesh <- function(a, c, mu, nu = 90L, nv = 40L, rgl = TRUE){
   #   ((a - c) * (mu + omega) - b2) /
   #   ((a + c) * (omega - c) + b2)
   OmegaT <- c(omegaT, 0, 0)
-  tormesh <- torusMesh(R, r, nu, nv, rgl = FALSE)
-  rtnormals <- r * tormesh[["normals"]]
-  xvertices <- t(tormesh[["vertices"]]) + OmegaT
+  tormesh <- torusMesh(R, r, nu, nv, rgl = TRUE)
+  rtnormals <- r * tormesh[["normals"]][1L:3L, ]
+  xvertices <- tormesh[["vb"]][1L:3L, ] + OmegaT
   for(i in 1L:nu){
     k0 <- i * nv - nv
     for(j in 1L:nv){
       k <- k0 + j
-      rtnormal <- rtnormals[k, ]
+      rtnormal <- rtnormals[, k]
       xvertex <- xvertices[, k]
       vertex <- inversion(xvertex)
       vertices[, k] <- vertex
@@ -184,7 +184,7 @@ cyclideMesh <- function(a, c, mu, nu = 90L, nv = 40L, rgl = TRUE){
   }
   tmesh <- tmesh3d(
     vertices    = vertices,
-    indices     = t(tormesh[["faces"]]),
+    indices     = tormesh[["it"]],
     normals     = normals,
     homogeneous = FALSE
   )

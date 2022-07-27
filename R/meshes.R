@@ -129,7 +129,9 @@ checkMesh <- function(vertices, faces, gmp, aslist){
 #'   and \code{faces}, and must be either a list containing the fields \code{vertices}
 #'   and \code{faces} (objects as described above), otherwise a \strong{rgl} mesh
 #'   (i.e. a \code{mesh3d} object)
-#' @param triangulate Boolean, whether to triangulate the faces
+#' @param triangulate Boolean, whether to triangulate the faces; if \code{TRUE},
+#'   it is highly recommended to use an exact type of numbers, i.e. 
+#'   \code{numbersType="lazyExact"} or \code{numbersType="gmp"}
 #' @param clean Boolean, whether to clean the mesh (merging duplicated
 #'   vertices, duplicated faces, removed isolated vertices)
 #' @param normals Boolean, whether to compute the normals
