@@ -23,7 +23,7 @@ std::pair<std::vector<std::vector<int>>, bool> list_to_faces2(
     std::vector<int> face(face_rcpp.begin(), face_rcpp.end());
     std::transform(
       face.begin(), face.end(), face.begin(),
-      std::bind2nd(std::minus<int>(), 1)
+	  std::bind(std::minus<int>(), _1, 1)
     );
     faces.emplace_back(face);
     triangle = triangle && (face.size() == 3);

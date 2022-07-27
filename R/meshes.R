@@ -400,7 +400,7 @@ toRGL <- function(mesh, ...){
 #' @export
 #'
 #' @examples
-#' library(MeshesOperations)
+#' \donttest{library(MeshesOperations)
 #' library(rgl)
 #' mesh <- Mesh(
 #'   mesh = truncatedIcosahedron,
@@ -411,7 +411,7 @@ toRGL <- function(mesh, ...){
 #' tmesh <- toRGL(mesh)
 #' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.9)
 #' shade3d(tmesh, color = "gold")
-#' plotEdges(mesh[["vertices"]], mesh[["edges0"]], color = "navy")
+#' plotEdges(mesh[["vertices"]], mesh[["edges0"]], color = "navy")}
 plotEdges <- function(
 		vertices,
 		edges,
