@@ -55,10 +55,12 @@ commercial purposes, you must obtain a license from the
 [GeometryFactory](https://geometryfactory.com).
 
 
-## Blog post
+## Blog posts
 
 I wrote a 
 [blog post](https://laustep.github.io/stlahblog/posts/BooleanOpsOnMeshes.html)
 devoted to Boolean operations on meshes (using **RCGAL**, the 
 [ancestor](https://laustep.github.io/stlahblog/posts/splittingRCGAL.html) 
-of **MehesOperations**).
+of **MehesOperations**), and 
+[another one](https://laustep.github.io/stlahblog/posts/MinkowskiSumLeonardo.html) 
+showing an example of the Minkowski addition.
