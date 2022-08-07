@@ -24,7 +24,6 @@ Triangle mesh of a Dupin cyclide.
 }
 \details{
 The Dupin cyclide in the plane \emph{z=0}:
-
 \if{html}{
   \out{<div style="text-align: center">}\figure{cyclide.png}{options: style="max-width:75\%;" alt="cyclide"}\out{</div>}
 }

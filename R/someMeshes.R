@@ -109,7 +109,6 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
 #'   and normals).
 #'
 #' @details The Dupin cyclide in the plane \emph{z=0}:
-#'
 #' \if{html}{
 #'   \out{<div style="text-align: center">}\figure{cyclide.png}{options: style="max-width:75\%;" alt="cyclide"}\out{</div>}
 #' }
