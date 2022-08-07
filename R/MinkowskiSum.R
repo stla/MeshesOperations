@@ -30,7 +30,7 @@
 #' shade3d(rglmesh, color = "maroon")}
 #'
 #' # example2: truncated icosahedron + tetrahedron
-#' library(MeshesOperations)
+#' \donttest{library(MeshesOperations)
 #' library(rgl)
 #' # mesh 1
 #' mesh1 <- truncatedIcosahedron
@@ -56,7 +56,7 @@
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(30, 30, zoom = 0.8)
 #' shade3d(rglmesh, color = "navy")
-#' plotEdges(mesh[["vertices"]], mesh[["edges0"]], color = "yellow")
+#' plotEdges(mesh[["vertices"]], mesh[["edges0"]], color = "yellow")}
 MinkowskiSum <- function(mesh1, mesh2, triangulate = TRUE, normals = FALSE){
   stopifnot(isBoolean(normals))
   vft1 <- getVFT(mesh1)
