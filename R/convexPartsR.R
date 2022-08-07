@@ -19,7 +19,7 @@
 #'
 #' @examples
 #' # a non-convex polyhedron ####
-#' library(MeshesOperations)
+#' \donttest{library(MeshesOperations)
 #' library(rgl)
 #' library(randomcoloR)
 #' meshes <- convexParts(mesh = NonConvexPolyhedron)
@@ -32,10 +32,10 @@
 #' plotEdges(
 #'   NonConvexPolyhedron[["vertices"]],
 #'   NonConvexPolyhedron[["edges"]]
-#' )
+#' )}
 #'
 #' # pentagrammic prism ####
-#' library(MeshesOperations)
+#' \donttest{library(MeshesOperations)
 #' library(rgl)
 #' library(randomcoloR)
 #' meshes <- convexParts(mesh = pentagrammicPrism)
@@ -50,7 +50,7 @@
 #'   pentagrammicPrism[["edges"]],
 #'   tubesRadius = 0.01,
 #'   spheresRadius = 0.02
-#' )
+#' )}
 convexParts <- function(
   vertices, faces, mesh = NULL, triangulate = TRUE
 ){

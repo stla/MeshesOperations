@@ -29,7 +29,7 @@ Decomposition of a mesh into convex parts.
 }
 \examples{
 # a non-convex polyhedron ####
-library(MeshesOperations)
+\donttest{library(MeshesOperations)
 library(rgl)
 library(randomcoloR)
 meshes <- convexParts(mesh = NonConvexPolyhedron)
@@ -42,10 +42,10 @@ for(i in seq_len(ncp)){
 plotEdges(
   NonConvexPolyhedron[["vertices"]],
   NonConvexPolyhedron[["edges"]]
-)
+)}
 
 # pentagrammic prism ####
-library(MeshesOperations)
+\donttest{library(MeshesOperations)
 library(rgl)
 library(randomcoloR)
 meshes <- convexParts(mesh = pentagrammicPrism)
@@ -60,5 +60,5 @@ plotEdges(
   pentagrammicPrism[["edges"]],
   tubesRadius = 0.01,
   spheresRadius = 0.02
-)
+)}
 }
