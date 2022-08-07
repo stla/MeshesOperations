@@ -116,7 +116,6 @@ torusMesh <- function(R, r, nu = 50, nv = 30, rgl = TRUE){
 #' \if{latex}{
 #'   \out{\begin{center}}\figure{cyclide.png}\out{\end{center}}
 #' }
-
 #'
 #' @export
 #'
