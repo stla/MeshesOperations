@@ -316,7 +316,7 @@ MeshesUnion <- function(
       vft  <- getVFT(mesh, beforeCheck = TRUE)
       mesh <- vft[["rmesh"]]
     }
-    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = FALSE)
+    checkMesh(mesh[["vertices"]], mesh[["faces"]], gmp, aslist = TRUE)
   })
   areTriangle <- vapply(checkMeshes, `[[`, logical(1L), "isTriangle")
   triangulate <- !areTriangle
